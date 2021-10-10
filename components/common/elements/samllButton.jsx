@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, StyleSheet, Button, TouchableOpacity, Dimensions } from 'react-native';
 
-const PrimaryButton = ({
+const SmallButton = ({
     disabled = false,
-    onPress = () => {  },
+    onPress = () => { },
     style = {},
     title = ''
 }) => (<TouchableOpacity disabled={disabled} onPress={onPress} style={[
@@ -21,14 +21,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#98DECA',
         borderRadius: 50,
         alignItems: 'center',
-        padding: 17,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        width: 'auto'
     },
     buttonText: {
-        fontFamily: 'Quasimodasemibold',
-        fontSize: 22,
+        fontFamily: 'Quasimodabold',
+        fontSize: 15,
         color: '#2B2C34',
-        // fontWeight: 'bold'
+        fontWeight: 'bold'
     }
 });
 
-export default PrimaryButton;
+export default SmallButton;

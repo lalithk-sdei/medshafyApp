@@ -24,7 +24,7 @@ const OPT = ({ otpChange }) => {
                 ref={ref}
                 {...props}
                 value={value}
-                onChangeText={(e) => { console.log(e); setValue(e) }}
+                onChangeText={(e) => { otpChange(e); setValue(e) }}
                 cellCount={CELL_COUNT}
                 rootStyle={styles.codeFiledRoot}
                 keyboardType="number-pad"
@@ -37,7 +37,7 @@ const OPT = ({ otpChange }) => {
                         style={[styles.cellRoot, isFocused && styles.focusCell]}
                     >
                         <Text style={styles.cellText}>
-                            {symbol || (isFocused ? <Cursor delay={2000} /> : null)}
+                            {symbol || (isFocused ? <Cursor delay={3000} /> : null)}
                         </Text>
                     </View>
                 )}
@@ -47,7 +47,7 @@ const OPT = ({ otpChange }) => {
 };
 
 const styles = StyleSheet.create({
-    root: { padding: 20, minHeight: 300 },
+    root: { padding: 20, },
     title: { textAlign: 'center', fontSize: 30 },
     codeFiledRoot: {
         marginTop: 20,

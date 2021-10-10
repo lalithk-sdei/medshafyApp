@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import FirstHead from "../common/elements/firstHead"
 import LightText from '../common/elements/lightText';
 import SecondText from '../common/elements/secondtext';
@@ -8,87 +8,143 @@ import PrimaryButton from '../common/elements/primaryButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from '@expo/vector-icons';
 import Floatinginput from '../common/elements/floatinginput';
+import { ForgotSendOpt } from '../../dataStore/actions/user';
+import { connect } from 'react-redux';
+import Errortext from '../common/elements/errorText';
+import { constants } from '../../utlits/constants';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { SET_OTPVERFY_STATUS, SET_OTPVERFY_STATUS_ONCE } from '../../dataStore/types/types';
 const ForgotPassword = (props) => {
 
     const [phone, setPhone] = React.useState('');
 
-    React.useEffect(() => {
-    }, []);
+    const [formstate, setFormState] = React.useState({
+        phTch: false, phErr: true, phErrMsg: "", phVal: "",
+    });
+    const [cncode, setCncode] = React.useState('+966');
 
+    const setSelectedValue = (e) => {
+        if (cncode == '+966') {
+            setCncode('+91');
+        } else {
+            setCncode('+966');
+        }
+    }
+
+    const mobilealdator = (e = null, tch = false) => {
+        const { lang } = props;
+        if (["", null, undefined].includes(e)) {
+            setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
+        } else if (`${e}`.length != 10) {
+            setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phoneinvalid, phVal: e, ...tch && { phTch: true } });
+        } else {
+            setFormState({ ...formstate, phErr: false, phErrMsg: '', phVal: e, ...tch && { phTch: true } });
+        }
+    }
+
+    const submit = () => {
+        props.sendOtp({ phonenumber: `${cncode}${formstate.phVal}` });
+    }
+    React.useEffect(() => {
+        props.resetVerify();
+        if (props.pageState.OtpState === 'ok') {
+            props.navigation.navigate('VerifyCode', { phone: `${cncode}${formstate.phVal}` });
+        } else if (props.pageState.OtpState === 'fail') {
+            Alert.alert(
+                'Failed!',
+                'This Mobile number is not registred.',
+                [{ text: 'Okay' }]
+            );
+        }
+    }, [props.pageState.OtpState, props.pageState.random]);
+    const { otpSendProcess } = props.pageState;
     return (
         <KeyboardAvoidingView
             // behavior={Platform.OS === "ios" ? "padding" : "height"}
             behavior='position'
         >
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
-                <View style={styles.main}>
-                    <View style={styles.firstCol}>
-                        <TouchableOpacity onPress={() => {
-                            props.navigation.navigate('login');
-                        }}>
-                            <AntDesign name="arrowleft" size={24} color="black" />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.secondcol}>
-                        <View style={{ marginBottom: 23 }}>
-                            <FirstHead>Forgot Password</FirstHead>
-                        </View>
-                    </View>
-                    <View style={styles.thirdCol}>
-                        <LightText>A verification code will be sent to the email address. Please verify your email by entering the code on the next screen.</LightText>
-                    </View>
-                    <View style={styles.fourth}>
-                        <View style={{ flex: 1 }}>
-                            <View style={{
-                                marginHorizontal: 10,
-                                marginTop: 34,
-                                borderColor: '#A8A8AB',
-                                borderBottomWidth: 2
-                            }} >
-                                <View style={{
-                                    flexDirection: 'row'
+                <View>
+                    <ScrollView>
+                        <Spinner
+                            color={"#9F9FA2"}
+                            visible={otpSendProcess}
+                            textContent={'Please wait...'}
+                            textStyle={{ color: '#FFF' }}
+                        />
+                        <View style={styles.main}>
+                            <View style={styles.firstCol}>
+                                <TouchableOpacity onPress={() => {
+                                    props.navigation.navigate('login');
                                 }}>
-                                    <Text style={{
-                                        paddingBottom: 7,
-                                        fontSize: 18,
-                                        fontFamily: 'QuasimodaMedium',
-                                    }}>+966</Text>
-                                    {/* <AntDesign style={{
+                                    <AntDesign name="arrowleft" size={24} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.secondcol}>
+                                <View style={{ marginBottom: 23 }}>
+                                    <FirstHead>Forgot Password</FirstHead>
+                                </View>
+                            </View>
+                            <View style={styles.thirdCol}>
+                                <LightText>A verification code will be sent to the email address. Please verify your email by entering the code on the next screen.</LightText>
+                            </View>
+                            <View style={styles.fourth}>
+                                <View style={{ flex: 1 }}>
+                                    <View style={{
+                                        marginHorizontal: 10,
+                                        marginTop: 34,
+                                        borderColor: '#A8A8AB',
+                                        borderBottomWidth: 2
+                                    }} >
+                                        <View style={{
+                                            flexDirection: 'row'
+                                        }}>
+                                            <TouchableOpacity onPress={() => { setSelectedValue() }}>
+                                                <Text style={{
+                                                    paddingBottom: 7,
+                                                    fontSize: 18,
+                                                    fontFamily: 'QuasimodaMedium',
+                                                }}>{cncode}</Text>
+                                            </TouchableOpacity>
+                                            {/* <AntDesign style={{
                                         position: 'absolute',
                                         right: -1,
                                         top: 7,
                                         opacity: 0.5
                                     }} name="down" size={12} color="#3F3F46" /> */}
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{ flex: 4 }} >
+                                    <View>
+                                        <Floatinginput
+                                            secureTextEntry={true}
+                                            changetext={(e) => { mobilealdator(e) }}
+                                            onEndEditing={(e) => { mobilealdator(e.nativeEvent.text, true); }}
+                                            blurOnSubmit
+                                            autoCapitalize='none'
+                                            keyboardType={'phone-pad'}
+                                            autoCorrect={false}
+                                            maxLength={10}
+                                            label='Mobile Number'>
+                                        </Floatinginput>
+                                    </View>
+                                    <View style={{ height: 20 }}>
+                                        {(formstate.phTch && formstate.phErr) && <Errortext>{formstate.phErrMsg}  </Errortext>}
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{ flex: 4 }} >
-                            <View>
-                                <Floatinginput
-                                    secureTextEntry={true}
-                                    onChangeText={(e) => { setPhone(e); console.log(e) }}
-                                    blurOnSubmit
-                                    autoCapitalize='none'
-                                    keyboardType={'phone-pad'}
-                                    autoCorrect={false}
-                                    maxLength={10}
-                                    label='Mobile Number'>
-                                </Floatinginput>
-                            </View>
-                            <View style={{ height: 20 }}>
-                                <Text>  </Text>
-                            </View>
-                        </View>
-                    </View>
 
-                    <View style={{
-                        alignItems: 'center',
-                        marginTop: 55
-                    }}>
-                        <PrimaryButton disabled={phone.length != 10} onPress={() => {
-                            props.navigation.navigate('VerifyCode', { phoneNuumber: phone });
-                        }} style={{ width: '80%' }} title="Submit" />
-                    </View>
+                            <View style={{
+                                alignItems: 'center',
+                                marginTop: 55
+                            }}>
+                                <PrimaryButton disabled={formstate.phErr} onPress={() => {
+                                    submit();
+                                }} style={{ width: '80%' }} title="Submit" />
+                            </View>
+                        </View>
+                    </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -119,6 +175,13 @@ const styles = StyleSheet.create({
 
 
 });
+const mapStateToProps = (state) => ({
+    lang: state.common.lang,
+    pageState: state.user
+});
 
-
-export default ForgotPassword;
+const mapDispatchToProps = dispatch => ({
+    sendOtp: (body) => { dispatch(ForgotSendOpt(body)) },
+    resetVerify: () => { dispatch({ type: SET_OTPVERFY_STATUS_ONCE, payload: '' }); },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

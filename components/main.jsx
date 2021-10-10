@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, BackHandler } from 'react-native';
 import Choselanguage from './onboard/chooseLanguage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Login from './onboard/login';
 import ForgotPassword from './onboard/forgotpassword';
@@ -11,30 +11,43 @@ import VerifyCode from './onboard/verifyCode';
 import SignUp from './onboard/signup';
 import { connect } from 'react-redux';
 import { setLang } from '../dataStore/actions/common';
+import Layout from './layout/layout';
+import Searchpage from './search/Searchpage';
+import Categories from './categories/categories';
+import Favorites from './favorites/favorites';
+import { getMe, setToken } from '../dataStore/actions/user';
 
-const Stack = createNativeStackNavigator();
 
 const MainComponent = (props) => {
+    const { Stack } = props;
 
     const removeVal = async () => {
         try {
             const val = await AsyncStorage.removeItem('userLang');
+            const val2 = await AsyncStorage.removeItem('loggedin');
         } catch (e) { }
     }
     React.useEffect(() => {
-        // removeVal()
-        props.setLangFn()
-    });
+        props.setLangFn();
+        if (props.user.loggedin) {
+            props.getMeFn(props.token)
+        }
+    }, []);
     return (
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen initialParams={{ lang: props.lang }} name="Choselanguage" component={Choselanguage} />
-                <Stack.Screen name="login" component={Login} />
-                <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-                <Stack.Screen name="ChangePassword" component={ChangePassword} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {props.loggedin == 'yes' && <Stack.Screen name="layout" component={Layout} />}
+            <Stack.Screen initialParams={{ lang: props.lang }} name="Choselanguage" component={Choselanguage} />
+            <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="searchpage" component={Searchpage} />
+            <Stack.Screen name="VerifyCode" component={VerifyCode} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            {props.loggedin != 'yes' && <Stack.Screen name="layout" component={Layout} />}
+            <Stack.Screen name="Categories" component={Categories} />
+            <Stack.Screen name="Favorites" component={Favorites} />
+        </Stack.Navigator >
+
     )
 };
 
@@ -42,8 +55,15 @@ const styles = StyleSheet.create({
 
 });
 
-const mapDispatchToProps = dispatch => ({
-    setLangFn: () => { dispatch(setLang()) },
+const mapStateToProps = (state) => ({
+    user: state.user,
 });
 
-export default connect(null, mapDispatchToProps)(MainComponent);
+
+const mapDispatchToProps = dispatch => ({
+    setLangFn: () => { dispatch(setLang()) },
+    setToken: (tok) => { dispatch(setToken(tok)) },
+    getMeFn: (tok) => { dispatch(getMe(tok)) },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);

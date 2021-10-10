@@ -19,7 +19,6 @@ const Choselanguage = (props) => {
             props.navigation.navigate('login', { lang: `${selected}` });
         } catch (e) {
             // saving error
-            console.log(e);
         }
     }
 
@@ -45,7 +44,7 @@ const Choselanguage = (props) => {
                     </View>
                 </View>
                 <View style={styles.langContainer}>
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('ar') }}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('en') }}>
                         <View style={styles.langInp}>
                             <View style={{ flex: 1 }}>
                                 <Image style={{ width: 35, height: 28 }} source={require('../../assets/images/arabicflag.png')} />

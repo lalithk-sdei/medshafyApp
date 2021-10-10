@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Button, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform, TextInput, ScrollView, Alert } from 'react-native';
 import FirstHead from "../common/elements/firstHead"
 import LightText from '../common/elements/lightText';
 import SecondText from '../common/elements/secondtext';
@@ -9,35 +9,48 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from '@expo/vector-icons';
 import Floatinginput from '../common/elements/floatinginput';
 import OPT from '../common/elements/otp';
+import { connect } from 'react-redux';
+import { validateOTP } from '../../dataStore/actions/user';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { SET_CHNAGPASS_STATUS_ONCE } from '../../dataStore/types/types';
 const VerifyCode = (props) => {
 
     const [phone, setPhone] = React.useState('');
-    const [OTP, setOTP] = React.useState([]);
-    const first = React.useRef();
-    const second = React.useRef();
-    const third = React.useRef();
-    const fourth = React.useRef();
+    const [OTP, setOTP] = React.useState('');
 
+
+    const setPhoneFn = () => {
+        try {
+            setPhone(props.route.params.phone)
+        } catch {
+
+        }
+    }
+
+    const otpChange = (e) => {
+        setOTP(e)
+    }
+    const submit = () => {
+        props.verifyOTP({
+            OTP,
+            phoneNumber: phone
+        });
+    }
 
     React.useEffect(() => {
-        // first.current.focus();
-
-    }, []);
-
-    const onchange = (e) => {
-        if (e == "" || e == null) {
-
-        } else {
-            const d = [...OTP, e];
-            setOTP(oldArray => [...oldArray, e]);
-            console.log(d);
+        setPhoneFn();
+        props.changepassreset();
+        if (props.pageState.otpVerifyStatus === 'ok') {
+            props.navigation.navigate('ChangePassword', { OTP });
+        } else if (props.pageState.otpVerifyStatus === 'fail') {
+            Alert.alert(
+                'Invalid OTP!',
+                'You have entred invalid OTP, Please enter valid OTP',
+                [{ text: 'Okay' }]
+            );
         }
-
-    }
-    const otpChange = (e) => {
-        console.log(e);
-    }
-
+    }, [props.pageState.otpVerifyStatus, props.pageState.random]);
+    const { otpVerifyProcess } = props.pageState;
 
     return (
         <KeyboardAvoidingView
@@ -45,40 +58,46 @@ const VerifyCode = (props) => {
             behavior='position'
         >
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
-                <View style={styles.main}>
-                    <View style={styles.firstCol}>
-                        <View style={{ flex: 1, paddingTop: 5 }}>
-                            <TouchableOpacity onPress={() => {
-                                props.navigation.navigate('ForgotPassword');
+                <View>
+                    <ScrollView>
+                        <Spinner
+                            color={"#9F9FA2"}
+                            visible={otpVerifyProcess}
+                            textContent={'Please wait...'}
+                            textStyle={{ color: '#FFF' }}
+                        />
+                        <View style={styles.main}>
+                            <View style={styles.firstCol}>
+                                <View style={{ flex: 1, paddingTop: 5 }}>
+                                    <TouchableOpacity onPress={() => {
+                                        props.navigation.navigate('ForgotPassword');
+                                    }}>
+                                        <AntDesign name="arrowleft" size={24} color="black" />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{ flex: 3 }} >
+                                    <View style={{}}>
+                                        <FirstHead>Verify Code</FirstHead>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={styles.thirdCol}>
+                                <LightText>Please enter the verification code sent to mobile number: {phone}</LightText>
+                            </View>
+                            <View style={styles.fourth}>
+                                <OPT otpChange={otpChange} />
+                            </View>
+                            <View style={{
+                                alignItems: 'center',
+                                marginTop: 55
                             }}>
-                                <AntDesign name="arrowleft" size={24} color="black" />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ flex: 3 }} >
-                            <View style={{}}>
-                                <FirstHead>Verify Code</FirstHead>
+                                <PrimaryButton disabled={OTP.length != 4} onPress={() => {
+                                    submit()
+                                }} style={{ width: '80%' }} title="Next" />
                             </View>
                         </View>
-                    </View>
-
-                    <View style={styles.thirdCol}>
-                        <LightText>Please enter the verification code sent to mobile number: xxxxx4321</LightText>
-                    </View>
-                    <View style={styles.fourth}>
-                        <OPT otpChange={otpChange} />
-                        {/* <TextInput onChangeText={(e) => { onchange(e); }} ref={first} maxLength={1} keyboardType={'phone-pad'} style={styles.otpCell} />
-                        <TextInput onChangeText={(e) => { onchange(e); }} ref={second} maxLength={1} keyboardType={'phone-pad'} style={styles.otpCell} />
-                        <TextInput onChangeText={(e) => { onchange(e); }} ref={third} maxLength={1} keyboardType={'phone-pad'} style={styles.otpCell} />
-                        <TextInput onChangeText={(e) => { onchange(e); }} ref={fourth} maxLength={1} keyboardType={'phone-pad'} style={styles.otpCell} /> */}
-                    </View>
-                    <View style={{
-                        alignItems: 'center',
-                        marginTop: 55
-                    }}>
-                        <PrimaryButton disabled={false} onPress={() => {
-                            props.navigation.navigate('ChangePassword', { phoneNuumber: phone });
-                        }} style={{ width: '80%' }} title="Next" />
-                    </View>
+                    </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView >
@@ -140,4 +159,14 @@ const styles = StyleSheet.create({
 });
 
 
-export default VerifyCode;
+const mapStateToProps = (state) => ({
+    lang: state.common.lang,
+    pageState: state.user
+});
+
+const mapDispatchToProps = dispatch => ({
+    verifyOTP: (body) => { dispatch(validateOTP(body)) },
+    changepassreset: () => { dispatch({ type: SET_CHNAGPASS_STATUS_ONCE, payload: '' }); }
+});
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyCode);
+

@@ -1,8 +1,14 @@
 import { combineReducers } from "redux";
-import announcments from "./announcments";
 import common from "./common";
+import user from "./user";
+import category from "./categories";
+import prod from "./prod";
+import fav from "./fav";
 
 export default combineReducers({
     common: common,
-
+    user: user,
+    category: category,
+    prod: prod,
+    fav: fav,
 });
