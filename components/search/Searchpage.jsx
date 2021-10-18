@@ -178,6 +178,7 @@ const Searchpage = (props) => {
                                                             data={ProdData.items}
                                                             renderItem={({ item }) => (<View style={{ marginBottom: 15 }}>
                                                                 <ProductCard
+                                                                    onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'searchpage', val: search }); }}
                                                                     isFav={(favs || []).map((e) => e.prodId._id).includes(item._id)}
                                                                     onpressfav={(type) => { favEvent(item, type) }}
                                                                     img={item.mainImage ? item.mainImage.mediumUrl : img}

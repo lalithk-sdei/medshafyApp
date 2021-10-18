@@ -12,7 +12,13 @@ export const constants = {
             passNotsame: "Passwords not matched.",
             acpectTerms: "Please accept terms and conditions.",
             regNum: "Registration number or Entity bumber is required.",
-
+            fulladdr: "Your complete address required.",
+            addr1: "Address line is required",
+            addrReq: "Address is required",
+            prodReq: "Product name is required",
+            qtyReq: "Quantity is required",
+            priceReq: "Price required",
+            descReq: "Description  is required",
         }
     }
 }

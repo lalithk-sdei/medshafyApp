@@ -16,6 +16,16 @@ import Searchpage from './search/Searchpage';
 import Categories from './categories/categories';
 import Favorites from './favorites/favorites';
 import { getMe, setToken } from '../dataStore/actions/user';
+import MyProfile from './profile/profile/myprofile';
+import EditProfile from './profile/profile/editprofile';
+import myOrders from './profile/orders/myOrders';
+import ViewProducts from './profile/orders/ViewProducts';
+import myaddress from './profile/address/myaddress';
+import ConfrimLocation from './profile/address/confirmLocation';
+import AddressDetails from './profile/address/adddressDetails';
+import editaddress from './profile/address/editaddress';
+import productddetails from './product/productddetails';
+import mycart from './cart/mycart';
 
 
 const MainComponent = (props) => {
@@ -46,8 +56,17 @@ const MainComponent = (props) => {
             {props.loggedin != 'yes' && <Stack.Screen name="layout" component={Layout} />}
             <Stack.Screen name="Categories" component={Categories} />
             <Stack.Screen name="Favorites" component={Favorites} />
+            <Stack.Screen name="MyProfile" component={MyProfile} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
+            <Stack.Screen name="myOrders" component={myOrders} />
+            <Stack.Screen name="Viewproducts" component={ViewProducts} />
+            <Stack.Screen name="MyAddress" component={myaddress} />
+            <Stack.Screen name="ConfrimLocation" component={ConfrimLocation} />
+            <Stack.Screen name="AddressDetails" component={AddressDetails} />
+            <Stack.Screen name="EditAddress" component={editaddress} />
+            <Stack.Screen name="ProductDetails" component={productddetails} />
+            <Stack.Screen name="MyCart" component={mycart} />
         </Stack.Navigator >
-
     )
 };
 
@@ -64,6 +83,7 @@ const mapDispatchToProps = dispatch => ({
     setLangFn: () => { dispatch(setLang()) },
     setToken: (tok) => { dispatch(setToken(tok)) },
     getMeFn: (tok) => { dispatch(getMe(tok)) },
+    
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainComponent);

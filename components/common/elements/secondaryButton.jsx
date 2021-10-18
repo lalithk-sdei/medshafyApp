@@ -5,6 +5,7 @@ const SecondaryBtn = ({
     disabled = false,
     onPress = () => { },
     style = {},
+    Txtstyle = {},
     title = '',
     iscamara = false,
 }) => (<TouchableOpacity disabled={disabled} onPress={onPress} style={[
@@ -12,10 +13,10 @@ const SecondaryBtn = ({
     style,
     {
         opacity: disabled ? 0.5 : 1
-    }
+    },
 ]}>
 
-    <Text style={styles.buttonText}>
+    <Text style={[styles.buttonText, Txtstyle]}>
         {iscamara && <React.Fragment><Feather name="camera" size={24} color="#707070" />{"    "}</React.Fragment>}
         {title}</Text>
 </TouchableOpacity>)

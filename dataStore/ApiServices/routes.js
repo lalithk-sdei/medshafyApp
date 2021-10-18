@@ -1,9 +1,6 @@
 export default {
     baseUrl: 'http://54.201.160.69:3142/',
     end: '',
-    stories: 'ecodwp/api/SpotLight/getRiseStoriesInnerPage',
-    getAllStories: 'ecodwp/api/SpotLight/getAllRiseStories',
-
     // users
     login: 'v1/auth/login',
     registerUser: 'v1/registerusers',
@@ -15,6 +12,7 @@ export default {
 
     // Categories
     getCategories: 'v1/products/categories/tree',
+    specialOrder: 'v1/addsplOrder',
 
     // products
     getProducts: (cat = "", search = "") => `v1/products/search?q=${search}&sort=createdAt&sortType=desc&categoryId=${cat}`,

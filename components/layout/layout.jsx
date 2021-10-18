@@ -9,6 +9,8 @@ import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import ProfilelandngPage from "../profile/profileLanding";
+import mycart from '../cart/mycart';
+import MyInvoices from "../invoices/invoice";
 
 function Feed() {
   return (
@@ -78,7 +80,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Invoice"
-          component={Invoices}
+          component={MyInvoices}
           options={{
             tabBarLabel: 'Invoice',
             tabBarIcon: ({ color, size }) => (
@@ -101,7 +103,7 @@ function MyTabs() {
         />
         <Tab.Screen
           name="Cart"
-          component={Cart}
+          component={mycart}
           options={{
             tabBarLabel: 'Cart',
             tabBarIcon: ({ color, size }) => (

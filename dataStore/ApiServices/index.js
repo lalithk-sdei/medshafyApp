@@ -56,6 +56,12 @@ export const users = {
 
 export const categories = {
     getCategories: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
+    specialOrder: (body) => requests.post(`${routes.baseUrl}${routes.specialOrder}`,body),
+}
+
+export const address = {
+    getAddress: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
+    addAddress: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
 }
 
 

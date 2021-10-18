@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const RegularText = props => <Text style={[styles.body, props.styles]}>{props.children}</Text>;
+const RegularText = props => <Text numberOfLines={props.nolines ? props.nolines : 30} style={[styles.body, props.styles]}>{props.children}</Text>;
 
 const styles = StyleSheet.create({
     body: {

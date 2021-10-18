@@ -181,6 +181,7 @@ const Categories = (props) => {
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item, index }) => <View style={{ flex: 1, marginRight: 10, marginBottom: item.ind == ProdData.items.length ? 200 : 20 }}>
                                                                         <ProductBoxOne
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'home', val: search }); }}
                                                                             isFav={(favData || []).map((e) => e.prodId._id).includes(item._id)}
                                                                             onpressfav={(type) => { favEvent(item, type) }}
                                                                             img={item.mainImage ? item.mainImage.mediumUrl : img}
@@ -203,7 +204,9 @@ const Categories = (props) => {
                                                                 <FlatList
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item }) => <View style={{ marginBottom: item.ind == ProdData.items.length ? 200 : 15 }}>
-                                                                        <ProductCard img={item.mainImage ? item.mainImage.mediumUrl : img} mrp={item.price} salePrice={item.salePrice} name={item.name} />
+                                                                        <ProductCard
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'home', val: search }); }}
+                                                                            img={item.mainImage ? item.mainImage.mediumUrl : img} mrp={item.price} salePrice={item.salePrice} name={item.name} />
                                                                     </View>}
                                                                     keyExtractor={item => item._id}
                                                                 />

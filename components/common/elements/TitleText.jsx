@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const TitleText = props => <Text style={styles.body}>{props.title}</Text>;
+const TitleText = props => <Text style={[styles.body, props.styles]}>{props.title}</Text>;
 
 const styles = StyleSheet.create({
     body: {

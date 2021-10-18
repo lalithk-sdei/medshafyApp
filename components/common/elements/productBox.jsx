@@ -10,7 +10,7 @@ const ProductBox = ({
     isCategory = false
 }) => {
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
-    return <TouchableOpacity onPress={onPress} style={[]}>
+    return <TouchableOpacity onPress={() => { onPress() }} style={[]}>
         <View>
             <View style={styles.prodBox}>
                 <Image

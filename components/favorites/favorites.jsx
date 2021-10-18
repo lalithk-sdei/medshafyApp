@@ -85,7 +85,7 @@ const Favorites = (props) => {
 
     React.useEffect(() => {
         setFrom(props.route.params.from);
-        if (props.route.params.from === 'home') {
+        if (props.route.params.from === 'home' || props.route.params.from === 'profile') {
             if (page == '0') {
                 if (props.user.loggedin && favStatus != 'ok') {
                     props.getFavs();
