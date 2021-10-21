@@ -45,6 +45,11 @@ const Searchpage = (props) => {
             }
         }, 500));
     }
+    const catrPressed = (item) => {
+        console.log(item);
+    };
+
+
     const favEvent = (item, type) => {
         if (props.user.loggedin) {
             const i = {
@@ -178,6 +183,7 @@ const Searchpage = (props) => {
                                                             data={ProdData.items}
                                                             renderItem={({ item }) => (<View style={{ marginBottom: 15 }}>
                                                                 <ProductCard
+                                                                    cartPressed={() => { catrPressed(item) }}
                                                                     onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'searchpage', val: search }); }}
                                                                     isFav={(favs || []).map((e) => e.prodId._id).includes(item._id)}
                                                                     onpressfav={(type) => { favEvent(item, type) }}

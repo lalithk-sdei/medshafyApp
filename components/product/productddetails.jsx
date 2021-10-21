@@ -41,12 +41,12 @@ const ProductDetails = (props) => {
                         /> */}
                         <View style={styles.main}>
                             <View style={{ paddingTop: 50, backgroundColor: 'white', flexDirection: 'column' }}>
-                                <View style={{marginLeft: 43}}>
+                                <View style={{ marginLeft: 43 }}>
                                     <Ionicons onPress={() => { props.navigation.navigate(from, { val }); }} name="arrow-back" size={24} color="black" />
                                 </View>
                                 <View>
                                     <Image
-                                        style={{ width: 'auto', height: 250, resizeMode: 'stretch' }}
+                                        style={{ marginHorizontal: 43, marginVertical: 20, width: 'auto', height: 250, resizeMode: 'stretch' }}
                                         source={{
                                             uri: mainImage ? mainImage.fileUrl : img,
                                         }}
@@ -55,43 +55,49 @@ const ProductDetails = (props) => {
                                 <View style={{ position: 'relative', left: 43 }}>
                                     {(discount != 0) &&
                                         <React.Fragment>
-                                            <Text style={{
+                                            <View style={{
                                                 position: 'absolute',
                                                 backgroundColor: '#2F33A4',
+                                                borderTopLeftRadius: 15,
                                                 left: 0,
                                                 padding: 5,
                                                 fontSize: 10,
-                                                width: 58,
+                                                // width: 58,
                                                 color: 'white',
-                                            }}>{discount} % OFF</Text>
-                                            <View style={{
-                                                position: 'absolute',
-                                                borderLeftColor: '#00000000',
-                                                borderLeftWidth: 8,
-                                                borderRightColor: '#00000000',
-                                                borderRightWidth: 8,
-                                                borderTopColor: '#6D6ACC',
-                                                borderTopWidth: 12,
-                                                width: 0,
-                                                left: 51,
-                                                height: 0
-                                            }}><Text>{" "}</Text></View>
-                                            <View style={{
-                                                position: 'absolute',
-                                                borderLeftColor: '#00000000',
-                                                borderLeftWidth: 8,
-                                                borderRightColor: '#00000000',
-                                                borderRightWidth: 8,
-                                                borderTopColor: '#6D6ACC',
-                                                borderTopWidth: 13,
-                                                top: 10,
-                                                left: 50.7,
-                                                width: 0,
-                                                transform: [
-                                                    { rotateZ: '180deg' }
-                                                ],
-                                                height: 0
-                                            }}><Text>{" "}</Text></View>
+                                            }}>
+                                                <Text style={{
+                                                    fontSize: 10,
+                                                    color: 'white',
+                                                }}>{discount} % OFF</Text>
+                                                <View style={{
+                                                    position: 'absolute',
+                                                    borderLeftColor: '#00000000',
+                                                    borderLeftWidth: 8,
+                                                    borderRightColor: '#00000000',
+                                                    borderRightWidth: 8,
+                                                    borderTopColor: '#6D6ACC',
+                                                    borderTopWidth: 12,
+                                                    width: 0,
+                                                    right: -9,
+                                                    height: 0
+                                                }}><Text>{" "}</Text></View>
+                                                <View style={{
+                                                    position: 'absolute',
+                                                    borderLeftColor: '#00000000',
+                                                    borderLeftWidth: 8,
+                                                    borderRightColor: '#00000000',
+                                                    borderRightWidth: 8,
+                                                    borderTopColor: '#6D6ACC',
+                                                    borderTopWidth: 13,
+                                                    top: 9,
+                                                    right: -9,
+                                                    width: 0,
+                                                    transform: [
+                                                        { rotateZ: '180deg' }
+                                                    ],
+                                                    height: 0
+                                                }}><Text>{" "}</Text></View>
+                                            </View>
                                         </React.Fragment>
                                     }
                                 </View>
@@ -102,7 +108,7 @@ const ProductDetails = (props) => {
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>Price per box :</Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5, flexDirection: 'row' }} >
-                                    <TitleText title={`SAR ${salePrice}   `} styles={{  fontSize: 24 }}></TitleText>
+                                    <TitleText title={`SAR ${salePrice}   `} styles={{ fontSize: 24 }}></TitleText>
                                     <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontFamily: 'Quasimoda', fontSize: 24 }}>SAR {price} </Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5, marginBottom: 20 }} >

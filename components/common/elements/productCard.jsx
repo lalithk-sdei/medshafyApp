@@ -11,6 +11,7 @@ const ProductCard = ({
     name = "Product",
     isCategory = false,
     isFav = false,
+    cartPressed = () => { },
     onpressfav = () => { },
 }) => {
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
@@ -68,37 +69,42 @@ const ProductCard = ({
                     }
                 </View>
                 <View style={{ flex: 2, marginLeft: 20, paddingVertical: 0, marginTop: 20 }}>
-                    <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text>
-                    <Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text>
+                    <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => { onPress(); }}><Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text></TouchableOpacity>
                     <View style={{
                         flexDirection: 'row',
                         marginTop: 15,
                     }}>
-                        <View style={{
-                            borderTopLeftRadius: 50,
-                            borderBottomLeftRadius: 50,
-                            paddingHorizontal: 15,
-                            paddingVertical: 10,
-                            backgroundColor: '#98DECA',
-                        }}>
-                            <Text style={{
-                                fontSize: Platform.OS == 'ios' ? 12 : 16,
-                                fontFamily: 'Quasimodabold',
-                                fontWeight: 'bold'
-                            }}>Add to card</Text>
-                        </View>
-                        <View style={{
-                            borderTopRightRadius: 50,
-                            borderBottomRightRadius: 50,
-                            paddingHorizontal: 10,
-                            paddingVertical: 2,
-                            backgroundColor: '#6CBAA8'
-                        }}>
-                            <Text style={{
-                                color: 'white',
-                                fontSize: Platform.OS == 'ios' ? 20 : 28,
-                            }}>+</Text>
-                        </View>
+                        <TouchableOpacity onPress={cartPressed}>
+                            <View style={{
+                                borderTopLeftRadius: 50,
+                                borderBottomLeftRadius: 50,
+                                paddingHorizontal: 15,
+                                paddingVertical: 10,
+                                backgroundColor: '#98DECA',
+                            }}>
+                                <Text style={{
+                                    fontSize: Platform.OS == 'ios' ? 12 : 16,
+                                    fontFamily: 'Quasimodabold',
+                                    fontWeight: 'bold'
+                                }}>Add to card</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={cartPressed}>
+                            <View style={{
+                                borderTopRightRadius: 50,
+                                borderBottomRightRadius: 50,
+                                paddingHorizontal: 10,
+                                paddingBottom: 5,
+                                paddingTop: 3,
+                                backgroundColor: '#6CBAA8'
+                            }}>
+                                <Text style={{
+                                    color: 'white',
+                                    fontSize: 20,
+                                }}>+</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ flex: 2 }}>
