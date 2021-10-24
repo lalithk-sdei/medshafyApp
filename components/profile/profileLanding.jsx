@@ -34,7 +34,7 @@ const ProfilelandngPage = (props) => {
         // if (props.user.loggedin === false) {
         //     props.navigation.navigate('Choselanguage');
         // }
-    }, [props.user.loggedin]);
+    }, []);
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
