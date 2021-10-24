@@ -126,7 +126,6 @@ const MyCart = (props) => {
         return val;
     }
 
-    console.log(cartData);
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
@@ -151,7 +150,7 @@ const MyCart = (props) => {
                     }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={false}
+                        visible={cartprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
@@ -254,7 +253,7 @@ const MyCart = (props) => {
                                         </View>
                                     </View>
                                     <View>
-                                        <PrimaryButton title={"Checkout"}></PrimaryButton>
+                                    <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={"Checkout"}></PrimaryButton>
                                     </View>
                                 </React.Fragment> : null}
 

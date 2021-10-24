@@ -80,7 +80,12 @@ export const cart = {
     deleteCart: (body) => requests.post(`${routes.baseUrl}${routes.deleteCart}`, body),
 }
 
+export const orders = {
+    getorders: () => requests.get(`${routes.baseUrl}${routes.getOrders}`),
+    createOrder: (body) => requests.post(`${routes.baseUrl}${routes.createOrder}`, body),
+}
+
 
 export const products = {
-    getProducts: ({ cat = "", search = "" }) => requests.get(`${routes.baseUrl}${routes.getProducts(cat, search)}`),
+    getProducts: ({ cat = "", search = "" }) => requests.get(`${routes.baseUrl}${routes.getProducts(cat, search)} `),
 }

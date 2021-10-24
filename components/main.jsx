@@ -26,6 +26,7 @@ import AddressDetails from './profile/address/adddressDetails';
 import editaddress from './profile/address/editaddress';
 import productddetails from './product/productddetails';
 import mycart from './cart/mycart';
+import checkout from './cart/checkout';
 
 
 const MainComponent = (props) => {
@@ -66,6 +67,8 @@ const MainComponent = (props) => {
             <Stack.Screen name="EditAddress" component={editaddress} />
             <Stack.Screen name="ProductDetails" component={productddetails} />
             <Stack.Screen name="MyCart" component={mycart} />
+            <Stack.Screen name="Checkout" component={checkout} />
+            
         </Stack.Navigator >
     )
 };

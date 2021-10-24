@@ -38,5 +38,10 @@ export default {
     updateaddress: "v1/updateaddress",
 
 
+    // Orders
+    getOrders: 'v1/getOrders',
+    createOrder: "v1/createOrder"
+
+
 
 }
