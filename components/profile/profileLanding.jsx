@@ -13,28 +13,35 @@ import { Entypo } from '@expo/vector-icons';
 import SecondaryBtn from '../common/elements/secondaryButton';
 import LinkText from '../common/elements/linktext';
 import RegularText from '../common/elements/regulartext';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfilelandngPage = (props) => {
+    const [logoutfr, setLogfr] = React.useState(false)
     const logout = async () => {
         try {
-            props.logoutFn();
-            props.resetAll();
-            await AsyncStorage.removeItem('userLang');
-            await AsyncStorage.removeItem('loggedin');
-            await AsyncStorage.removeItem('token');
-            setTimeout(() => {
+            setLogfr(true);
+            const a = await AsyncStorage.removeItem('userLang');
+            const b = await AsyncStorage.removeItem('loggedin');
+            const c = await AsyncStorage.removeItem('token');
+            // if (a && b && c) {
+                console.log("friee");
+                setLogfr(true);
+                props.logoutFn();
+                props.resetAll();
                 props.navigation.navigate('Choselanguage');
-            }, 10);
-        } catch (e) { }
+            // }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 
     React.useEffect(() => {
-        // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        // if (props.user.loggedin === false) {
-        //     props.navigation.navigate('Choselanguage');
-        // }
-    }, []);
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+        if (props.user.loggedin === false && logoutfr === true) {
+            console.log("friee");
+            props.navigation.navigate('Choselanguage');
+        }
+    }, [props.user.loggedin, logoutfr]);
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>

@@ -8,6 +8,8 @@ import PrimaryButton from '../common/elements/primaryButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { connect } from 'react-redux';
 import { setLang } from '../../dataStore/actions/common';
+import { RESET_DATA, SET_LOGOUT } from '../../dataStore/types/types';
+
 
 const Choselanguage = (props) => {
     const [selected, setSelected] = React.useState(null);
@@ -30,6 +32,15 @@ const Choselanguage = (props) => {
         } else {
             setLoaded(true);
         }
+        // if (props.route.params && props.route.params.logout) {
+        //     (async () => {
+        //         props.logoutFn();
+        //         props.resetAll();
+        //         await AsyncStorage.removeItem('userLang');
+        //         await AsyncStorage.removeItem('loggedin');
+        //         await AsyncStorage.removeItem('token');
+        //     })();
+        // }
     }, []);
 
     return (
@@ -109,6 +120,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => ({
     setLangFn: (done) => { dispatch(setLang(done)) },
+    logoutFn: () => { dispatch({ type: SET_LOGOUT }) },
+    resetAll: () => { dispatch({ type: RESET_DATA }) }
 });
 
 export default connect(null, mapDispatchToProps)(Choselanguage);
