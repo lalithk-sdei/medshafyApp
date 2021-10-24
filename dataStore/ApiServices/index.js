@@ -30,9 +30,9 @@ httpInstance.interceptors.response.use((response) => {
 
 const requests = {
     get: (url) => httpInstance.get(url),
-    delete: (url) => httpInstance.delete(url),
-    // post: (url, body) => httpInstance.post(url, body),
+    delete: (url, body) => httpInstance.delete(url),
     post: (url, body) => httpInstance.post(url, body),
+    put: (url, body) => httpInstance.put(url, body),
     postImages: (url, body) => httpInstance.post(url, body, {
         headers: {
             'Accept': 'application/json',
@@ -51,17 +51,19 @@ export const users = {
     validateOPT: (body) => requests.post(`${routes.baseUrl}${routes.validateOPT}`, body),
     chnagePassword: (body) => requests.post(`${routes.baseUrl}${routes.chnagePassword}`, body),
     getme: () => requests.get(`${routes.baseUrl}${routes.me}`),
+    updateuser: (body) => requests.put(`${routes.baseUrl}${routes.updateuser}`, body),
 }
 
 
 export const categories = {
     getCategories: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
-    specialOrder: (body) => requests.post(`${routes.baseUrl}${routes.specialOrder}`,body),
+    specialOrder: (body) => requests.post(`${routes.baseUrl}${routes.specialOrder}`, body),
 }
 
 export const address = {
-    getAddress: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
-    addAddress: () => requests.get(`${routes.baseUrl}${routes.getCategories}`),
+    getaddresss: () => requests.get(`${routes.baseUrl}${routes.getaddresss}`),
+    addAddress: (body) => requests.post(`${routes.baseUrl}${routes.addAddress}`, body),
+    updateAddress: (body) => requests.put(`${routes.baseUrl}${routes.updateaddress}`, body),
 }
 
 
@@ -69,6 +71,13 @@ export const fav = {
     getFavUser: () => requests.get(`${routes.baseUrl}${routes.getFavUser(store.getState().user.loggedinUserData._id)}`),
     addtoFav: (body) => requests.post(`${routes.baseUrl}${routes.addToFav}`, body),
     renoveFav: (ProdId, userId) => requests.delete(`${routes.baseUrl}${routes.renoveFav(ProdId, userId)}`),
+}
+
+export const cart = {
+    getCartForUsers: () => requests.get(`${routes.baseUrl}${routes.getCartForUsers(store.getState().user.loggedinUserData._id)}`),
+    addToCart: (body) => requests.post(`${routes.baseUrl}${routes.addtocartnew}`, body),
+    UpdateCart: (body) => requests.put(`${routes.baseUrl}${routes.updateCart}`, body),
+    deleteCart: (body) => requests.post(`${routes.baseUrl}${routes.deleteCart}`, body),
 }
 
 

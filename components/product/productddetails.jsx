@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Modal, View, Text, StyleSheet, Image, FlatList, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
+import { Platform, Modal, View, Text, StyleSheet, Image, FlatList, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { login } from '../../dataStore/actions/user';
@@ -16,33 +16,142 @@ import { LogBox } from 'react-native';
 import { GetCategories } from '../../dataStore/actions/category';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
 import TitleText from '../common/elements/TitleText';
+import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import CartQty from '../common/elements/cartQty';
 
 
 const ProductDetails = (props) => {
 
+    const { offeredPrices, mainImage = null, salePrice = 0, price = 10, name = "Product", from, val, brand, model, country, description, _id } = props.route.params;
+
+    const [openQty, setOIpenQty] = React.useState(false);
+    const [qtys, setQtys] = React.useState(false);
+
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const { Prodprocess, ProdStatus, ProdData } = props.product;
+    const { cartprocess, cartStatus, cartData } = props.cart;
+
+
+    const AddtoCart = (prod) => {
+        const b = {
+            "prods": {
+                "prodId": prod._id,
+                "prodQty": "def",
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: props.route.params }, () => { });
+    }
+    // Add to cart
+    const cartPressed = (prod) => {
+        if (props.user.loggedin) {
+            if (prod.offeredPrices != null && prod.offeredPrices.length > 0) {
+                setSelProd(prod);
+                setQtys(prod.offeredPrices);
+                setTimeout(() => {
+                    setOIpenQty(true);
+                }, 10);
+            } else {
+                AddtoCart(prod)
+            }
+        } else {
+            Alert.alert(
+                'Login Required!',
+                'Please login to add products in your cart.',
+                [
+                    { text: 'cancel', onPress: () => { } },
+                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                ],
+            );
+        }
+    };
+    const cartQtyRecived = (item) => {
+        const b = {
+            "prods": {
+                "prodId": _id,
+                "prodQty": item._id,
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: props.route.params }, () => { });
+    }
+    // Update Cart
+    const cartUpdate = (cd, ope) => {
+        const b = {
+            "prods": {
+                "prodId": cd.prodId._id,
+                "prodQty": cd.prodQty,
+                "qty": ope == 'inc' ? (+cd.qty + 1) : (+cd.qty - 1)
+            },
+            "userId": props.user.loggedinUserData._id,
+            "docId": cd._id
+        };
+        if (+cd.qty == 1 && ope != 'inc') {
+            props.deleteCartFn({
+                "userId": props.user.loggedinUserData._id,
+                "docId": cd._id
+            });
+        } else {
+            props.updatecartFn(b);
+        }
+    };
+
+
+
+    const inCart = (cartData || []).map((e) => e.prodId._id).includes(_id);
+    const cd = (cartData || []).filter((e) => e.prodId._id == _id);
+
+    const [isDef, setisDef] = React.useState(true);
+    const [priceObj, setPriceObj] = React.useState(null);
+
     React.useEffect(() => {
+        if (inCart && cd.length > 0) {
+            if (cd[0].prodQty == 'def') {
+                setisDef(true);
+            } else {
+                const p = offeredPrices.filter((q) => q._id == cd[0].prodQty);
+                if (p.length > 0) {
+                    setPriceObj(p[0]);
+                    setisDef(false);
+                } else {
+                    setisDef(true);
+                }
+            }
+        } else {
+            setisDef(true);
+        }
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    }, []);
-    console.log(props.route.params);
-    const { mainImage = null, salePrice = 0, price = 10, name = "Product", from, val, brand, model, country, description } = props.route.params;
+    }, [cartData]);
+
+
     const discount = Math.ceil(100 - (salePrice / price) * 100);
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
+                    {openQty ? <View style={{
+                        position: 'absolute',
+                        backgroundColor: 'white',
+                        width: '90%',
+                        zIndex: 1,
+                        top: '30%',
+                        left: '5%',
+                        borderRadius: 10
+                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <ScrollView>
-                        {/* <Spinner
+                        <Spinner
                             color={"#9F9FA2"}
-                            visible={Prodprocess || Catprocess || favprocess}
+                            visible={cartprocess}
                             textContent={'Please wait...'}
                             textStyle={{ color: '#FFF' }}
-                        /> */}
-                        <View style={styles.main}>
+                        />
+                        <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
                             <View style={{ paddingTop: 50, backgroundColor: 'white', flexDirection: 'column' }}>
                                 <View style={{ marginLeft: 43 }}>
-                                    <Ionicons onPress={() => { props.navigation.navigate(from, { val }); }} name="arrow-back" size={24} color="black" />
+                                    {/* <Ionicons onPress={() => { props.navigation.navigate(from, { val: val }); }} name="arrow-back" size={24} color="black" /> */}
+                                    <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                                 </View>
                                 <View>
                                     <Image
@@ -58,7 +167,7 @@ const ProductDetails = (props) => {
                                             <View style={{
                                                 position: 'absolute',
                                                 backgroundColor: '#2F33A4',
-                                                borderTopLeftRadius: 15,
+                                                borderTopLeftRadius: 10,
                                                 left: 0,
                                                 padding: 5,
                                                 fontSize: 10,
@@ -90,6 +199,14 @@ const ProductDetails = (props) => {
                                                     borderTopColor: '#6D6ACC',
                                                     borderTopWidth: 13,
                                                     top: 9,
+                                                    ...Platform.select({
+                                                        ios: {
+                                                            top: 9,
+                                                        },
+                                                        android: {
+                                                            top: 8.5,
+                                                        }
+                                                    }),
                                                     right: -9,
                                                     width: 0,
                                                     transform: [
@@ -105,42 +222,101 @@ const ProductDetails = (props) => {
                                     <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24 }}>{name}</Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5 }} >
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>Price per box :</Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>
+                                        {isDef ? "" : priceObj.qtyname}
+                                    </Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5, flexDirection: 'row' }} >
-                                    <TitleText title={`SAR ${salePrice}   `} styles={{ fontSize: 24 }}></TitleText>
-                                    <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontFamily: 'Quasimoda', fontSize: 24 }}>SAR {price} </Text>
+                                    <TitleText title={`SAR ${isDef ? salePrice : priceObj.OfferdPrice}    `} styles={{ fontSize: 24 }}></TitleText>
+                                    <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontFamily: 'Quasimoda', fontSize: 24 }}>SAR {isDef ? price : priceObj.price}</Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5, marginBottom: 20 }} >
                                     <View style={{
-                                        flexDirection: 'row',
+                                        // flexDirection: 'row',
+                                        width: 200,
                                         marginTop: 15,
                                     }}>
-                                        <View style={{
-                                            borderTopLeftRadius: 50,
-                                            borderBottomLeftRadius: 50,
-                                            paddingHorizontal: 15,
-                                            paddingVertical: 10,
-                                            backgroundColor: '#98DECA',
-                                        }}>
-                                            <Text style={{
-                                                fontSize: Platform.OS == 'ios' ? 12 : 16,
-                                                fontFamily: 'Quasimodabold',
-                                                fontWeight: 'bold'
-                                            }}>Add to card</Text>
-                                        </View>
-                                        <View style={{
-                                            borderTopRightRadius: 50,
-                                            borderBottomRightRadius: 50,
-                                            paddingHorizontal: 10,
-                                            paddingVertical: 2,
-                                            backgroundColor: '#6CBAA8'
-                                        }}>
-                                            <Text style={{
-                                                color: 'white',
-                                                fontSize: Platform.OS == 'ios' ? 20 : 28,
-                                            }}>+</Text>
-                                        </View>
+                                        {inCart ? <React.Fragment>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity onPress={() => { cartUpdate(cd.length > 0 ? cd[0] : null, 'dec') }}>
+                                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                                        <View style={{
+                                                            backgroundColor: '#6CBAA8',
+                                                            borderRadius: 50,
+                                                            width: 30,
+                                                            height: 30,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ color: 'white', fontSize: 20 }}>&#8722;</Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                <View style={{
+                                                    flex: 2,
+                                                    paddingVertical: 7,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center'
+                                                }}>
+                                                    <Text style={{
+                                                        fontSize: 16,
+                                                        fontFamily: 'Quasimodabold',
+                                                        fontWeight: 'bold',
+                                                        color: 'black'
+                                                    }}>{cd.length > 0 ? cd[0].qty : ""}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => { cartUpdate(cd.length > 0 ? cd[0] : null, 'inc') }}>
+                                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                                        <View style={{
+                                                            backgroundColor: '#6CBAA8',
+                                                            borderRadius: 50,
+                                                            width: 30,
+                                                            height: 30,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ color: 'white', fontSize: 20 }}>&#43;</Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </React.Fragment> :
+                                            <React.Fragment>
+                                                <TouchableOpacity onPress={() => { cartPressed() }}>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <View style={{
+                                                            flex: 4,
+                                                            backgroundColor: '#98DECA',
+                                                            paddingVertical: 7,
+                                                            borderTopLeftRadius: 50,
+                                                            borderBottomLeftRadius: 50,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{
+                                                                fontSize: 16,
+                                                                fontFamily: 'Quasimodabold',
+                                                                fontWeight: 'bold',
+                                                                color: 'black'
+                                                            }}>Add to card</Text>
+                                                        </View>
+                                                        <View style={{
+                                                            flex: 1.5,
+                                                            backgroundColor: '#6CBAA8',
+                                                            borderTopRightRadius: 50,
+                                                            borderBottomRightRadius: 50,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{
+                                                                color: 'white',
+                                                                fontSize: 20,
+                                                            }}>+ </Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </React.Fragment>
+                                        }
                                     </View>
                                 </View>
                             </View>
@@ -181,11 +357,17 @@ const mapStateToProps = (state) => ({
     product: state.prod,
     cat: state.category,
     user: state.user,
-    fav: state.fav
+    fav: state.fav,
+    cart: state.cart
 });
 
 
 const mapDispatchToProps = dispatch => ({
+    loadCart: () => { dispatch(GetCartForUser()) },
+    updatecartFn: (body) => { dispatch(UpdateCart(body)) },
+    deleteCartFn: (body) => { dispatch(deleteCart(body)) },
+    addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
+
     loadProducts: (body) => { dispatch(GetProducts(body)) },
     callCat: () => { dispatch(GetCategories()) },
     getFavs: () => { dispatch(GetFavForUser()) },

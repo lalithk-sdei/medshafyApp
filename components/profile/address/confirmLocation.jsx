@@ -72,7 +72,6 @@ const ConfrimLocation = (props) => {
                 return;
             }
             let loc = await Location.geocodeAsync(val);
-            console.log(loc);
             if (loc.length > 0) {
                 setLocation({ ...location, ...loc[0] });
                 setMapLoaded(false);

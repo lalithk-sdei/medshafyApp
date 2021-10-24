@@ -11,16 +11,20 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import SecondaryBtn from '../common/elements/secondaryButton';
+import LinkText from '../common/elements/linktext';
+import RegularText from '../common/elements/regulartext';
 
 const ProfilelandngPage = (props) => {
     const logout = async () => {
         try {
             props.logoutFn();
             props.resetAll();
-            props.navigation.navigate('Choselanguage');
-            const val = await AsyncStorage.removeItem('userLang');
-            const val2 = await AsyncStorage.removeItem('loggedin');
-            const val3 = await AsyncStorage.removeItem('token');
+            await AsyncStorage.removeItem('userLang');
+            await AsyncStorage.removeItem('loggedin');
+            await AsyncStorage.removeItem('token');
+            setTimeout(() => {
+                props.navigation.navigate('Choselanguage');
+            }, 10);
         } catch (e) { }
     }
 
@@ -45,76 +49,83 @@ const ProfilelandngPage = (props) => {
                         <View style={styles.tophead}>
                             <TitleText title="My Account" />
                         </View>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
-                            <View style={styles.body}>
-                                {/* My Profile */}
-                                <TouchableOpacity onPress={() => {
-                                    props.navigation.navigate('MyProfile');
-                                    console.log("TEST");
-                                }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardIcon}><FontAwesome name="user-o" color={'#3F3F46'} size={20} /></View>
-                                        <View style={styles.CardTextDiv}>
-                                            <Text style={styles.CardtextStyle}>My Profile</Text>
-                                        </View>
-                                        <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
-                                            <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                {/* My Orders */}
-                                <TouchableOpacity onPress={() => { props.navigation.navigate('myOrders'); }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardIcon}><MaterialCommunityIcons name="clipboard-text-outline" size={26} color="#3F3F46" /></View>
-                                        <View style={styles.CardTextDiv}>
-                                            <Text style={styles.CardtextStyle}>My Order</Text>
-                                        </View>
-                                        <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
-                                            <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                {/* Adress Book */}
-                                <TouchableOpacity onPress={() => { props.navigation.navigate('MyAddress'); }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardIcon}><Octicons name="location" color={'#3F3F46'} size={25} /></View>
-                                        <View style={styles.CardTextDiv}>
-                                            <Text style={styles.CardtextStyle}>Address Book</Text>
-                                        </View>
-                                        <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
-                                            <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                {/* Favorite products */}
-                                <TouchableOpacity onPress={() => { props.navigation.navigate('Favorites', { from: 'profile', page: '0' }); }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardIcon}><MaterialIcons name="favorite-outline" color={'#3F3F46'} size={26} /></View>
-                                        <View style={styles.CardTextDiv}>
-                                            <Text style={styles.CardtextStyle}>Favourite Products</Text>
-                                        </View>
-                                        <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
-                                            <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                                {/* Buy Again */}
-                                <TouchableOpacity onPress={() => { props.navigation.navigate('Favorites', { from: 'profile', page: '1' }); }}>
-                                    <View style={styles.card}>
-                                        <View style={styles.cardIcon}><Entypo name="back-in-time" size={24} color="black" /></View>
-                                        <View style={styles.CardTextDiv}>
-                                            <Text style={styles.CardtextStyle}>Buy Again</Text>
-                                        </View>
-                                        <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
-                                            <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
-                                        </View>
-                                    </View>
-                                    <View style={{ marginVertical: 10 }}>
-                                        <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={'Logout'} onPress={() => { logout(); }}></SecondaryBtn>
-                                    </View>
-                                </TouchableOpacity>
+                        {!props.user.loggedin ? <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{}}>
+                                <React.Fragment>
+                                    {<RegularText>Please <LinkText onPress={() => { props.navigation.navigate('login'); }}>login</LinkText> to access your profile</RegularText>}
+                                </React.Fragment>
                             </View>
-                        </ScrollView>
+                        </View> :
+                            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                                <View style={styles.body}>
+                                    {/* My Profile */}
+                                    <TouchableOpacity onPress={() => {
+                                        props.navigation.navigate('MyProfile');
+                                    }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><FontAwesome name="user-o" color={'#3F3F46'} size={20} /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>My Profile</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* My Orders */}
+                                    <TouchableOpacity onPress={() => { props.navigation.navigate('myOrders'); }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><MaterialCommunityIcons name="clipboard-text-outline" size={26} color="#3F3F46" /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>My Order</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* Adress Book */}
+                                    <TouchableOpacity onPress={() => { props.navigation.navigate('MyAddress'); }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><Octicons name="location" color={'#3F3F46'} size={25} /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>Address Book</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* Favorite products */}
+                                    <TouchableOpacity onPress={() => { props.navigation.navigate('Favorites', { from: 'profile', page: '0' }); }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><MaterialIcons name="favorite-outline" color={'#3F3F46'} size={26} /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>Favourite Products</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {/* Buy Again */}
+                                    <TouchableOpacity onPress={() => { props.navigation.navigate('Favorites', { from: 'profile', page: '1' }); }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><Entypo name="back-in-time" size={24} color="black" /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>Buy Again</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                        <View style={{ marginVertical: 10 }}>
+                                            <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={'Logout'} onPress={() => { logout(); }}></SecondaryBtn>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </ScrollView>
+                        }
                     </View>
                 </View>
             </React.Fragment>

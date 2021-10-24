@@ -9,6 +9,7 @@ export default {
     validateOPT: 'v1/auth/otpVerifyph',
     chnagePassword: 'v1/auth/passwordResetapp',
     me: 'v1/users/me',
+    updateuser: 'v1/usersUpdateSelf',
 
     // Categories
     getCategories: 'v1/products/categories/tree',
@@ -21,5 +22,21 @@ export default {
     // Favorites
     getFavUser: (userID) => `v1/getFavs/${userID}`,
     addToFav: 'v1/addtoFav',
-    renoveFav: (prodId, userID) => `v1/favs/${prodId}/${userID}`
+    renoveFav: (prodId, userID) => `v1/favs/${prodId}/${userID}`,
+
+    // Cart
+    getCartForUsers: (userID) => `v1/getcart/${userID}`,
+    addtocartnew: 'v1/addtocartnew',
+    updateCart: 'v1/updatecart',
+    deleteCart: 'v1/delete',
+
+
+    // Addresses
+
+    addAddress: "v1/addAddress",
+    getaddresss: "v1/getaddresss",
+    updateaddress: "v1/updateaddress",
+
+
+
 }

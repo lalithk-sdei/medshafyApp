@@ -54,7 +54,7 @@ const AddressDetails = (props) => {
     const feild2 = (e = null, tch = false) => {
         const { lang } = props;
         if (["", null, undefined].includes(e)) {
-            setFormState({ ...formstate, feild2Err: true, feild2ErrMsg: constants[lang].errors.addr1, feild2Val: e, ...tch && { feild2Tch: true } });
+            setFormState({ ...formstate, feild2Err: true, feild2ErrMsg: constants[lang].errors.namereq, feild2Val: e, ...tch && { feild2Tch: true } });
         } else {
             setFormState({ ...formstate, feild2Err: false, feild2ErrMsg: '', feild2Val: e, ...tch && { feild2Tch: true } });
         }
@@ -70,19 +70,8 @@ const AddressDetails = (props) => {
         }
     }
 
-
     const saveAddress = () => {
         const { latitude, longitude, filed1, feild2 } = props.route.params;
-        // console.log(props.route.params);
-        console.log({
-            lat: latitude,
-            longitude: longitude,
-            address: filed1,
-            completeAddress: formstate.feild1Val,
-            addressline1: feild2,
-            name: formstate.feild2Val,
-            mobileno: formstate.phVal,
-        });
         props.addAddressFn({
             lat: latitude,
             longitude: longitude,
@@ -91,8 +80,20 @@ const AddressDetails = (props) => {
             addressline1: feild2,
             name: formstate.feild2Val,
             mobileno: formstate.phVal,
-        }, () => {
-            props.navigation.navigate('MyAddress');
+        }, (st) => {
+            if (st) {
+                props.navigation.navigate('MyAddress');
+            } else {
+                setTimeout(() => {
+                    Alert.alert(
+                        'Failed',
+                        "We coudn't add address please try after sometime.",
+                        [
+                            { text: 'ok', onPress: () => { } },
+                        ],
+                    );
+                }, 100);
+            }
         });
     }
     React.useEffect(() => {

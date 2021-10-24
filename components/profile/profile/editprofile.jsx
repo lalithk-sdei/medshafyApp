@@ -20,15 +20,17 @@ import { constants } from '../../../utlits/constants';
 import Errortext from '../../common/elements/errorText';
 import { ValidateEmail } from '../../../utlits/helpers';
 import PrimaryButton from '../../common/elements/primaryButton';
+import { updateuser } from '../../../dataStore/actions/user';
 
 const EditProfile = (props) => {
-
+    const { loginprocess } = props.user;
+    const { companyName = "", email = "", phoneNumber = "", regnumber = "", address = "", StoreImages = [] } = props.route ? props.route.params : {};
     const [formstate, setFormState] = React.useState({
-        cmpTch: false, cmpErr: true, cmpErrMsg: "", cmpVal: "",
-        phTch: false, phErr: true, phErrMsg: "", phVal: "",
-        emailTch: false, emailErr: true, emailErrMsg: "", emailVal: "",
-        regTch: false, regErr: true, regErrMsg: "", regVal: "",
-        addrTch: false, addrErr: true, addrErrMsg: "", addrVal: "",
+        cmpTch: true, cmpErr: companyName != "" ? false : true, cmpErrMsg: companyName ? "" : constants[props.lang].errors.companyNamereq, cmpVal: companyName,
+        phTch: true, phErr: phoneNumber != "" ? false : true, phErrMsg: phoneNumber ? "" : constants[props.lang].errors.phonereq, phVal: phoneNumber,
+        emailTch: true, emailErr: email != "" ? false : true, emailErrMsg: email ? "" : constants[props.lang].errors.emailRequired, emailVal: email,
+        regTch: true, regErr: true, regErrMsg: "", regVal: regnumber,
+        addrTch: true, addrErr: address != "" ? false : true, addrErrMsg: address ? "" : constants[props.lang].errors.addrReq, addrVal: address,
     });
 
     const cmpValidator = (e = null, tch = false) => {
@@ -70,36 +72,45 @@ const EditProfile = (props) => {
     const addrValidator = (e = null, tch = false) => {
         const { lang } = props;
         if (["", null, undefined].includes(e)) {
-            setFormState({ ...formstate, addrErr: true, addrErrMsg: constants[lang].errors.companyNamereq, addrVal: e, ...tch && { addrTch: true } });
+            setFormState({ ...formstate, addrErr: true, addrErrMsg: constants[lang].errors.addrReq, addrVal: e, ...tch && { addrTch: true } });
         } else {
             setFormState({ ...formstate, addrErr: false, addrErrMsg: '', addrVal: e, ...tch && { addrTch: true } });
         }
     }
 
+    const save = () => {
+        const b = {
+            companyName: formstate.cmpVal,
+            email: formstate.emailVal,
+            phoneNumber: formstate.phVal,
+            regnumber: formstate.regVal,
+            address: formstate.addrVal,
+            StoreImages: StoreImages
+        }
+        props.updateuserFn(b, (st) => {
+            if (st) {
+                props.navigation.navigate('MyProfile');
+            } else {
+                Alert.alert(
+                    'Failed',
+                    "We coudn't update your profile please try after sometime.",
+                    [
+                        { text: 'ok', onPress: () => { } },
+                    ],
+                );
+            }
+        });
+    }
 
     React.useEffect(() => {
-        // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        // if (props.user.loggedin === false) {
-        //     props.navigation.navigate('Choselanguage');
-        // }
-        cmpValidator("Esther Medical");
-        setFormState({
-            ...formstate,
-            cmpVal: "Esther Medical",
-            phVal: "+91 987-654-3210",
-            emailVal: "esther@gmail.com",
-            regVal: "Izz5nle5lw",
-            addrVal: "2972 Wesithemer Rd. Santa Ana, Illinois 85486"
-        })
-
-    }, [props.user.loggedin]);
+    }, []);
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={false}
+                        visible={loginprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
@@ -201,47 +212,23 @@ const EditProfile = (props) => {
                                     <View style={styles.cardClm}>
                                         <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Photos</LightText></View>
                                     </View>
-                                    <View style={[styles.cardClm, { flexDirection: 'row', flexWrap: 'wrap' }]}>
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
+                                    {StoreImages.length > 0 ? <View style={[styles.cardClm, { flexDirection: 'row', flexWrap: 'wrap' }]}>
+                                        {StoreImages.map((e, ind) => <Image
+                                            key={ind}
+                                            style={{
+                                                margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2,
+                                                height: Dimensions.get('screen').width / 6.2,
+                                                resizeMode: 'stretch'
+                                            }}
                                             source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
+                                                uri: e.fileUrl,
                                             }}
                                         />
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
-                                            source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                            }}
-                                        />
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
-                                            source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                            }}
-                                        />
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
-                                            source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                            }}
-                                        />
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
-                                            source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                            }}
-                                        />
-                                        <Image
-                                            style={{ margin: 5, borderWidth: 1, width: Dimensions.get('screen').width / 6.2, height: Dimensions.get('screen').width / 6.2, resizeMode: 'stretch' }}
-                                            source={{
-                                                uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                            }}
-                                        />
-                                    </View>
+                                        )}
+                                    </View> : <LightText>No Images Found</LightText>}
                                 </View>
                                 <View style={{ marginVertical: 20 }}>
-                                    <PrimaryButton title="Save Changes" />
+                                    <PrimaryButton onPress={save} disabled={formstate.cmpErr || formstate.phErr || formstate.emailErr || formstate.addrErr} title="Save Changes" />
                                 </View>
                             </View>
                         </ScrollView>
@@ -262,11 +249,7 @@ const styles = StyleSheet.create({
     tophead: {
         paddingHorizontal: 23,
         flexDirection: 'row',
-        // textAlign: 'center',
-        // alignItems: 'center',
-        // justifyContent: 'center',
         paddingTop: 50,
-
         backgroundColor: 'white',
         paddingBottom: 22,
         elevation: 4,
@@ -312,6 +295,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     logoutFn: () => { dispatch({ type: SET_LOGOUT }) },
-    resetAll: () => { dispatch({ type: RESET_DATA }) }
+    resetAll: () => { dispatch({ type: RESET_DATA }) },
+    updateuserFn: (body, clbk) => { dispatch(updateuser(body, clbk)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

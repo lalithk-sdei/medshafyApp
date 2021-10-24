@@ -19,6 +19,7 @@ import PlaneText from '../common/elements/planeText';
 import PrimaryButton from '../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import LinkText from '../common/elements/linktext';
 
 const MyInvoices = (props) => {
     const logout = async () => {
@@ -57,122 +58,129 @@ const MyInvoices = (props) => {
                             <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Invoice" /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
-                        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
-                            <View style={styles.body}>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View >
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                        {!props.user.loggedin ? <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{}}>
+                                <React.Fragment>
+                                    {<RegularText>Please <LinkText onPress={() => { props.navigation.navigate('login'); }}>login</LinkText> to access your invoices</RegularText>}
+                                </React.Fragment>
+                            </View>
+                        </View> :
+                            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+                                <View style={styles.body}>
+                                    <View style={styles.card}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View >
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View>
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
-                                                <TouchableOpacity onPress={() => { }}>
-                                                    <View style={{
-                                                        backgroundColor: '#98DECA',
-                                                        borderRadius: 50,
-                                                        paddingHorizontal: 10,
-                                                        paddingVertical: 5,
-                                                        marginTop: 5,
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center'
-                                                    }}>
-                                                        <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View >
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
-                                                <TouchableOpacity onPress={() => { }}>
-                                                    <View style={{
-                                                        backgroundColor: '#98DECA',
-                                                        borderRadius: 50,
-                                                        paddingHorizontal: 10,
-                                                        paddingVertical: 5,
-                                                        marginTop: 5,
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center'
-                                                    }}>
-                                                        <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
-                                                    </View>
-                                                </TouchableOpacity>
+                                            <View>
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
+                                                    <TouchableOpacity onPress={() => { }}>
+                                                        <View style={{
+                                                            backgroundColor: '#98DECA',
+                                                            borderRadius: 50,
+                                                            paddingHorizontal: 10,
+                                                            paddingVertical: 5,
+                                                            marginTop: 5,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View >
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                    <View style={styles.card}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View >
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                        <View>
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
-                                                <TouchableOpacity onPress={() => { }}>
-                                                    <View style={{
-                                                        backgroundColor: '#98DECA',
-                                                        borderRadius: 50,
-                                                        paddingHorizontal: 10,
-                                                        paddingVertical: 5,
-                                                        marginTop: 5,
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center'
-                                                    }}>
-                                                        <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View >
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
-                                            </View>
-                                        </View>
-                                        <View>
-                                            <View style={{ flexDirection: 'column' }}>
-                                                <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
-                                                <TouchableOpacity onPress={() => { }}>
-                                                    <View style={{
-                                                        backgroundColor: '#98DECA',
-                                                        borderRadius: 50,
-                                                        paddingHorizontal: 10,
-                                                        paddingVertical: 5,
-                                                        marginTop: 5,
-                                                        justifyContent: 'center',
-                                                        alignItems: 'center'
-                                                    }}>
-                                                        <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
-                                                    </View>
-                                                </TouchableOpacity>
+                                            <View>
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
+                                                    <TouchableOpacity onPress={() => { }}>
+                                                        <View style={{
+                                                            backgroundColor: '#98DECA',
+                                                            borderRadius: 50,
+                                                            paddingHorizontal: 10,
+                                                            paddingVertical: 5,
+                                                            marginTop: 5,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
                                         </View>
                                     </View>
-                                </View>
+                                    <View style={styles.card}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View >
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                </View>
+                                            </View>
+                                            <View>
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
+                                                    <TouchableOpacity onPress={() => { }}>
+                                                        <View style={{
+                                                            backgroundColor: '#98DECA',
+                                                            borderRadius: 50,
+                                                            paddingHorizontal: 10,
+                                                            paddingVertical: 5,
+                                                            marginTop: 5,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View style={styles.card}>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                            <View >
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                </View>
+                                            </View>
+                                            <View>
+                                                <View style={{ flexDirection: 'column' }}>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, }}>2ORD561801524</Text>
+                                                    <TouchableOpacity onPress={() => { }}>
+                                                        <View style={{
+                                                            backgroundColor: '#98DECA',
+                                                            borderRadius: 50,
+                                                            paddingHorizontal: 10,
+                                                            paddingVertical: 5,
+                                                            marginTop: 5,
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center'
+                                                        }}>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
 
-                                {/* <View style={[styles.card, { padding: 0 }]}>
+                                    {/* <View style={[styles.card, { padding: 0 }]}>
                                     <View style={{ paddingHorizontal: 15, paddingTop: 15, flexDirection: 'row', paddingBottom: 15 }}>
                                         <MaterialIcons name="credit-card" size={24} color="black" />
                                         <RegularText >{"    "}Paid by Apple Pay</RegularText>
@@ -185,8 +193,9 @@ const MyInvoices = (props) => {
                                         <RegularText >2972 Wesithemer Rd. Santa Ana, Illinois 85486</RegularText>
                                     </View>
                                 </View> */}
-                            </View>
-                        </ScrollView>
+                                </View>
+                            </ScrollView>
+                        }
                     </View>
                 </View>
             </React.Fragment >

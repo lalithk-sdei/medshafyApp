@@ -12,6 +12,8 @@ import { Entypo } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import ProductBoxOne from '../common/elements/productBoxOne';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
+import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import CartQty from '../common/elements/cartQty';
 
 const Favorites = (props) => {
 
@@ -21,7 +23,7 @@ const Favorites = (props) => {
     const [search, setSearch] = React.useState("");
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const [masterProds, SetMasterprods] = React.useState([]);
-    const [filteredProds, SetFilteredProds] = React.useState([]);  const [time, setTime] = React.useState(null);
+    const [filteredProds, SetFilteredProds] = React.useState([]); const [time, setTime] = React.useState(null);
 
 
     const registerKey = (val) => {
@@ -83,9 +85,80 @@ const Favorites = (props) => {
         // props.getFavs();
     }
 
+
+    const [openQty, setOIpenQty] = React.useState(false);
+    const [Selprod, setSelProd] = React.useState(null);
+    const [qtys, setQtys] = React.useState(false);
+    const { cartprocess, cartStatus, cartData } = props.cart;
+    const AddtoCart = (prod) => {
+        const b = {
+            "prods": {
+                "prodId": prod._id,
+                "prodQty": "def",
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: prod }, () => { });
+    }
+    // Add to cart
+    const catrPressed = (prod) => {
+        if (props.user.loggedin) {
+            if (prod.offeredPrices != null && prod.offeredPrices.length > 0) {
+                setSelProd(prod);
+                setQtys(prod.offeredPrices);
+                setTimeout(() => {
+                    setOIpenQty(true);
+                }, 10);
+            } else {
+                AddtoCart(prod)
+            }
+        } else {
+            Alert.alert(
+                'Login Required!',
+                'Please login to add products in your cart.',
+                [
+                    { text: 'cancel', onPress: () => { } },
+                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                ],
+            );
+        }
+    };
+    const cartQtyRecived = (item) => {
+        const b = {
+            "prods": {
+                "prodId": Selprod._id,
+                "prodQty": item._id,
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: Selprod }, () => { });
+    }
+    // Update Cart
+    const cartUpdate = (cd, ope) => {
+        const b = {
+            "prods": {
+                "prodId": cd.prodId._id,
+                "prodQty": cd.prodQty,
+                "qty": ope == 'inc' ? (+cd.qty + 1) : (+cd.qty - 1)
+            },
+            "userId": props.user.loggedinUserData._id,
+            "docId": cd._id
+        };
+        if (+cd.qty == 1 && ope != 'inc') {
+            props.deleteCartFn({
+                "userId": props.user.loggedinUserData._id,
+                "docId": cd._id
+            });
+        } else {
+            props.updatecartFn(b);
+        }
+    };
+
     React.useEffect(() => {
         setFrom(props.route.params.from);
-        if (props.route.params.from === 'home' || props.route.params.from === 'profile') {
+        if (props.route.params.from === 'Home' || props.route.params.from === 'profile') {
             if (page == '0') {
                 if (props.user.loggedin && favStatus != 'ok') {
                     props.getFavs();
@@ -105,13 +178,22 @@ const Favorites = (props) => {
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
+                    {openQty ? <View style={{
+                        position: 'absolute',
+                        backgroundColor: 'white',
+                        width: '90%',
+                        zIndex: 1,
+                        top: '30%',
+                        left: '5%',
+                        borderRadius: 10
+                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={favprocess}
+                        visible={favprocess || cartprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
-                    <View style={styles.main}>
+                    <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
                         <View style={styles.firstCol}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1, marginTop: 25, paddingLeft: 10 }}>
@@ -187,9 +269,16 @@ const Favorites = (props) => {
                                                                         marginLeft: (index % 2) == 0 ? 0 : 10
                                                                     }}>
                                                                         <ProductBoxOne
+                                                                            cartData={{
+                                                                                inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
+                                                                                cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
+                                                                            }}
+                                                                            cartPressed={() => { catrPressed(item) }}
+                                                                            cartUpdate={(cd, ope) => { cartUpdate(cd, ope) }}
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'Fav', val: search }); }}
                                                                             isFav={(filteredProds || []).map((e) => e._id).includes(item._id)}
                                                                             onpressfav={(type) => { favEvent(item, type) }}
-                                                                            img={item.mainImage ? img : img}
+                                                                            img={item.mainImage != null ? item.mainImage.fileUrl : img}
                                                                             mrp={item.price}
                                                                             salePrice={item.salePrice}
                                                                             name={item.name} />
@@ -208,12 +297,20 @@ const Favorites = (props) => {
                                                         <React.Fragment>
                                                             {filteredProds.length > 0 &&
                                                                 <FlatList
+
                                                                     data={filteredProds.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item }) => <View style={{ marginBottom: item.ind == filteredProds.length ? 200 : 15 }}>
                                                                         <ProductCard
+                                                                            cartData={{
+                                                                                inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
+                                                                                cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
+                                                                            }}
+                                                                            cartPressed={() => { catrPressed(item) }}
+                                                                            cartUpdate={(cd, ope) => { cartUpdate(cd, ope) }}
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'Fav', val: search }); }}
                                                                             isFav={(filteredProds || []).map((e) => e._id).includes(item._id)}
                                                                             onpressfav={(type) => { favEvent(item, type) }}
-                                                                            img={item.mainImage ? img : img}
+                                                                            img={item.mainImage != null ? item.mainImage.fileUrl : img}
                                                                             mrp={item.price}
                                                                             salePrice={item.salePrice}
                                                                             name={item.name} />
@@ -289,10 +386,16 @@ const mapStateToProps = (state) => ({
     lang: state.common.lang,
     user: state.user,
     fav: state.fav,
+    cart: state.cart
 });
 
 
 const mapDispatchToProps = dispatch => ({
+    loadCart: () => { dispatch(GetCartForUser()) },
+    updatecartFn: (body) => { dispatch(UpdateCart(body)) },
+    deleteCartFn: (body) => { dispatch(deleteCart(body)) },
+    addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
+
     loginAction: (body) => { dispatch(login(body)) },
     getFavs: () => { dispatch(GetFavForUser()) },
     addtoFavFn: (body, done) => { dispatch(addtoFav(body, done)) },

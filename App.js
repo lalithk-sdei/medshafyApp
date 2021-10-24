@@ -26,9 +26,9 @@ function App(props) {
   const fetchFonts = () => {
     const fonts = Font.loadAsync({
       'Quasimoda': require('./assets/fonts/quasimoda-light.otf'),
-      'Quasimodasemibold': require('./assets/fonts/Quasimodasemibold.ttf'),
-      'Quasimodabold': require('./assets/fonts/Quasimodasemibold.ttf'),
-      'QuasimodaMedium': require('./assets/fonts/QuasimodaMedium.ttf'),
+      'Quasimodasemibold': require('./assets/fonts/org/Quasimoda-SemiBold.otf'),
+      'Quasimodabold': require('./assets/fonts/org/Quasimoda-Bold.otf'),
+      'QuasimodaMedium': require('./assets/fonts/org/Quasimoda-Medium.otf'),
     });
 
     const GetStoreData = () => {
@@ -38,7 +38,7 @@ function App(props) {
           const logd = await AsyncStorage.getItem('loggedin');
           const token = await AsyncStorage.getItem('token');
           setlang(val); Setloggedin(logd); userToken(token);
-          console.log(val, logd, token );
+          console.log(val, logd, token);
           if (logd === "yes") {
             store.dispatch(getMe(token, (status) => {
               if (status) {

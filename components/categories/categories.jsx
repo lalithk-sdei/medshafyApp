@@ -13,6 +13,8 @@ import ProductBoxOne from '../common/elements/productBoxOne';
 import { GetProducts } from '../../dataStore/actions/prod';
 import { GetCategories } from '../../dataStore/actions/category';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
+import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import CartQty from '../common/elements/cartQty';
 
 const Categories = (props) => {
 
@@ -40,6 +42,77 @@ const Categories = (props) => {
     const { Catprocess, CatStatus, CatData, } = props.cat;
     const { Prodprocess, ProdStatus, ProdData } = props.product;
     const { favprocess, favStatus, favData, } = props.fav;
+    const { cartprocess, cartStatus, cartData } = props.cart;
+
+    const [openQty, setOIpenQty] = React.useState(false);
+    const [Selprod, setSelProd] = React.useState(null);
+    const [qtys, setQtys] = React.useState(false);
+
+    const AddtoCart = (prod) => {
+        const b = {
+            "prods": {
+                "prodId": prod._id,
+                "prodQty": "def",
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: prod }, () => { });
+    }
+    // Add to cart
+    const catrPressed = (prod) => {
+        if (props.user.loggedin) {
+            if (prod.offeredPrices != null && prod.offeredPrices.length > 0) {
+                setSelProd(prod);
+                setQtys(prod.offeredPrices);
+                setTimeout(() => {
+                    setOIpenQty(true);
+                }, 10);
+            } else {
+                AddtoCart(prod)
+            }
+        } else {
+            Alert.alert(
+                'Login Required!',
+                'Please login to add products in your cart.',
+                [
+                    { text: 'cancel', onPress: () => { } },
+                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                ],
+            );
+        }
+    };
+    const cartQtyRecived = (item) => {
+        const b = {
+            "prods": {
+                "prodId": Selprod._id,
+                "prodQty": item._id,
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: Selprod }, () => { });
+    }
+    // Update Cart
+    const cartUpdate = (cd, ope) => {
+        const b = {
+            "prods": {
+                "prodId": cd.prodId._id,
+                "prodQty": cd.prodQty,
+                "qty": ope == 'inc' ? (+cd.qty + 1) : (+cd.qty - 1)
+            },
+            "userId": props.user.loggedinUserData._id,
+            "docId": cd._id
+        };
+        if (+cd.qty == 1 && ope != 'inc') {
+            props.deleteCartFn({
+                "userId": props.user.loggedinUserData._id,
+                "docId": cd._id
+            });
+        } else {
+            props.updatecartFn(b);
+        }
+    };
 
     const favEvent = (item, type) => {
         if (props.user.loggedin) {
@@ -75,7 +148,10 @@ const Categories = (props) => {
             setCatpar(props.route.params.cat)
             setSelectedCat(props.route.params.cat)
         }
-        if (CatData.length == 0) {
+        if (cartData.length == 0 && props.user.loggedin) {
+            props.loadCart();
+        }
+        if (CatData.length == 0 && props.user.loggedin) {
             props.callCat();
         }
         if (props.user.loggedin && favStatus == '') {
@@ -87,14 +163,23 @@ const Categories = (props) => {
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
+                    {openQty ? <View style={{
+                        position: 'absolute',
+                        backgroundColor: 'white',
+                        width: '90%',
+                        zIndex: 1,
+                        top: '30%',
+                        left: '5%',
+                        borderRadius: 10
+                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={Prodprocess || Catprocess || favprocess}
+                        visible={Prodprocess || Catprocess || favprocess || cartprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
                     {page == "search" &&
-                        <View style={styles.main}>
+                        <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
                             <View style={styles.firstCol}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{ flex: 1, marginTop: 25, paddingLeft: 10 }}>
@@ -181,13 +266,19 @@ const Categories = (props) => {
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item, index }) => <View style={{ flex: 1, marginRight: 10, marginBottom: item.ind == ProdData.items.length ? 200 : 20 }}>
                                                                         <ProductBoxOne
-                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'home', val: search }); }}
+                                                                            cartData={{
+                                                                                inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
+                                                                                cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
+                                                                            }}
+                                                                            cartPressed={() => { catrPressed(item) }}
+                                                                            cartUpdate={(cd, ope) => { cartUpdate(cd, ope) }}
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'Home', val: search }); }}
                                                                             isFav={(favData || []).map((e) => e.prodId._id).includes(item._id)}
                                                                             onpressfav={(type) => { favEvent(item, type) }}
                                                                             img={item.mainImage ? item.mainImage.mediumUrl : img}
                                                                             mrp={item.price}
                                                                             salePrice={item.salePrice}
-                                                                            name={index} />
+                                                                            name={item.name} />
                                                                     </View>}
                                                                     keyExtractor={item => item._id}
                                                                     numColumns={2}
@@ -205,8 +296,19 @@ const Categories = (props) => {
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item }) => <View style={{ marginBottom: item.ind == ProdData.items.length ? 200 : 15 }}>
                                                                         <ProductCard
-                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'home', val: search }); }}
-                                                                            img={item.mainImage ? item.mainImage.mediumUrl : img} mrp={item.price} salePrice={item.salePrice} name={item.name} />
+                                                                            cartData={{
+                                                                                inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
+                                                                                cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
+                                                                            }}
+                                                                            cartPressed={() => { catrPressed(item) }}
+                                                                            cartUpdate={(cd, ope) => { cartUpdate(cd, ope) }}
+                                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'Home', val: search }); }}
+                                                                            isFav={(favData || []).map((e) => e.prodId._id).includes(item._id)}
+                                                                            onpressfav={(type) => { favEvent(item, type) }}
+                                                                            img={item.mainImage ? item.mainImage.mediumUrl : img}
+                                                                            mrp={item.price}
+                                                                            salePrice={item.salePrice}
+                                                                            name={item.name} />
                                                                     </View>}
                                                                     keyExtractor={item => item._id}
                                                                 />
@@ -278,11 +380,17 @@ const mapStateToProps = (state) => ({
     product: state.prod,
     cat: state.category,
     user: state.user,
-    fav: state.fav
+    fav: state.fav,
+    cart: state.cart
 });
 
 
 const mapDispatchToProps = dispatch => ({
+    loadCart: () => { dispatch(GetCartForUser()) },
+    updatecartFn: (body) => { dispatch(UpdateCart(body)) },
+    deleteCartFn: (body) => { dispatch(deleteCart(body)) },
+    addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
+
     loadProducts: (body) => { dispatch(GetProducts(body)) },
     callCat: () => { dispatch(GetCategories()) },
     getFavs: () => { dispatch(GetFavForUser()) },

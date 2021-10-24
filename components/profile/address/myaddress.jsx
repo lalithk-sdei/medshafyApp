@@ -16,38 +16,20 @@ import { Feather } from '@expo/vector-icons';
 import LightText from '../../common/elements/lightText';
 import RegularText from '../../common/elements/regulartext';
 import PrimaryButton from '../../common/elements/primaryButton';
+import { getAddress } from '../../../dataStore/actions/address';
 
 const MyAddress = (props) => {
-    const logout = async () => {
-        try {
-            props.logoutFn();
-            props.resetAll();
-            props.navigation.navigate('Choselanguage');
-            const val = await AsyncStorage.removeItem('userLang');
-            const val2 = await AsyncStorage.removeItem('loggedin');
-            const val3 = await AsyncStorage.removeItem('token');
-        } catch (e) { }
-    }
-
-
-
-
-
     React.useEffect(() => {
-        // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        // if (props.user.loggedin === false) {
-        //     props.navigation.navigate('Choselanguage');
-        // }
-    }, [props.user.loggedin]);
-    console.log(props.address);
-    const { address = [] } = props.address;
+        props.getAddressFn();
+    }, []);
+    const { address = [], addressprocess } = props.address;
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={false}
+                        visible={addressprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
@@ -76,7 +58,7 @@ const MyAddress = (props) => {
                                     </React.Fragment> : <React.Fragment>
                                         <View style={{ height: Dimensions.get('screen').height / 1.5 }}>
                                             <ScrollView contentContainerStyle={{}}>
-                                                {address.map((addr) => <View style={{
+                                                {address && address.length > 0 && address.map((addr, ind) => <View key={ind} style={{
                                                     backgroundColor: 'white',
                                                     padding: 20,
                                                     margin: 20
@@ -166,6 +148,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = dispatch => ({
     logoutFn: () => { dispatch({ type: SET_LOGOUT }) },
-    resetAll: () => { dispatch({ type: RESET_DATA }) }
+    resetAll: () => { dispatch({ type: RESET_DATA }) },
+    getAddressFn: () => { dispatch(getAddress()) },
+
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyAddress);

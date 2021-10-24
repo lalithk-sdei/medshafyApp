@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
+import { Text, StyleSheet, View, Image, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 const ProductCard = ({
@@ -13,28 +12,37 @@ const ProductCard = ({
     isFav = false,
     cartPressed = () => { },
     onpressfav = () => { },
+    cartUpdate = () => { },
+    cartData = {
+        inCart: false,
+        cartValues: null
+    }
 }) => {
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
-    return <TouchableOpacity onPress={() => { onPress(); }}>
-        <View>
-            <View style={styles.prodBox}>
-                <View style={{ flex: 2, paddingVertical: 20 }}>
+    return <View>
+        <View style={styles.prodBox}>
+            <View style={{ flex: 2, paddingVertical: 20 }}>
+                <TouchableOpacity onPress={() => { onPress(); }}>
                     <Image
                         style={{ width: '100%', height: '100%', resizeMode: 'stretch' }}
                         source={{
                             uri: img,
                         }}
                     />
-                    {(discount != 0 && !isCategory) &&
-                        <React.Fragment>
+                </TouchableOpacity>
+                {(discount != 0 && !isCategory) &&
+                    <React.Fragment>
+                        <View style={{
+                            position: 'absolute',
+                            backgroundColor: '#2F33A4',
+                            borderTopLeftRadius: 5,
+                            left: 0,
+                            padding: 5,
+                            fontSize: 10,
+                            color: 'white',
+                        }}>
                             <Text style={{
-                                position: 'absolute',
-                                backgroundColor: '#2F33A4',
-                                left: 0,
-                                borderTopLeftRadius: 5,
-                                padding: 5,
                                 fontSize: 10,
-                                width: 58,
                                 color: 'white',
                             }}>{discount} % OFF</Text>
                             <View style={{
@@ -46,7 +54,7 @@ const ProductCard = ({
                                 borderTopColor: '#6D6ACC',
                                 borderTopWidth: 12,
                                 width: 0,
-                                left: 51,
+                                right: -9,
                                 height: 0
                             }}><Text>{" "}</Text></View>
                             <View style={{
@@ -57,69 +65,118 @@ const ProductCard = ({
                                 borderRightWidth: 8,
                                 borderTopColor: '#6D6ACC',
                                 borderTopWidth: 13,
-                                top: 10,
-                                left: 50.7,
+                                top: 9,
+                                right: -9,
                                 width: 0,
                                 transform: [
                                     { rotateZ: '180deg' }
                                 ],
                                 height: 0
                             }}><Text>{" "}</Text></View>
+                        </View>
+                    </React.Fragment>
+                }
+            </View>
+            <View style={{ flex: 3, marginLeft: 20, paddingVertical: 0, marginTop: 20 }}>
+                <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => { onPress(); }}><Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text></TouchableOpacity>
+                <View style={{
+                    marginTop: 15,
+                }}>
+                    {cartData.inCart ? <React.Fragment>
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity onPress={() => { cartUpdate(cartData.cartValues.length > 0 ? cartData.cartValues[0] : null, 'dec') }}>
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{
+                                        backgroundColor: '#6CBAA8',
+                                        borderRadius: 50,
+                                        width: 30,
+                                        height: 30,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={{ color: 'white', fontSize: 20 }}>&#8722;</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{
+                                flex: 2,
+                                paddingVertical: 7,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Text style={{
+                                    fontSize: 16,
+                                    fontFamily: 'Quasimodabold',
+                                    fontWeight: 'bold',
+                                    color: 'black'
+                                }}>{cartData.cartValues.length > 0 ? cartData.cartValues[0].qty : ""}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => { cartUpdate(cartData.cartValues.length > 0 ? cartData.cartValues[0] : null, 'inc') }}>
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{
+                                        backgroundColor: '#6CBAA8',
+                                        borderRadius: 50,
+                                        width: 30,
+                                        height: 30,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={{ color: 'white', fontSize: 20 }}>&#43;</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </React.Fragment> :
+                        <React.Fragment>
+                            <TouchableOpacity onPress={() => { cartPressed() }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <View style={{
+                                        flex: 4,
+                                        backgroundColor: '#98DECA',
+                                        paddingVertical: 7,
+                                        borderTopLeftRadius: 50,
+                                        borderBottomLeftRadius: 50,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={{
+                                            fontSize: 16,
+                                            fontFamily: 'Quasimodabold',
+                                            fontWeight: 'bold',
+                                            color: 'black'
+                                        }}>Add to card</Text>
+                                    </View>
+                                    <View style={{
+                                        flex: 1.5,
+                                        backgroundColor: '#6CBAA8',
+                                        borderTopRightRadius: 50,
+                                        borderBottomRightRadius: 50,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={{
+                                            color: 'white',
+                                            fontSize: 20,
+                                        }}>+ </Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
                         </React.Fragment>
                     }
                 </View>
-                <View style={{ flex: 2, marginLeft: 20, paddingVertical: 0, marginTop: 20 }}>
-                    <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
-                    <TouchableOpacity onPress={() => { onPress(); }}><Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text></TouchableOpacity>
-                    <View style={{
-                        flexDirection: 'row',
-                        marginTop: 15,
-                    }}>
-                        <TouchableOpacity onPress={cartPressed}>
-                            <View style={{
-                                borderTopLeftRadius: 50,
-                                borderBottomLeftRadius: 50,
-                                paddingHorizontal: 15,
-                                paddingVertical: 10,
-                                backgroundColor: '#98DECA',
-                            }}>
-                                <Text style={{
-                                    fontSize: Platform.OS == 'ios' ? 12 : 16,
-                                    fontFamily: 'Quasimodabold',
-                                    fontWeight: 'bold'
-                                }}>Add to card</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={cartPressed}>
-                            <View style={{
-                                borderTopRightRadius: 50,
-                                borderBottomRightRadius: 50,
-                                paddingHorizontal: 10,
-                                paddingBottom: 5,
-                                paddingTop: 3,
-                                backgroundColor: '#6CBAA8'
-                            }}>
-                                <Text style={{
-                                    color: 'white',
-                                    fontSize: 20,
-                                }}>+</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ flex: 2 }}>
-                    <View style={{
-                        position: 'absolute',
-                        right: 10,
-                        top: 10
-                    }}>
-                        {isFav ? <Entypo name="heart" size={30} color="#EE6000" onPress={() => { onpressfav("remove") }} /> : <EvilIcons onPress={() => { onpressfav("add") }} name="heart" size={36} color="#EE6000" />}
-                    </View>
+            </View>
+            <View style={{ flex: 1 }}>
+                <View style={{
+                    position: 'absolute',
+                    right: 10,
+                    top: 10
+                }}>
+                    {isFav ? <Entypo name="heart" size={30} color="#EE6000" onPress={() => { onpressfav("remove") }} /> : <EvilIcons onPress={() => { onpressfav("add") }} name="heart" size={36} color="#EE6000" />}
                 </View>
             </View>
         </View>
-    </TouchableOpacity >
-
+    </View>
 }
 
 const styles = StyleSheet.create({

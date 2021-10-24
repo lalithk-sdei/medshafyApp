@@ -5,6 +5,7 @@ import category from "./categories";
 import prod from "./prod";
 import fav from "./fav";
 import address from "./address";
+import cart from "./cart";
 
 export default combineReducers({
     common: common,
@@ -13,4 +14,5 @@ export default combineReducers({
     prod: prod,
     fav: fav,
     address: address,
+    cart: cart,
 });

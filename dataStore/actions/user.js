@@ -52,6 +52,25 @@ export const getMe = (token, clbak = () => { }) => async (dispatch) => {
     }
 }
 
+export const updateuser = (bod, clbak = () => { }) => async (dispatch) => {
+    dispatch({ type: SET_LOGIN_PROCESS, payload: true });
+    try {
+        let res = await users.updateuser(bod);
+        if (res.data && res.code === 200) {
+            dispatch({ type: SET_USER_DATA_MANUAL, payload: res.data });
+            dispatch({ type: SET_LOGIN_STATUS, payload: 'ok' });
+            clbak(true);
+            dispatch({ type: SET_LOGIN_PROCESS, payload: false });
+        } else {
+            clbak(true);
+            dispatch({ type: SET_LOGIN_PROCESS, payload: false });
+        }
+    } catch (error) {
+        clbak(false);
+        dispatch({ type: SET_LOGIN_PROCESS, payload: false });
+    }
+}
+
 
 export const login = (body) => async (dispatch) => {
     dispatch({ type: SET_LOGIN_PROCESS, payload: true });

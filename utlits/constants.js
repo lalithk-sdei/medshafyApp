@@ -19,6 +19,7 @@ export const constants = {
             qtyReq: "Quantity is required",
             priceReq: "Price required",
             descReq: "Description  is required",
+            namereq: "Name  is required",
         }
     }
 }

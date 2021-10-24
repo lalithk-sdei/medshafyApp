@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Platform, Modal, View, Text, StyleSheet, Image, FlatList, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
+import { Platform, Modal, View, Text, StyleSheet, Pressable, FlatList, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, SafeAreaView, StatusBar } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { login } from '../../dataStore/actions/user';
 import SearchInput from '../common/elements/searchInput';
+import RadioButton from '../common/elements/radiobutton';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
@@ -15,24 +16,30 @@ import { GetProducts } from '../../dataStore/actions/prod';
 import { LogBox } from 'react-native';
 import { GetCategories } from '../../dataStore/actions/category';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
+import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import CartQty from '../common/elements/cartQty';
+
+
 const Searchpage = (props) => {
 
     const [page, setpage] = React.useState("search");
-    const [fn, setFn] = React.useState();
+    const [openQty, setOIpenQty] = React.useState(false);
+    const [Selprod, setSelProd] = React.useState(null);
+    const [qtys, setQtys] = React.useState(false);
     const [brand, setBrand] = React.useState();
 
-    const [cart, setCart] = React.useState(3);
     const [favs, setFavs] = React.useState(props.fav.favData);
     const [search, setSearch] = React.useState(props.route.params.val);
-    const [banners, setbanners] = React.useState([
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-    ]);
 
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
-    const countries = ["Egypt", "Canada", "Australia", "Ireland", "Egypt", "Canada", "Australia", "Ireland", "Egypt", "Canada", "Australia", "Ireland",];
+
+    const [open, setOpen] = React.useState(false);
+    const [cat, setCat] = React.useState(null);
+    const [items, setItems] = React.useState([]);
+    const { Catprocess, CatStatus, CatData, } = props.cat;
+    const { favprocess, favStatus, favData, } = props.fav;
+    const { Prodprocess, ProdStatus, ProdData } = props.product;
+    const { cartprocess, cartStatus, cartData } = props.cart;
 
     const [time, setTime] = React.useState(null);
     const registerKey = (val) => {
@@ -45,10 +52,6 @@ const Searchpage = (props) => {
             }
         }, 500));
     }
-    const catrPressed = (item) => {
-        console.log(item);
-    };
-
 
     const favEvent = (item, type) => {
         if (props.user.loggedin) {
@@ -77,18 +80,80 @@ const Searchpage = (props) => {
         }
     }
 
+    const AddtoCart = (prod) => {
+        const b = {
+            "prods": {
+                "prodId": prod._id,
+                "prodQty": "def",
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: prod }, () => { });
+    }
+    // Add to cart
+    const catrPressed = (prod) => {
+        if (props.user.loggedin) {
+            if (prod.offeredPrices != null && prod.offeredPrices.length > 0) {
+                setSelProd(prod);
+                setQtys(prod.offeredPrices);
+                setTimeout(() => {
+                    setOIpenQty(true);
+                }, 10);
+            } else {
+                AddtoCart(prod)
+            }
+        } else {
+            Alert.alert(
+                'Login Required!',
+                'Please login to add products in your cart.',
+                [
+                    { text: 'cancel', onPress: () => { } },
+                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                ],
+            );
+        }
+    };
+    const cartQtyRecived = (item) => {
+        const b = {
+            "prods": {
+                "prodId": Selprod._id,
+                "prodQty": item._id,
+                "qty": 1
+            },
+            "userId": props.user.loggedinUserData._id
+        };
+        props.addtoCart(b, { ...b.prods, prodId: Selprod }, () => { });
+    }
+    // Update Cart
+    const cartUpdate = (cd, ope) => {
+        const b = {
+            "prods": {
+                "prodId": cd.prodId._id,
+                "prodQty": cd.prodQty,
+                "qty": ope == 'inc' ? (+cd.qty + 1) : (+cd.qty - 1)
+            },
+            "userId": props.user.loggedinUserData._id,
+            "docId": cd._id
+        };
+        if (+cd.qty == 1 && ope != 'inc') {
+            props.deleteCartFn({
+                "userId": props.user.loggedinUserData._id,
+                "docId": cd._id
+            });
+        } else {
+            props.updatecartFn(b);
+        }
+    };
 
 
-    const [open, setOpen] = React.useState(false);
-    const [cat, setCat] = React.useState(null);
-    const [items, setItems] = React.useState([]);
-    const { Catprocess, CatStatus, CatData, } = props.cat;
-    const { favprocess, favStatus, favData, } = props.fav;
-    const { Prodprocess, ProdStatus, ProdData } = props.product;
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (CatData.length == 0) {
             props.callCat();
+        }
+        if (cartData.length == 0 && props.user.loggedin) {
+            props.loadCart();
         }
         props.loadProducts({ search, cat });
         if (props.user.loggedin && favStatus == '') {
@@ -99,15 +164,24 @@ const Searchpage = (props) => {
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
+                    {openQty ? <View style={{
+                        position: 'absolute',
+                        backgroundColor: 'white',
+                        width: '90%',
+                        zIndex: 1,
+                        top: '30%',
+                        left: '5%',
+                        borderRadius: 10
+                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <ScrollView>
                         <Spinner
                             color={"#9F9FA2"}
-                            visible={Prodprocess || Catprocess || favprocess}
+                            visible={Prodprocess || Catprocess || favprocess || cartprocess}
                             textContent={'Please wait...'}
                             textStyle={{ color: '#FFF' }}
                         />
                         {page == "search" &&
-                            <View style={styles.main}>
+                            <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
                                 <View style={styles.firstCol}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flex: 1, marginTop: 25, paddingLeft: 10 }}>
@@ -118,8 +192,8 @@ const Searchpage = (props) => {
                                         </View>
                                         <View style={{ flex: 1 }}>
                                             <View style={{ marginTop: 25, paddingLeft: 10, position: 'relative' }}>
-                                                <Ionicons name="ios-cart-outline" size={30} color="black" />
-                                                {cart != 0 &&
+                                                <Ionicons onPress={() => { props.navigation.navigate('Cart'); }} name="ios-cart-outline" size={30} color="black" />
+                                                {cartData.length != 0 &&
                                                     <View style={{
                                                         paddingHorizontal: 8,
                                                         right: -5,
@@ -132,7 +206,7 @@ const Searchpage = (props) => {
                                                         <Text style={{
                                                             color: 'white',
                                                             fontSize: 10
-                                                        }}>{cart}
+                                                        }}>{cartData.length}
                                                         </Text>
                                                     </View>
                                                 }
@@ -183,7 +257,12 @@ const Searchpage = (props) => {
                                                             data={ProdData.items}
                                                             renderItem={({ item }) => (<View style={{ marginBottom: 15 }}>
                                                                 <ProductCard
+                                                                    cartData={{
+                                                                        inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
+                                                                        cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
+                                                                    }}
                                                                     cartPressed={() => { catrPressed(item) }}
+                                                                    cartUpdate={(cd, ope) => { cartUpdate(cd, ope) }}
                                                                     onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'searchpage', val: search }); }}
                                                                     isFav={(favs || []).map((e) => e.prodId._id).includes(item._id)}
                                                                     onpressfav={(type) => { favEvent(item, type) }}
@@ -219,7 +298,7 @@ const Searchpage = (props) => {
 
 const styles = StyleSheet.create({
     main: {
-        minHeight: Dimensions.get('screen').height
+        minHeight: Dimensions.get('screen').height,
     },
     firstCol: {
         paddingTop: 30,
@@ -255,6 +334,12 @@ const styles = StyleSheet.create({
         height: 40,
         fontFamily: 'QuasimodaMedium',
     },
+
+
+
+
+
+
 });
 
 
@@ -262,12 +347,17 @@ const mapStateToProps = (state) => ({
     product: state.prod,
     cat: state.category,
     user: state.user,
-    fav: state.fav
+    fav: state.fav,
+    cart: state.cart
 });
 
 
 const mapDispatchToProps = dispatch => ({
     loadProducts: (body) => { dispatch(GetProducts(body)) },
+    loadCart: () => { dispatch(GetCartForUser()) },
+    updatecartFn: (body) => { dispatch(UpdateCart(body)) },
+    deleteCartFn: (body) => { dispatch(deleteCart(body)) },
+    addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
     callCat: () => { dispatch(GetCategories()) },
     getFavs: () => { dispatch(GetFavForUser()) },
     addtoFavFn: (body, done) => { dispatch(addtoFav(body, done)) },

@@ -23,36 +23,26 @@ import { Marker } from 'react-native-maps';
 import Floatinginput from '../../common/elements/floatinginput';
 import { constants } from '../../../utlits/constants';
 import Errortext from '../../common/elements/errorText';
-import { addAddress } from '../../../dataStore/actions/address';
+import { addAddress, updateAddress } from '../../../dataStore/actions/address';
 
 const EditAddress = (props) => {
-    const [maploaded, setMapLoaded] = React.useState(false);
-    const [location, setLocation] = React.useState({
-        latitudeDelta: 0.1929,
-        longitudeDelta: 0.0521,
-    });
-    const [errorMsg, setErrorMsg] = React.useState(null);
-    const [address, setAddress] = React.useState(null);
     const [isloding, setIsloading] = React.useState(false);
-
-
+    const { lat, longitude, address, completeAddress, addressline1, name, mobileno, _id } = props.route.params;
     const [formstate, setFormState] = React.useState({
-        NameTch: true, NameErr: false, NameErrMsg: "", NameVal: props.route.params.name,
-        addrTch: true, addrErr: false, addrErrMsg: "", addrVal: props.route.params.address,
-        phTch: true, phErr: false, phErrMsg: "", phVal: props.route.params.mobileno,
+        NameTch: true, NameErr: false, NameErrMsg: "", NameVal: name,
+        addrTch: true, addrErr: false, addrErrMsg: "", addrVal: address,
+        phTch: true, phErr: false, phErrMsg: "", phVal: mobileno,
     });
     const Name = (e = null, tch = false) => {
-        console.log(e);
         const { lang } = props;
         if (["", null, undefined].includes(e)) {
-            setFormState({ ...formstate, NameErr: true, NameErrMsg: constants[lang].errors.fulladdr, NameVal: e, ...tch && { NameTch: true } });
+            setFormState({ ...formstate, NameErr: true, NameErrMsg: constants[lang].errors.namereq, NameVal: e, ...tch && { NameTch: true } });
         } else {
             setFormState({ ...formstate, NameErr: false, NameErrMsg: '', NameVal: e, ...tch && { NameTch: true } });
         }
     }
 
     const addr = (e = null, tch = false) => {
-        console.log(e);
         const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, addrErr: true, addrErrMsg: constants[lang].errors.addrReq, addrVal: e, ...tch && { addrTch: true } });
@@ -73,31 +63,33 @@ const EditAddress = (props) => {
 
 
     const saveAddress = () => {
-        const { latitude, longitude, filed1, addr } = props.route.params;
-        // console.log(props.route.params);
-        console.log({
-            lat: latitude,
+        props.updateAddressFn({
+            lat: lat,
             longitude: longitude,
-            address: filed1,
-            completeAddress: formstate.NameVal,
-            addressline1: addr,
-            name: formstate.addrVal,
-            addrno: formstate.phVal,
-        });
-        props.addAddressFn({
-            lat: latitude,
-            longitude: longitude,
-            address: filed1,
-            completeAddress: formstate.NameVal,
-            addressline1: addr,
-            name: formstate.addrVal,
-            addrno: formstate.phVal,
-        }, () => {
-            props.navigation.navigate('MyAddress');
+            address: formstate.addrVal,
+            completeAddress: completeAddress,
+            addressline1: addressline1,
+            name: formstate.NameVal,
+            mobileno: formstate.phVal,
+            _id: _id
+        }, (st) => {
+            console.log(st);
+            if (st) {
+                props.navigation.navigate('MyAddress');
+            } else {
+                setTimeout(() => {
+                    Alert.alert(
+                        'Failed',
+                        "We coudn't add address please try after sometime.",
+                        [
+                            { text: 'ok', onPress: () => { } },
+                        ],
+                    );
+                }, 100);
+            }
         });
     }
     React.useEffect(() => {
-        console.log(props.route.params);
         const { address = "", name = "", mobileno = "" } = props.route.params;
         // addr(address, true);
         // Name(name, true);
@@ -208,7 +200,7 @@ const EditAddress = (props) => {
                                     <View style={{
                                         marginTop: 30
                                     }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Profile'); }} title="Save Changes" />
+                                        <PrimaryButton disabled={formstate.NameErr || formstate.addrErr || formstate.phErr} onPress={() => { saveAddress() }} title="Save Changes" />
                                     </View>
                                 </View>
                             </View>
@@ -278,6 +270,6 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = dispatch => ({
-    addAddressFn: (bdy, done) => { dispatch(addAddress(bdy, done)) },
+    updateAddressFn: (bdy, done) => { dispatch(updateAddress(bdy, done)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditAddress);

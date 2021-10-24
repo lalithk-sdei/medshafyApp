@@ -11,53 +11,12 @@ import { FontAwesome } from '@expo/vector-icons';
 import ProfilelandngPage from "../profile/profileLanding";
 import mycart from '../cart/mycart';
 import MyInvoices from "../invoices/invoice";
-
-function Feed() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Feed!</Text>
-    </View>
-  );
-}
-
-function Profile(props) {
-  const logout = async () => {
-    try {
-      const val = await AsyncStorage.removeItem('userLang');
-      const val2 = await AsyncStorage.removeItem('loggedin');
-      const val3 = await AsyncStorage.removeItem('token');
-      await props.navigation.navigate('login');
-    } catch (e) { }
-  }
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button onPress={() => {
-        logout();
-      }} title={"Log Out"} />
-      <Text>Profile!</Text>
-    </View>
-  );
-}
-
-function Invoices() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Invoices!</Text>
-    </View>
-  );
-}
-
-function Cart() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Cart!</Text>
-    </View>
-  );
-}
+import { GetCartForUser } from '../../dataStore/actions/cart';
+import { connect } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+function MyTabs({ cartData = [] }) {
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -108,7 +67,27 @@ function MyTabs() {
             tabBarLabel: 'Cart',
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="cart" color={color} size={size} />
-              <AntDesign name="shoppingcart" color={color} size={size} />
+              <React.Fragment>
+                <AntDesign name="shoppingcart" color={color} size={size} />
+                {cartData.length != 0 &&
+                  <View style={{
+                    paddingHorizontal: 8,
+                    right: 20,
+                    top: -5,
+                    paddingVertical: 5,
+                    backgroundColor: '#EE6000',
+                    borderRadius: 50,
+                    position: 'absolute'
+                  }}>
+                    <Text style={{
+                      color: 'white',
+                      fontSize: 10
+                    }}>{cartData.length}
+                    </Text>
+                  </View>
+                }
+              </React.Fragment>
+
             ),
           }}
         />
@@ -118,9 +97,27 @@ function MyTabs() {
   );
 }
 
-export default function Layout(props) {
+export function Layout(props) {
+  const { cartprocess, cartStatus, cartData } = props.cart;
+  React.useEffect(() => {
+    if (cartData.length == 0 && props.user.loggedin) {
+      props.loadCart();
+    }
+  }, []);
   return (
-    <MyTabs />
-    // </NavigationContainer>
+    <MyTabs cartData={cartData} />
   );
 }
+
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  cart: state.cart
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  loadCart: () => { dispatch(GetCartForUser()) },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+

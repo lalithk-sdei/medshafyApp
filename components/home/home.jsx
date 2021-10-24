@@ -145,7 +145,6 @@ const Home = (props) => {
                         })
                     );
                 } catch (errrr) {
-                    console.log(errrr);
                 }
             }
         }
@@ -214,6 +213,7 @@ const Home = (props) => {
 
         setSearch("");
     }, [props.fav.favStatus, isFocused]);
+
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
@@ -295,11 +295,19 @@ const Home = (props) => {
                                                 justifyContent: 'space-between'
                                             }}>
                                                 <TitleText title={"FAVOURITES"} />
-                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'home', page: '0' }); }} title={"VIEW ALL"} />
+                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '0' }); }} title={"VIEW ALL"} />
                                             </View>
                                             <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                                 {favData.slice(0, 3).map((item, ind) =>
-                                                    <View key={`fav-${ind}`} style={{ width: '35%', paddingRight: 17 }}><ProductBox onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'home', val: search }); }} img={item.mainImage ? img : img} mrp={item.prodId.price} salePrice={item.prodId.salePrice} name={item.prodId.name} /></View>
+                                                    <View key={`fav-${ind}`} style={{ width: '35%', paddingRight: 17 }}>
+                                                        <ProductBox
+                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item.prodId, from: 'Home', val: search }); }}
+                                                            img={item.prodId.mainImage != null ? item.prodId.mainImage.fileUrl : img}
+                                                            mrp={item.prodId.price}
+                                                            salePrice={item.prodId.salePrice}
+                                                            name={item.prodId.name}
+                                                        />
+                                                    </View>
                                                 )}
                                             </View>
                                         </View>
@@ -311,7 +319,7 @@ const Home = (props) => {
                                             justifyContent: 'space-between'
                                         }}>
                                             <TitleText title={"BUY AGAIN"} />
-                                            <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'home', page: '1' }); }} title={"VIEW ALL"} />
+                                            <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '1' }); }} title={"VIEW ALL"} />
                                         </View>
                                         <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                             <View style={{ flex: 1, marginRight: 17 }}><ProductBox img={img} mrp={400} salePrice={400} name={"Fabric Masks"} /></View>

@@ -19,6 +19,8 @@ const Floatinginput = (props) => {
     useEffect(() => {
         if (props.liftUp) {
             setisFocused(true);
+        }
+        if (props.value) {
             setVal(props.value);
         }
     }, [])
