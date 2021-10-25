@@ -253,7 +253,7 @@ const MyCart = (props) => {
                                         </View>
                                     </View>
                                     <View>
-                                    <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={"Checkout"}></PrimaryButton>
+                                        <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={"Checkout"}></PrimaryButton>
                                     </View>
                                 </React.Fragment> : null}
 

@@ -78,6 +78,7 @@ export const cart = {
     addToCart: (body) => requests.post(`${routes.baseUrl}${routes.addtocartnew}`, body),
     UpdateCart: (body) => requests.put(`${routes.baseUrl}${routes.updateCart}`, body),
     deleteCart: (body) => requests.post(`${routes.baseUrl}${routes.deleteCart}`, body),
+    clearCart: () => requests.post(`${routes.baseUrl}${routes.clearCart}`, {}),
 }
 
 export const orders = {

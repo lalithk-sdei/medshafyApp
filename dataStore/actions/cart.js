@@ -1,5 +1,5 @@
 import { cart } from "../ApiServices/index";
-import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, ADD_TO_CART, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM } from "../types/types";
+import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, ADD_TO_CART, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM, CLEAR_CART } from "../types/types";
 
 export const GetCartForUser = () => async (dispatch) => {
     setTimeout(() => {
@@ -41,6 +41,28 @@ export const AddToCart = (body, cartprod, done) => async (dispatch) => {
         dispatch({ type: SET_LOAD_CART_PROCESS, payload: false });
     }
 }
+
+export const clearCart = (done) => async (dispatch) => {
+    dispatch({ type: SET_LOAD_CART_PROCESS, payload: true });
+    try {
+        let res = await cart.clearCart();
+        if (res.code === 200) {
+            dispatch({ type: SET_LOAD_CART_STATUS, payload: 'ok' });
+            dispatch({ type: CLEAR_CART, payload: [] });
+            done(true, res);
+        } else {
+            dispatch({ type: SET_LOAD_CART_STATUS, payload: 'fail' });
+            done(false, res);
+        }
+        dispatch({ type: SET_LOAD_CART_PROCESS, payload: false });
+    } catch (error) {
+        done(false, error);
+        dispatch({ type: SET_LOAD_CART_STATUS, payload: 'fail' });
+        dispatch({ type: SET_LOAD_CART_PROCESS, payload: false });
+    }
+}
+
+
 
 export const UpdateCart = (body) => async (dispatch) => {
     dispatch({ type: SET_LOAD_CART_PROCESS, payload: true });

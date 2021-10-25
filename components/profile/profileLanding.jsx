@@ -23,7 +23,7 @@ const ProfilelandngPage = (props) => {
             const b = await AsyncStorage.removeItem('loggedin');
             const c = await AsyncStorage.removeItem('token');
             // if (a && b && c) {
-                console.log("friee");
+                console.log("friee", 1);
                 setLogfr(true);
                 props.logoutFn();
                 props.resetAll();

@@ -19,11 +19,12 @@ import PlaneText from '../common/elements/planeText';
 import PrimaryButton from '../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import { AddToCart, clearCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import { getAddress } from '../../dataStore/actions/address';
 import RadioButton from '../common/elements/radiobutton';
 import ApplePayBtn from '../common/elements/applyePay';
 import { addOrder } from '../../dataStore/actions/orders';
+import LinkText from '../common/elements/linktext';
 
 const Checkout = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -32,9 +33,31 @@ const Checkout = (props) => {
     const [qtys, setQtys] = React.useState(false);
     const { cartprocess, cartStatus, cartData = [] } = props.cart;
 
-    const getPriceName = (prod) => {
+
+    const cartUpdate = (cd, ope) => {
+        const b = {
+            "prods": {
+                "prodId": cd.prodId._id,
+                "prodQty": cd.prodQty,
+                "qty": ope == 'inc' ? (+cd.qty + 1) : (+cd.qty - 1)
+            },
+            "userId": props.user.loggedinUserData._id,
+            "docId": cd._id
+        };
+        if (+cd.qty == 1 && ope != 'inc') {
+            props.deleteCartFn({
+                "userId": props.user.loggedinUserData._id,
+                "docId": cd._id
+            });
+        } else {
+            props.updatecartFn(b);
+        }
+    };
+
+
+    const getPriceName = (prod, lng = 'en') => {
         if (prod.prodId == null || prod.prodQty === 'def') {
-            return "";
+            return "def";
         }
         if (prod.prodId.offeredPrices.length == 0) {
             cartUpdate({ ...prod, qty: 1 }, 'dec');
@@ -43,7 +66,11 @@ const Checkout = (props) => {
         if (d.length == 0) {
             cartUpdate({ ...prod, qty: 1 }, 'dec');
         }
-        return d[0].qtyname;
+        if (lng == 'en') {
+            return d[0].qtyname;
+        } else {
+            return d[0].qtynameArabic;
+        }
     }
 
     const getPriceval = (prod) => {
@@ -68,27 +95,60 @@ const Checkout = (props) => {
 
     const { address = [], addressprocess } = props.address;
 
+    console.log(cartData);
+
     const submit = () => {
-        // const b = {
-        //     prods: cartData.map((e) => ({
-        //         prodId: {
-        //             type: Schema.Types.ObjectId,
-        //             ref: 'Product',
-        //         },
-        //         qty: { type: String },
-        //         prodName: { type: String },
-        //         prodnameArabic: { type: String },
-        //         prodImg: { type: String },
-        //         qtyname: { type: String },
-        //         qtynameArabic: { type: String },
-        //         prodPrice: { type: String },
-        //     })),
-        //     paidBy: { type: Number },
-        //     address: { type: Object },
-        //     DeliveryCharges: { type: Number },
-        //     Vat: { type: Number },
-        // };
-        props.addOrderFn({}, (st) => { });
+        try {
+            const b = {
+                prods: cartData.map((pro) => ({
+                    prodId: pro.prodId._id,
+                    qty: pro.qty,
+                    prodName: pro.prodId.name,
+                    prodnameArabic: pro.prodId.arabicName,
+                    prodImg: pro.prodId.mainImage ? pro.prodId.mainImage.mediumUrl : null,
+                    qtyname: getPriceName(pro, 'en'),
+                    qtynameArabic: getPriceName(pro, 'ar'),
+                    prodPrice: getPriceval(pro),
+                })),
+                paidBy: 0,
+                address: seladdr,
+                DeliveryCharges: 0,
+                Vat: 0,
+                subTotal: cartData.map((pro) => getPriceval(pro)).reduce((a, b) => a + b),
+            };
+            props.addOrderFn(b, (st) => {
+                if (st) {
+                    // Clear Cart
+                    props.clearCartFn((d, r) => {
+                        console.log(d, "pre", r);
+                        props.navigation.navigate('myOrders');
+                    });
+                } else {
+                    setTimeout(() => {
+                        Alert.alert(
+                            'Oops',
+                            "We are not able to process your order. please reach to support",
+                            [
+                                { text: 'ok', onPress: () => { } },
+                            ],
+                        );
+                    }, 100);
+                }
+
+            });
+        } catch (e) {
+            setTimeout(() => {
+                Alert.alert(
+                    'Oops',
+                    "Some products in your cart are not avaliable. Please try after sometime.",
+                    [
+                        { text: 'ok', onPress: () => { } },
+                    ],
+                );
+            }, 100);
+        }
+
+
     }
 
     React.useEffect(() => {
@@ -139,7 +199,7 @@ const Checkout = (props) => {
                                             <View>
                                                 {/* Address */}
                                                 <View >
-                                                    {address && address.length > 0 && address.map((addr, ind) => <View key={ind} style={{
+                                                    {address && address.length > 0 ? address.map((addr, ind) => <View key={ind} style={{
                                                         backgroundColor: 'white',
                                                         padding: 10,
                                                         borderColor: '#efe9e9',
@@ -165,7 +225,14 @@ const Checkout = (props) => {
                                                                 </View>
                                                             </View>
                                                         </TouchableOpacity>
-                                                    </View>)}
+                                                    </View>) : <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', alignItems: 'center' }}>
+                                                        <View style={{}}>
+                                                            <RegularText styles={{}}>Your address book is empty</RegularText>
+                                                        </View>
+                                                        <View style={{ paddingTop: 20 }}>
+                                                            <LinkText onPress={() => { props.navigation.navigate('MyAddress'); }}>Click here to manage your address</LinkText>
+                                                        </View>
+                                                    </View>}
                                                 </View>
                                                 <View style={{ margin: 20 }}><PrimaryButton onPress={() => { setTab(1) }} disabled={seladdr == null} title="Next"></PrimaryButton></View>
                                             </View>
@@ -249,7 +316,7 @@ const Checkout = (props) => {
                                 </View>
 
                                 <View style={{ marginTop: 30 }}>
-                                    <PrimaryButton disabled={tab != 2} title="Done" />
+                                    <PrimaryButton onPress={() => { submit(); }} disabled={tab != 2} title="Done" />
                                 </View>
 
 
@@ -257,7 +324,7 @@ const Checkout = (props) => {
                                 <View style={styles.clickCard}></View>
                             </View>
 
-                            <View style={{ height: 400 }}></View>
+                            <View style={{ height: 100 }}></View>
                         </ScrollView>
                     </View>
                 </View>
@@ -354,6 +421,7 @@ const mapDispatchToProps = dispatch => ({
     addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
     getAddressFn: () => { dispatch(getAddress()) },
     addOrderFn: (body, done) => { dispatch(addOrder(body, done)) },
+    clearCartFn: (done) => { dispatch(clearCart(done)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
 

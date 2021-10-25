@@ -29,6 +29,7 @@ export default {
     addtocartnew: 'v1/addtocartnew',
     updateCart: 'v1/updatecart',
     deleteCart: 'v1/delete',
+    clearCart: 'v1/clearCart',
 
 
     // Addresses

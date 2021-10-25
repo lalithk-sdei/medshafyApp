@@ -32,7 +32,9 @@ const Viewproducts = (props) => {
         } catch (e) { }
     }
 
+    const order = props.route.params;
 
+    console.log(order);
     React.useEffect(() => {
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
@@ -57,7 +59,8 @@ const Viewproducts = (props) => {
                         </View>
                         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                             <View style={styles.body}>
-                                <View style={styles.card}>
+
+                                {order.prods && order.prods.length > 0 ? order.prods.map((pro, ind) => <View key={ind} style={styles.card}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{ flex: 1 }}>
                                             <Image
@@ -68,39 +71,23 @@ const Viewproducts = (props) => {
                                             />
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <RegularText nolines={1}>Hand Gloves</RegularText>
-                                            <TitleText title={"SAR 49.00"} />
+                                            <RegularText nolines={1}>{pro.prodName}</RegularText>
+                                            <TitleText title={`SAR ${pro.prodPrice}`} />
                                         </View>
                                     </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row' }}>
-                                        <View style={{ flex: 1 }}>
-                                            <Image
-                                                style={{ margin: 5, width: Dimensions.get('screen').width / 3.5, height: Dimensions.get('screen').width / 3.5, resizeMode: 'stretch' }}
-                                                source={{
-                                                    uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
-                                                }}
-                                            />
-                                        </View>
-                                        <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <RegularText nolines={1}>Hand Gloves</RegularText>
-                                            <TitleText title={"SAR 49.00"} />
-                                        </View>
-                                    </View>
-                                </View>
+                                </View>) : null}
                                 <View style={[styles.card, { padding: 0 }]}>
                                     <View style={{ paddingHorizontal: 15, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <RegularText title={""}>Sub total</RegularText>
-                                        <RegularText >SAR 27</RegularText>
+                                        <RegularText >SAR {order.subTotal}</RegularText>
                                     </View>
                                     <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <RegularText title={""}>Delivery charges</RegularText>
-                                        <RegularText >SAR 33</RegularText>
+                                        <RegularText >SAR 0</RegularText>
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <RegularText title={""}>Total</RegularText>
-                                        <TitleText styles={{ fontSize: 17 }} title={"SAR 60"} />
+                                        <TitleText styles={{ fontSize: 17 }} title={`SAR ${order.subTotal}`} />
                                     </View>
                                 </View>
                                 <View style={[styles.card, { padding: 0 }]}>
@@ -113,7 +100,7 @@ const Viewproducts = (props) => {
                                         <LightText >{"    "}Delivery Address</LightText>
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, flexDirection: 'row' }}>
-                                        <RegularText >2972 Wesithemer Rd. Santa Ana, Illinois 85486</RegularText>
+                                        <RegularText >{order.address.address}</RegularText>
                                     </View>
                                 </View>
                             </View>

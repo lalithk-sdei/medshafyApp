@@ -64,6 +64,7 @@ export const SET_LOAD_ORDERS = "SET_LOAD_ORDERS";
 // CARTorites
 export const SET_LOAD_CART_PROCESS = "SET_LOAD_CART_PROCESS";
 export const SET_LOAD_CART_STATUS = "SET_LOAD_CART_STATUS";
+export const CLEAR_CART = "CLEAR_CART";
 export const SET_LOAD_CART_DATA = "SET_LOAD_CART_DATA";
 export const ADD_TO_CART = "ADD_TO_CART";
 export const ADD_NEW_CART = "ADD_NEW_CART";

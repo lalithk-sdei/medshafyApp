@@ -27,6 +27,10 @@ const ProductDetails = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
     const [qtys, setQtys] = React.useState(false);
 
+    const [Selprod, setSelProd] = React.useState(null);
+
+
+
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const { Prodprocess, ProdStatus, ProdData } = props.product;
     const { cartprocess, cartStatus, cartData } = props.cart;
@@ -46,14 +50,14 @@ const ProductDetails = (props) => {
     // Add to cart
     const cartPressed = (prod) => {
         if (props.user.loggedin) {
-            if (prod.offeredPrices != null && prod.offeredPrices.length > 0) {
-                setSelProd(prod);
-                setQtys(prod.offeredPrices);
+            if (offeredPrices != null && offeredPrices.length > 0) {
+                setSelProd(props.route.params);
+                setQtys(offeredPrices);
                 setTimeout(() => {
                     setOIpenQty(true);
                 }, 10);
             } else {
-                AddtoCart(prod)
+                AddtoCart(props.route.params)
             }
         } else {
             Alert.alert(

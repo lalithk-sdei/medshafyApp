@@ -18,6 +18,8 @@ import RegularText from '../../common/elements/regulartext';
 import PlaneText from '../../common/elements/planeText';
 import PrimaryButton from '../../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
+import { getAddress } from '../../../dataStore/actions/address';
+import { getOrders } from '../../../dataStore/actions/orders';
 
 const MyOrders = (props) => {
     const logout = async () => {
@@ -30,21 +32,24 @@ const MyOrders = (props) => {
             const val3 = await AsyncStorage.removeItem('token');
         } catch (e) { }
     }
+    const { ordersprocess, ordersStatus, orders = [] } = props.order;
 
+    console.log(orders);
 
     React.useEffect(() => {
+        props.getOrdersFn()
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
         //     props.navigation.navigate('Choselanguage');
         // }
-    }, [props.user.loggedin]);
+    }, []);
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
                 <View style={{ flex: 1 }}>
                     <Spinner
                         color={"#9F9FA2"}
-                        visible={false}
+                        visible={ordersprocess}
                         textContent={'Please wait...'}
                         textStyle={{ color: '#FFF' }}
                     />
@@ -54,62 +59,35 @@ const MyOrders = (props) => {
                             <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="My Orders" /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
+
+                        {orders.length == 0 ? <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{}}>
+                                <React.Fragment>
+                                    {(!ordersprocess) && <RegularText>Your dont have any orders.</RegularText>}
+                                </React.Fragment>
+                            </View>
+                        </View> : null}
+
                         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                             <View style={styles.body}>
-                                <View style={styles.card}>
+                                {orders.length > 0 ? orders.map((ord, ind) => <View key={ind} style={styles.card}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <View><RegularText styles={{ fontSize: 20 }} title="Order Total" >Order Total</RegularText></View>
-                                        <View><TitleText title="SAR 306" /></View>
+                                        <View><TitleText title={`SAR ${ord.subTotal}`} /></View>
                                     </View>
                                     <View style={{ marginTop: 15 }}>
-                                        <View><PlaneText>Order id : ORD561801524</PlaneText></View>
-                                        <View><PlaneText>Created : 2019-04-01 09:25:20</PlaneText></View>
-                                        <View><PlaneText>Ship to : Adam Watts</PlaneText></View>
+                                        <View><PlaneText>Order id : {ord.orderId ? ord.orderId : `ORD0000${ind}`}</PlaneText></View>
+                                        <View><PlaneText>Created : {new Date(ord.updatedAt).toDateString()} {new Date(ord.updatedAt).toLocaleTimeString()} </PlaneText></View>
+                                        <View><PlaneText>Ship to : {ord.address ? ord.address.name : "Unknown"}</PlaneText></View>
                                     </View>
                                     <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                         <MaterialCommunityIcons name="clock" size={24} color="red" />
                                         <RegularText>{"    "}Pending for Delivery</RegularText>
                                     </View>
                                     <View style={{ marginTop: 20 }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts'); }} title={"View Products"} />
+                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts', ord); }} title={"View Products"} />
                                     </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View><RegularText styles={{ fontSize: 20 }} title="Order Total" >Order Total</RegularText></View>
-                                        <View><TitleText title="SAR 306" /></View>
-                                    </View>
-                                    <View style={{ marginTop: 15 }}>
-                                        <View><PlaneText>Order id : ORD561801524</PlaneText></View>
-                                        <View><PlaneText>Created : 2019-04-01 09:25:20</PlaneText></View>
-                                        <View><PlaneText>Ship to : Adam Watts</PlaneText></View>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                        <AntDesign name="checkcircle" size={24} color="#98DECA" />
-                                        <RegularText>{"    "}Pending for Delivery</RegularText>
-                                    </View>
-                                    <View style={{ marginTop: 20 }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts'); }} title={"View Products"} />
-                                    </View>
-                                </View>
-                                <View style={styles.card}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View><RegularText styles={{ fontSize: 20 }} title="Order Total" >Order Total</RegularText></View>
-                                        <View><TitleText title="SAR 306" /></View>
-                                    </View>
-                                    <View style={{ marginTop: 15 }}>
-                                        <View><PlaneText>Order id : ORD561801524</PlaneText></View>
-                                        <View><PlaneText>Created : 2019-04-01 09:25:20</PlaneText></View>
-                                        <View><PlaneText>Ship to : Adam Watts</PlaneText></View>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                        <MaterialCommunityIcons name="clock" size={24} color="red" />
-                                        <RegularText>{"    "}Pending for Delivery</RegularText>
-                                    </View>
-                                    <View style={{ marginTop: 20 }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts'); }} title={"View Products"} />
-                                    </View>
-                                </View>
+                                </View>) : null}
                             </View>
                         </ScrollView>
                     </View>
@@ -169,12 +147,15 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    order: state.order
+
 });
 
 
 const mapDispatchToProps = dispatch => ({
     logoutFn: () => { dispatch({ type: SET_LOGOUT }) },
-    resetAll: () => { dispatch({ type: RESET_DATA }) }
+    resetAll: () => { dispatch({ type: RESET_DATA }) },
+    getOrdersFn: () => { dispatch(getOrders()) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyOrders);
