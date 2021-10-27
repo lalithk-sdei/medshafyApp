@@ -32,9 +32,8 @@ const MyOrders = (props) => {
             const val3 = await AsyncStorage.removeItem('token');
         } catch (e) { }
     }
-    const { ordersprocess, ordersStatus, orders = [] } = props.order;
+    const { ordersprocess, ordersStatus, orders = [], buyAgain=[] } = props.order;
 
-    console.log(orders);
 
     React.useEffect(() => {
         props.getOrdersFn()

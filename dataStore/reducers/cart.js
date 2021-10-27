@@ -21,7 +21,8 @@ export default function (state = initialData, action) {
         case UPDATE_CART:
             try {
                 let cart = state.cartData;
-                cart[cart.findIndex(e => e._id == action.payload.docId)].qty = action.payload.prods.qty
+                cart[cart.findIndex(e => e._id == action.payload.docId)].qty = action.payload.prods.qty;
+                cart[cart.findIndex(e => e._id == action.payload.docId)].prodQty = action.payload.prods.prodQty;
                 return { ...state, cartData: cart };
             } catch (e) {
                 return state;

@@ -83,6 +83,7 @@ export const cart = {
 
 export const orders = {
     getorders: () => requests.get(`${routes.baseUrl}${routes.getOrders}`),
+    getBuyagain: () => requests.get(`${routes.baseUrl}${routes.getBuyagain}`),
     createOrder: (body) => requests.post(`${routes.baseUrl}${routes.createOrder}`, body),
 }
 

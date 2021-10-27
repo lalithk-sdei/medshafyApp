@@ -19,7 +19,7 @@ import CartQty from '../common/elements/cartQty';
 const Categories = (props) => {
 
     const [page, setpage] = React.useState("search");
-    const [mode, setMode] = React.useState("0");
+    const [mode, setMode] = React.useState("1");
     const [search, setSearch] = React.useState("");
     const [selecTedCat, setSelectedCat] = React.useState(null);
 
@@ -188,14 +188,32 @@ const Categories = (props) => {
                                     <View style={{ flex: 5 }}>
                                         <SearchInput closeFn={() => { setSearch(""); registerKey("") }} value={search} placeholder={search} onChangeText={(e) => { setSearch(e); registerKey(e) }} />
                                     </View>
-                                    <View style={{ flex: 1 }}>
+                                    {/* <View style={{ flex: 1 }}>
                                         <View style={{ marginTop: 30, paddingLeft: 10, position: 'relative' }}>
                                             <SimpleLineIcons onPress={() => { setMode("0") }} name="grid" size={24} color={mode == "0" ? "#EE6000" : "black"} />
                                         </View>
-                                    </View>
+                                    </View> */}
                                     <View style={{ flex: 1 }}>
-                                        <View style={{ marginTop: 25, paddingLeft: 10, position: 'relative' }}>
-                                            <Entypo onPress={() => { setMode("1") }} name="list" size={33} color={mode == "1" ? "#EE6000" : "black"} />
+                                        <View style={{ marginTop: 30, paddingLeft: 10, position: 'relative' }}>
+                                            <Ionicons onPress={() => { props.navigation.navigate('Cart'); }} name="ios-cart-outline" size={30} color="black" />
+                                            {cartData.length != 0 &&
+                                                <View style={{
+                                                    paddingHorizontal: 8,
+                                                    right: -5,
+                                                    top: -10,
+                                                    paddingVertical: 5,
+                                                    backgroundColor: '#EE6000',
+                                                    borderRadius: 50,
+                                                    position: 'absolute'
+                                                }}>
+                                                    <Text style={{
+                                                        color: 'white',
+                                                        fontSize: 10
+                                                    }}>{cartData.length}
+                                                    </Text>
+                                                </View>
+                                            }
+                                            {/* <SimpleLineIcons onPress={() => { setMode("0") }} name="grid" size={24} color={mode == "0" ? "#EE6000" : "black"} /> */}
                                         </View>
                                     </View>
                                 </View>

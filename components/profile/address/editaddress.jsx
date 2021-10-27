@@ -73,7 +73,6 @@ const EditAddress = (props) => {
             mobileno: formstate.phVal,
             _id: _id
         }, (st) => {
-            console.log(st);
             if (st) {
                 props.navigation.navigate('MyAddress');
             } else {

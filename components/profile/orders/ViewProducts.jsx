@@ -34,7 +34,6 @@ const Viewproducts = (props) => {
 
     const order = props.route.params;
 
-    console.log(order);
     React.useEffect(() => {
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
@@ -66,7 +65,7 @@ const Viewproducts = (props) => {
                                             <Image
                                                 style={{ margin: 5, width: Dimensions.get('screen').width / 3.5, height: Dimensions.get('screen').width / 3.5, resizeMode: 'stretch' }}
                                                 source={{
-                                                    uri: 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
+                                                    uri: pro.prodImg ? pro.prodImg : 'https://gcdn.pbrd.co/images/grEHL3gquLuy.png',
                                                 }}
                                             />
                                         </View>

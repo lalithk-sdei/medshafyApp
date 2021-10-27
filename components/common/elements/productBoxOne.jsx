@@ -128,37 +128,37 @@ const ProductBoxOne = ({
                             </View>
                         </React.Fragment> :
                             <React.Fragment>
-                                <TouchableOpacity onPress={() => { cartPressed() }}>
+                                <TouchableOpacity onPress={() => { onPress(); }}>
                                     <View style={{ flexDirection: 'row' }}>
                                         <View style={{
                                             flex: 4,
                                             backgroundColor: '#98DECA',
                                             paddingVertical: 7,
-                                            borderTopLeftRadius: 50,
-                                            borderBottomLeftRadius: 50,
+                                            borderRadius: 50,
+                                            // borderBottomLeftRadius: 50,
                                             justifyContent: 'center',
                                             alignItems: 'center'
                                         }}>
                                             <Text style={{
-                                                fontSize: 14,
+                                                fontSize: 16,
                                                 fontFamily: 'Quasimodabold',
                                                 fontWeight: 'bold',
                                                 color: 'black'
-                                            }}>Add to card</Text>
+                                            }}>View Details</Text>
                                         </View>
-                                        <View style={{
-                                            flex: 1.5,
-                                            backgroundColor: '#6CBAA8',
-                                            borderTopRightRadius: 50,
-                                            borderBottomRightRadius: 50,
-                                            justifyContent: 'center',
-                                            alignItems: 'center'
-                                        }}>
-                                            <Text style={{
-                                                color: 'white',
-                                                fontSize: 20,
-                                            }}>+ </Text>
-                                        </View>
+                                        {/* <View style={{
+                                        flex: 1.5,
+                                        backgroundColor: '#6CBAA8',
+                                        borderTopRightRadius: 50,
+                                        borderBottomRightRadius: 50,
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}>
+                                        <Text style={{
+                                            color: 'white',
+                                            fontSize: 20,
+                                        }}>+ </Text>
+                                    </View> */}
                                     </View>
                                 </TouchableOpacity>
                             </React.Fragment>

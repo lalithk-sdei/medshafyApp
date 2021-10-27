@@ -36,6 +36,13 @@ const Searchpage = (props) => {
     const [open, setOpen] = React.useState(false);
     const [cat, setCat] = React.useState(null);
     const [items, setItems] = React.useState([]);
+
+
+    const [openbr, setOpenbr] = React.useState(false);
+    const [br, setbr] = React.useState(``);
+    const [brands, setbrands] = React.useState([]);
+
+
     const { Catprocess, CatStatus, CatData, } = props.cat;
     const { favprocess, favStatus, favData, } = props.fav;
     const { Prodprocess, ProdStatus, ProdData } = props.product;
@@ -146,7 +153,6 @@ const Searchpage = (props) => {
         }
     };
 
-
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (CatData.length == 0) {
@@ -238,13 +244,35 @@ const Searchpage = (props) => {
                                                         }}
                                                     />
                                                 </View>
+                                                {ProdData && ProdData.items && ProdData.items.length > 0 ? <React.Fragment>
+                                                    <View style={{ flex: 1, marginRight: 10 }}>
+                                                        <DropDownPicker
+                                                            placeholder="Brand"
+                                                            style={styles.dropdown4BtnStyle}
+                                                            modalProps={{
+                                                                animationType: "fade"
+                                                            }}
+                                                            listMode="MODAL"
+                                                            open={openbr}
+                                                            value={br}
+                                                            items={ProdData.items.filter((p, s, ar) => ar.findIndex(t => t.brand == p.brand) == s).map((e, ind) => ({ label: e.brand, value: `${ind}-${e.brand}` }))}
+                                                            setOpen={setOpenbr}
+                                                            setValue={(setbr)}
+                                                            setItems={setbrands}
+                                                            textStyle={{
+                                                                fontSize: 14,
+                                                                fontFamily: 'QuasimodaMedium'
+                                                            }}
+                                                        />
+                                                    </View>
+                                                </React.Fragment> : null}
                                                 <View style={{ flex: 0.5 }}></View>
                                             </View>
 
                                             {ProdData && ProdData.items && ProdData.items.length > 0 ? <React.Fragment>
                                                 <View style={{ marginTop: 10 }}>
                                                     {ProdStatus == 'ok' &&
-                                                        <RegularText>{ProdData.count} results {search != "" && <Text>for </Text>}
+                                                        <RegularText>{br.split('-').length == 2 ? ProdData.items.filter((e) => e.brand == br.split('-')[1]).length : ProdData.count} results {search != "" && <Text>for </Text>}
                                                             <RegularText styles={{ color: '#2F33A4' }}>
                                                                 {search != "" && <Text>"{search}"</Text>}
                                                             </RegularText>
@@ -254,7 +282,7 @@ const Searchpage = (props) => {
                                                 <View style={{ marginTop: 10 }}>
                                                     {ProdStatus == 'ok' &&
                                                         <FlatList
-                                                            data={ProdData.items}
+                                                            data={br.split('-').length == 2 ? ProdData.items.filter((e) => e.brand == br.split('-')[1]) : ProdData.items}
                                                             renderItem={({ item }) => (<View style={{ marginBottom: 15 }}>
                                                                 <ProductCard
                                                                     cartData={{

@@ -14,12 +14,13 @@ import ProductBoxOne from '../common/elements/productBoxOne';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import CartQty from '../common/elements/cartQty';
+import { getBuyagain } from '../../dataStore/actions/orders';
 
 const Favorites = (props) => {
 
     const [page, setpage] = React.useState(props.route.params.page);
     const [from, setFrom] = React.useState(props.route.params.from);
-    const [mode, setMode] = React.useState("0");
+    const [mode, setMode] = React.useState("1");
     const [search, setSearch] = React.useState("");
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const [masterProds, SetMasterprods] = React.useState([]);
@@ -68,6 +69,7 @@ const Favorites = (props) => {
     }
 
     const { favprocess, favStatus, favData, } = props.fav;
+    const { ordersprocess, ordersStatus, orders = [], buyAgain = [] } = props.order;
 
 
 
@@ -166,11 +168,11 @@ const Favorites = (props) => {
                 SetMasterprods(favData.map((e) => e.prodId));
                 SetFilteredProds(favData.map((e) => e.prodId).filter((r) => new RegExp(search).test(r.name)));
             } else if (page == '1') {
-                // if (props.user.loggedin && favStatus != 'ok') {
-                //     props.getFavs();
-                // }
-                // SetMasterprods(favData.map((e) => e.prodId));
-                // SetFilteredProds(favData.map((e) => e.prodId).filter((r) => new RegExp(search).test(r.name)));
+                if (props.user.loggedin && ordersStatus != 'ok') {
+                    props.fetBuyAgainOrdersFn();
+                }
+                SetMasterprods(buyAgain.map((e) => e));
+                SetFilteredProds(buyAgain.map((e) => e).filter((r) => new RegExp(search).test(r.name)));
             }
         }
     }, [props.fav.favData, page]);
@@ -202,16 +204,35 @@ const Favorites = (props) => {
                                 <View style={{ flex: 5 }}>
                                     <SearchInput closeFn={() => { setSearch(""); registerKey("") }} value={search} placeholder={search} onChangeText={(e) => { setSearch(e); registerKey(e) }} />
                                 </View>
-                                <View style={{ flex: 1 }}>
-                                    <View style={{ marginTop: 30, paddingLeft: 10, position: 'relative' }}>
-                                        <SimpleLineIcons onPress={() => { setMode("0") }} name="grid" size={24} color={mode == "0" ? "#EE6000" : "black"} />
-                                    </View>
-                                </View>
-                                <View style={{ flex: 1 }}>
+                                {/* <View style={{ flex: 1 }}>
                                     <View style={{ marginTop: 25, paddingLeft: 10, position: 'relative' }}>
                                         <Entypo onPress={() => { setMode("1") }} name="list" size={33} color={mode == "1" ? "#EE6000" : "black"} />
                                     </View>
+                                </View> */}
+                                <View style={{ flex: 1 }}>
+                                    <View style={{ marginTop: 30, paddingLeft: 10, position: 'relative' }}>
+                                        <Ionicons onPress={() => { props.navigation.navigate('Cart'); }} name="ios-cart-outline" size={30} color="black" />
+                                        {cartData.length != 0 &&
+                                            <View style={{
+                                                paddingHorizontal: 8,
+                                                right: -5,
+                                                top: -10,
+                                                paddingVertical: 5,
+                                                backgroundColor: '#EE6000',
+                                                borderRadius: 50,
+                                                position: 'absolute'
+                                            }}>
+                                                <Text style={{
+                                                    color: 'white',
+                                                    fontSize: 10
+                                                }}>{cartData.length}
+                                                </Text>
+                                            </View>
+                                        }
+                                        {/* <SimpleLineIcons onPress={() => { setMode("0") }} name="grid" size={24} color={mode == "0" ? "#EE6000" : "black"} /> */}
+                                    </View>
                                 </View>
+
                             </View>
                             <View style={{ marginTop: 20 }}>
                                 <ScrollView>
@@ -386,7 +407,8 @@ const mapStateToProps = (state) => ({
     lang: state.common.lang,
     user: state.user,
     fav: state.fav,
-    cart: state.cart
+    cart: state.cart,
+    order: state.order
 });
 
 
@@ -399,6 +421,7 @@ const mapDispatchToProps = dispatch => ({
     loginAction: (body) => { dispatch(login(body)) },
     getFavs: () => { dispatch(GetFavForUser()) },
     addtoFavFn: (body, done) => { dispatch(addtoFav(body, done)) },
-    rmoveFavFn: (prodId, userId, done) => { dispatch(renoveFav(prodId, userId, done)) }
+    rmoveFavFn: (prodId, userId, done) => { dispatch(renoveFav(prodId, userId, done)) },
+    fetBuyAgainOrdersFn: () => { dispatch(getBuyagain()) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Favorites);

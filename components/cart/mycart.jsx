@@ -157,7 +157,7 @@ const MyCart = (props) => {
                     <View style={{ flex: 1, opacity: openQty ? 0.1 : 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}>
-                                {/* <Ionicons onPress={() => { props.navigation.navigate('myOrders'); }} name="arrow-back" size={24} color="black" /> */}
+                                <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                             </View>
                             <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Cart" /></View>
                             <View style={{ flex: 1 }}></View>

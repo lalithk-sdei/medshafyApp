@@ -22,7 +22,21 @@ import CartQty from '../common/elements/cartQty';
 
 const ProductDetails = (props) => {
 
-    const { offeredPrices, mainImage = null, salePrice = 0, price = 10, name = "Product", from, val, brand, model, country, description, _id } = props.route.params;
+    const getPriceName = (prod) => {
+        if (prod.prodQty === 'def') {
+            return { _id: 'def' };
+        }
+        if (prod.prodId.offeredPrices.length == 0) {
+            cartUpdate({ ...prod, qty: 1 }, 'dec');
+        }
+        const d = prod.prodId.offeredPrices.filter((e) => e._id == prod.prodQty);
+        if (d.length == 0) {
+            cartUpdate({ ...prod, qty: 1 }, 'dec');
+        }
+        return d[0];
+    }
+
+    const { offeredPrices = [], mainImage = null, salePrice = 0, price = 10, name = "Product", from, val, brand, model, country, description, _id } = props.route.params;
 
     const [openQty, setOIpenQty] = React.useState(false);
     const [qtys, setQtys] = React.useState(false);
@@ -36,11 +50,32 @@ const ProductDetails = (props) => {
     const { cartprocess, cartStatus, cartData } = props.cart;
 
 
+    const inCart = (cartData || []).map((e) => e.prodId._id).includes(_id);
+    const cd = (cartData || []).filter((e) => e.prodId._id == _id);
+    const [selQty, setselQty] = React.useState(null);
+    const [isDef, setisDef] = React.useState(true);
+    const [priceObj, setPriceObj] = React.useState(null);
+
+    const getPriceval = (prod) => {
+        if (prod.prodQty === 'def') {
+            return prod.prodId.salePrice * +prod.qty;
+        }
+        if (prod.prodId.offeredPrices.length == 0) {
+            cartUpdate({ ...prod, qty: 1 }, 'dec');
+        }
+        const d = prod.prodId.offeredPrices.filter((e) => e._id == prod.prodQty);
+        if (d.length == 0) {
+            cartUpdate({ ...prod, qty: 1 }, 'dec');
+        }
+        return d[0].OfferdPrice * +prod.qty;
+    }
+
+
     const AddtoCart = (prod) => {
         const b = {
             "prods": {
                 "prodId": prod._id,
-                "prodQty": "def",
+                "prodQty": selQty == null ? 'def' : selQty._id,
                 "qty": 1
             },
             "userId": props.user.loggedinUserData._id
@@ -57,7 +92,7 @@ const ProductDetails = (props) => {
                     setOIpenQty(true);
                 }, 10);
             } else {
-                AddtoCart(props.route.params)
+                AddtoCart(props.route.params);
             }
         } else {
             Alert.alert(
@@ -71,15 +106,20 @@ const ProductDetails = (props) => {
         }
     };
     const cartQtyRecived = (item) => {
+        setselQty(item)
         const b = {
             "prods": {
                 "prodId": _id,
                 "prodQty": item._id,
-                "qty": 1
+                "qty": inCart ? 0 : 1
             },
             "userId": props.user.loggedinUserData._id
         };
-        props.addtoCart(b, { ...b.prods, prodId: props.route.params }, () => { });
+        if (inCart) {
+            cartUpdate(cd.length > 0 ? { ...cd[0], qty: 0, prodQty: item._id } : null, 'inc');
+        } else {
+            // props.addtoCart(b, { ...b.prods, prodId: props.route.params }, () => { });
+        }
     }
     // Update Cart
     const cartUpdate = (cd, ope) => {
@@ -104,14 +144,9 @@ const ProductDetails = (props) => {
 
 
 
-    const inCart = (cartData || []).map((e) => e.prodId._id).includes(_id);
-    const cd = (cartData || []).filter((e) => e.prodId._id == _id);
-
-    const [isDef, setisDef] = React.useState(true);
-    const [priceObj, setPriceObj] = React.useState(null);
-
     React.useEffect(() => {
         if (inCart && cd.length > 0) {
+            setselQty(getPriceName(cd[0]));
             if (cd[0].prodQty == 'def') {
                 setisDef(true);
             } else {
@@ -154,7 +189,6 @@ const ProductDetails = (props) => {
                         <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
                             <View style={{ paddingTop: 50, backgroundColor: 'white', flexDirection: 'column' }}>
                                 <View style={{ marginLeft: 43 }}>
-                                    {/* <Ionicons onPress={() => { props.navigation.navigate(from, { val: val }); }} name="arrow-back" size={24} color="black" /> */}
                                     <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                                 </View>
                                 <View>
@@ -225,14 +259,14 @@ const ProductDetails = (props) => {
                                 <View style={{ marginLeft: 43, marginTop: 30 }} >
                                     <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24 }}>{name}</Text>
                                 </View>
-                                <View style={{ marginLeft: 43, marginTop: 5 }} >
+                                {/* <View style={{ marginLeft: 43, marginTop: 5 }} >
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>
                                         {isDef ? "" : priceObj.qtyname}
                                     </Text>
-                                </View>
+                                </View> */}
                                 <View style={{ marginLeft: 43, marginTop: 5, flexDirection: 'row' }} >
-                                    <TitleText title={`SAR ${isDef ? salePrice : priceObj.OfferdPrice}    `} styles={{ fontSize: 24 }}></TitleText>
-                                    <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontFamily: 'Quasimoda', fontSize: 24 }}>SAR {isDef ? price : priceObj.price}</Text>
+                                    <TitleText title={`SAR ${selQty == null ? salePrice : (selQty._id == "def" ? salePrice : selQty.OfferdPrice)}`} styles={{ fontSize: 24 }}></TitleText>
+                                    <Text style={{ textDecorationLine: 'line-through', textDecorationStyle: 'solid', fontFamily: 'Quasimoda', fontSize: 24 }}> {`SAR ${selQty == null ? price : (selQty._id == "def" ? price : selQty.price)}`}</Text>
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 5, marginBottom: 20 }} >
                                     <View style={{
@@ -240,6 +274,13 @@ const ProductDetails = (props) => {
                                         width: 200,
                                         marginTop: 15,
                                     }}>
+                                        {offeredPrices.length > 0 ?
+                                            <TouchableOpacity onPress={() => { cartPressed() }}>
+                                                <View style={{ flexDirection: 'row', borderRadius: 5, justifyContent: 'space-between', marginBottom: 15, backgroundColor: '#E2E7E6', padding: 8 }}>
+                                                    <Text style={{ width: '85%' }} numberOfLines={1}>{selQty != null ? selQty._id == 'def' ? 'single' : selQty.qtyname : "Choose Quantity"}</Text>
+                                                    <AntDesign name="down" size={20} color="black" />
+                                                </View>
+                                            </TouchableOpacity> : null}
                                         {inCart ? <React.Fragment>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <TouchableOpacity onPress={() => { cartUpdate(cd.length > 0 ? cd[0] : null, 'dec') }}>
@@ -286,7 +327,7 @@ const ProductDetails = (props) => {
                                             </View>
                                         </React.Fragment> :
                                             <React.Fragment>
-                                                <TouchableOpacity onPress={() => { cartPressed() }}>
+                                                <TouchableOpacity onPress={() => { AddtoCart(props.route.params); }}>
                                                     <View style={{ flexDirection: 'row' }}>
                                                         <View style={{
                                                             flex: 4,

@@ -95,7 +95,6 @@ const Checkout = (props) => {
 
     const { address = [], addressprocess } = props.address;
 
-    console.log(cartData);
 
     const submit = () => {
         try {
@@ -120,7 +119,6 @@ const Checkout = (props) => {
                 if (st) {
                     // Clear Cart
                     props.clearCartFn((d, r) => {
-                        console.log(d, "pre", r);
                         props.navigation.navigate('myOrders');
                     });
                 } else {
@@ -173,7 +171,7 @@ const Checkout = (props) => {
                     <View style={{ flex: 1, opacity: openQty ? 0.1 : 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}>
-                                <Ionicons onPress={() => { props.navigation.navigate('MyCart'); }} name="arrow-back" size={24} color="black" />
+                                <Ionicons onPress={() => {  props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                             </View>
                             <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Checkout" /></View>
                             <View style={{ flex: 1 }}></View>
@@ -255,6 +253,7 @@ const Checkout = (props) => {
                                                     </View>
                                                 </View>
                                                 <View style={{ margin: 20 }}><ApplePayBtn onPress={() => { setTab(2) }} disabled={seladdr == null} title="Next"></ApplePayBtn></View>
+                                                <View style={{ marginHorizontal: 20, marginBottom: 10 }}><SecondaryBtn style={{ borderRadius: 10, padding: 10 }} onPress={() => { setTab(2) }} disabled={seladdr == null} title="COD"></SecondaryBtn></View>
                                             </View>
                                         </View> : null}
                                 </View>

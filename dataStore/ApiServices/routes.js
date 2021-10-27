@@ -41,6 +41,7 @@ export default {
 
     // Orders
     getOrders: 'v1/getOrders',
+    getBuyagain: 'v1/buyAgain',
     createOrder: "v1/createOrder"
 
 

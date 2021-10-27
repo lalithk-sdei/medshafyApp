@@ -17,7 +17,6 @@ const MyProfile = (props) => {
             props.navigation.navigate('Choselanguage');
         }
     }, []);
-    console.log(props.user.loggedinUserData);
     const { companyName = "", email = "", phoneNumber = "", regnumber = "", address = "", StoreImages = [] } = props.user ? props.user.loggedinUserData : {};
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>

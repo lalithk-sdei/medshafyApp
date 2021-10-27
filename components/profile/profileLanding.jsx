@@ -23,14 +23,12 @@ const ProfilelandngPage = (props) => {
             const b = await AsyncStorage.removeItem('loggedin');
             const c = await AsyncStorage.removeItem('token');
             // if (a && b && c) {
-                console.log("friee", 1);
                 setLogfr(true);
                 props.logoutFn();
                 props.resetAll();
                 props.navigation.navigate('Choselanguage');
             // }
         } catch (e) {
-            console.log(e);
         }
     }
 
@@ -38,7 +36,6 @@ const ProfilelandngPage = (props) => {
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (props.user.loggedin === false && logoutfr === true) {
-            console.log("friee");
             props.navigation.navigate('Choselanguage');
         }
     }, [props.user.loggedin, logoutfr]);

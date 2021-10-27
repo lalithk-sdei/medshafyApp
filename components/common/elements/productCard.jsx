@@ -129,14 +129,14 @@ const ProductCard = ({
                         </View>
                     </React.Fragment> :
                         <React.Fragment>
-                            <TouchableOpacity onPress={() => { cartPressed() }}>
+                            <TouchableOpacity onPress={() => {  onPress(); }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{
                                         flex: 4,
                                         backgroundColor: '#98DECA',
                                         paddingVertical: 7,
-                                        borderTopLeftRadius: 50,
-                                        borderBottomLeftRadius: 50,
+                                        borderRadius: 50,
+                                        // borderBottomLeftRadius: 50,
                                         justifyContent: 'center',
                                         alignItems: 'center'
                                     }}>
@@ -145,9 +145,9 @@ const ProductCard = ({
                                             fontFamily: 'Quasimodabold',
                                             fontWeight: 'bold',
                                             color: 'black'
-                                        }}>Add to card</Text>
+                                        }}>View Details</Text>
                                     </View>
-                                    <View style={{
+                                    {/* <View style={{
                                         flex: 1.5,
                                         backgroundColor: '#6CBAA8',
                                         borderTopRightRadius: 50,
@@ -159,7 +159,7 @@ const ProductCard = ({
                                             color: 'white',
                                             fontSize: 20,
                                         }}>+ </Text>
-                                    </View>
+                                    </View> */}
                                 </View>
                             </TouchableOpacity>
                         </React.Fragment>

@@ -23,6 +23,7 @@ import PrimaryButton from '../common/elements/primaryButton';
 import { constants } from '../../utlits/constants';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadStoredoc } from '../../dataStore/actions/user';
+import { getBuyagain } from '../../dataStore/actions/orders';
 
 const Home = (props) => {
 
@@ -43,6 +44,7 @@ const Home = (props) => {
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const { Catprocess, CatStatus, CatData, } = props.cat;
     const { favprocess, favStatus, favData, } = props.fav;
+    const { ordersprocess, ordersStatus, orders = [], buyAgain = [] } = props.order;
     const [time, setTime] = React.useState(null);
     const registerKey = (val) => {
         clearTimeout(time);
@@ -207,12 +209,14 @@ const Home = (props) => {
         if (isFocused) {
             if (props.user.loggedin) {
                 props.getFavs();
+                props.fetBuyAgainOrdersFn();
             }
         }
 
 
         setSearch("");
     }, [props.fav.favStatus, isFocused]);
+
 
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
@@ -221,7 +225,7 @@ const Home = (props) => {
                     <ScrollView style={{ flex: 1 }}>
                         <Spinner
                             color={"#9F9FA2"}
-                            visible={Catprocess || favprocess || imgPrs}
+                            visible={Catprocess || favprocess || imgPrs || ordersprocess}
                             textContent={'Please wait...'}
                             textStyle={{ color: '#FFF' }}
                         />
@@ -313,20 +317,30 @@ const Home = (props) => {
                                         </View>
                                     }
                                     {/* Buy Again */}
-                                    <View style={{}}>
-                                        <View style={{
-                                            flexDirection: 'row',
-                                            justifyContent: 'space-between'
-                                        }}>
-                                            <TitleText title={"BUY AGAIN"} />
-                                            <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '1' }); }} title={"VIEW ALL"} />
+                                    {buyAgain.length > 0 &&
+                                        <View style={{}}>
+                                            <View style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between'
+                                            }}>
+                                                <TitleText title={"BUY AGAIN"} />
+                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '1' }); }} title={"VIEW ALL"} />
+                                            </View>
+                                            <View style={{ flexDirection: 'row', marginTop: 30 }}>
+                                                {buyAgain.slice(0, 3).map((item, ind) =>
+                                                    <View key={`fav-${ind}`} style={{ width: '35%', paddingRight: 17 }}>
+                                                        <ProductBox
+                                                            onPress={() => { props.navigation.navigate('ProductDetails', { ...item, from: 'Home', val: search }); }}
+                                                            img={item.mainImage != null ? item.mainImage.fileUrl : img}
+                                                            mrp={item.price}
+                                                            salePrice={item.salePrice}
+                                                            name={item.name}
+                                                        />
+                                                    </View>
+                                                )}
+                                            </View>
                                         </View>
-                                        <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                                            <View style={{ flex: 1, marginRight: 17 }}><ProductBox img={img} mrp={400} salePrice={400} name={"Fabric Masks"} /></View>
-                                            <View style={{ flex: 1, marginRight: 17 }}><ProductBox img={img} mrp={600} salePrice={600} name={"Fabric Masks"} /></View>
-                                            <View style={{ flex: 1 }}><ProductBox img={img} mrp={1100} salePrice={900} name={"Fabric Masks"} /></View>
-                                        </View>
-                                    </View>
+                                    }
                                     {/* Categories */}
                                     <View style={{ marginTop: 52 }}>
                                         <View style={{
@@ -511,7 +525,8 @@ const mapStateToProps = (state) => ({
     cat: state.category,
     lang: state.common.lang,
     fav: state.fav,
-    user: state.user
+    user: state.user,
+    order: state.order
 });
 
 
@@ -520,5 +535,6 @@ const mapDispatchToProps = dispatch => ({
     getFavs: () => { dispatch(GetFavForUser()) },
     sendSplOrd: (body, done) => { dispatch(sendSpecialOrder(body, done)) },
     uploadStorImages: (body, done) => { dispatch(uploadStoredoc(body, done)) },
+    fetBuyAgainOrdersFn: () => { dispatch(getBuyagain()) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
