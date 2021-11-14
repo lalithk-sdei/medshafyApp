@@ -1,24 +1,15 @@
 import * as React from 'react';
-import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, Text, TouchableHighlight, FlatList, Button, TouchableOpacity } from 'react-native';
+import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, Text, TouchableOpacity } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { LogBox } from 'react-native';
 import { RESET_DATA, SET_LOGOUT } from '../../dataStore/types/types';
 import TitleText from '../common/elements/TitleText';
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import SecondaryBtn from '../common/elements/secondaryButton';
 import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
 import LightText from '../common/elements/lightText';
 import RegularText from '../common/elements/regulartext';
-import PlaneText from '../common/elements/planeText';
 import PrimaryButton from '../common/elements/primaryButton';
-import { AntDesign } from '@expo/vector-icons';
-import { SimpleLineIcons } from '@expo/vector-icons';
 import { AddToCart, clearCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import { getAddress } from '../../dataStore/actions/address';
 import RadioButton from '../common/elements/radiobutton';
@@ -124,10 +115,10 @@ const Checkout = (props) => {
                 } else {
                     setTimeout(() => {
                         Alert.alert(
-                            'Oops',
-                            "Something went wrong, Please try after some time.",
+                            constants[lang].errors.oops,
+                            constants[lang].errors.swwptast,
                             [
-                                { text: 'ok', onPress: () => { } },
+                                { text: constants[lang].errors.ok, onPress: () => { } },
                             ],
                         );
                     }, 100);
@@ -137,10 +128,10 @@ const Checkout = (props) => {
         } catch (e) {
             setTimeout(() => {
                 Alert.alert(
-                    'Oops',
-                    "Something went wrong, Please try after some time.",
+                    constants[lang].errors.oops,
+                    constants[lang].errors.swwptast,
                     [
-                        { text: 'ok', onPress: () => { } },
+                        { text: constants[lang].errors.ok, onPress: () => { } },
                     ],
                 );
             }, 100);
@@ -165,7 +156,7 @@ const Checkout = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={addressprocess || cartprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1, opacity: openQty ? 0.1 : 1 }}>
@@ -173,7 +164,7 @@ const Checkout = (props) => {
                             <View style={{ flex: 1 }}>
                                 <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                             </View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Checkout" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.checkout} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         {cartData.length == 0 ? <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
@@ -189,7 +180,7 @@ const Checkout = (props) => {
                                     <TouchableOpacity onPress={() => { if (seladdr) { setTab(0) } }}>
                                         <View style={{ flexDirection: 'row', padding: 15 }}>
                                             <View style={[styles.step, { backgroundColor: tab === 0 ? '#EE6000' : 'white' }]}><Text style={{ fontFamily: 'Quasimodabold', color: tab === 0 ? 'white' : '#EE6000' }}>1</Text></View>
-                                            <View style={{ marginTop: 4 }}><TitleText title="Customer Address" /></View>
+                                            <View style={{ marginTop: 4 }}><TitleText title={constants[lang].static.cusaddr} /></View>
                                         </View>
                                     </TouchableOpacity>
                                     {tab === 0 ?
@@ -225,7 +216,7 @@ const Checkout = (props) => {
                                                         </TouchableOpacity>
                                                     </View>) : <View style={{ flexDirection: 'column', margin: 20, justifyContent: 'center', alignItems: 'center' }}>
                                                         <View style={{}}>
-                                                            <RegularText styles={{}}>Your address book is empty</RegularText>
+                                                            <RegularText styles={{}}>{constants[lang].static.ydbie}</RegularText>
                                                         </View>
                                                         <View style={{ paddingTop: 20 }}>
                                                             <LinkText onPress={() => { props.navigation.navigate('MyAddress'); }}>{constants[lang].static.chtmyd}</LinkText>
@@ -240,7 +231,7 @@ const Checkout = (props) => {
                                 <View style={styles.clickCard}>
                                     <View style={{ flexDirection: 'row', padding: 15 }}>
                                         <View style={[styles.step, { backgroundColor: tab === 1 ? '#EE6000' : 'white' }]}><Text style={{ fontFamily: 'Quasimodabold', color: tab === 1 ? 'white' : '#EE6000' }}>2</Text></View>
-                                        <View style={{ marginTop: 4 }}><TitleText title="Payment Method" /></View>
+                                        <View style={{ marginTop: 4 }}><TitleText title={constants[lang].static.paymet} /></View>
                                     </View>
                                     {tab === 1 ?
                                         <View style={{ paddingTop: 10, borderTopColor: '#0000000B', borderTopWidth: 1 }}>
@@ -249,7 +240,7 @@ const Checkout = (props) => {
                                                 <View style={{ backgroundColor: '#E2E6E9' }}>
                                                     <View style={{ flexDirection: 'row', padding: 23 }}>
                                                         <View style={{ flex: 1 }}><LightText styles={{ fontSize: 18 }}>{constants[lang].static.payamt}</LightText></View>
-                                                        <View style={{ flex: 1 }}><TitleText title="SAR 306.00"></TitleText></View>
+                                                        <View style={{ flex: 1 }}><TitleText title={`${constants[lang].static.curr} 32`}></TitleText></View>
                                                     </View>
                                                 </View>
                                                 <View style={{ margin: 20 }}><ApplePayBtn onPress={() => { setTab(2) }} disabled={seladdr == null} title={constants[lang].static.next}></ApplePayBtn></View>
@@ -262,7 +253,7 @@ const Checkout = (props) => {
                                 <View style={styles.clickCard}>
                                     <View style={{ flexDirection: 'row', padding: 15 }}>
                                         <View style={[styles.step, { backgroundColor: tab === 2 ? '#EE6000' : 'white' }]}><Text style={{ fontFamily: 'Quasimodabold', color: tab === 2 ? 'white' : '#EE6000' }}>3</Text></View>
-                                        <View style={{ marginTop: 4 }}><TitleText title="Summary" /></View>
+                                        <View style={{ marginTop: 4 }}><TitleText title={constants[lang].static.summary} /></View>
                                     </View>
                                     {tab === 2 ?
                                         <View style={{ paddingTop: 10, borderTopColor: '#0000000B', borderTopWidth: 1 }}>
@@ -315,7 +306,7 @@ const Checkout = (props) => {
                                 </View>
 
                                 <View style={{ marginTop: 30 }}>
-                                    <PrimaryButton onPress={() => { submit(); }} disabled={tab != 2} title="Done" />
+                                    <PrimaryButton onPress={() => { submit(); }} disabled={tab != 2} title={constants[lang].static.done} />
                                 </View>
 
 

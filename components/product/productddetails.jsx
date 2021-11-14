@@ -18,6 +18,7 @@ import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav'
 import TitleText from '../common/elements/TitleText';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import CartQty from '../common/elements/cartQty';
+import { constants } from '../../utlits/constants';
 
 
 const ProductDetails = (props) => {
@@ -42,7 +43,7 @@ const ProductDetails = (props) => {
     const [qtys, setQtys] = React.useState(false);
 
     const [Selprod, setSelProd] = React.useState(null);
-
+    const { lang } = props;
 
 
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
@@ -96,11 +97,11 @@ const ProductDetails = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add products in your cart.',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltapiyc,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }
@@ -183,7 +184,7 @@ const ProductDetails = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={cartprocess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
@@ -370,13 +371,13 @@ const ProductDetails = (props) => {
                                     <TitleText title={`Product Name : ${name}`}></TitleText>
                                 </View>
                                 <View style={{ marginTop: 15 }}>
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>Brand :  {brand} </Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} :  {brand} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>Model Number :  {model} </Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>Country :  {country} </Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
                                 </View>
                                 <View style={{ marginTop: 20 }}>
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}> {description} </Text>
@@ -403,7 +404,8 @@ const mapStateToProps = (state) => ({
     cat: state.category,
     user: state.user,
     fav: state.fav,
-    cart: state.cart
+    cart: state.cart,
+    lang: state.common.lang
 });
 
 

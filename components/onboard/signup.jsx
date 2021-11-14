@@ -189,7 +189,7 @@ const SignUp = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={signUpProcess || loginprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <TouchableHighlight activeOpacity={false}>

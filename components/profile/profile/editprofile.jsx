@@ -32,9 +32,9 @@ const EditProfile = (props) => {
         regTch: true, regErr: true, regErrMsg: "", regVal: regnumber,
         addrTch: true, addrErr: address != "" ? false : true, addrErrMsg: address ? "" : constants[props.lang].errors.addrReq, addrVal: address,
     });
-
+    const { lang } = props;
     const cmpValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, cmpErr: true, cmpErrMsg: constants[lang].errors.companyNamereq, cmpVal: e, ...tch && { cmpTch: true } });
         } else {
@@ -42,7 +42,7 @@ const EditProfile = (props) => {
         }
     }
     const emialValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, emailErr: true, emailErrMsg: constants[lang].errors.emailRequired, emailVal: e, ...tch && { emailTch: true } });
         } else if (!ValidateEmail(e)) {
@@ -52,7 +52,7 @@ const EditProfile = (props) => {
         }
     }
     const mobilealdator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
         } else if (`${e}`.length != 10) {
@@ -62,7 +62,7 @@ const EditProfile = (props) => {
         }
     }
     const regValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         // if (["", null, undefined].includes(e)) {
         //     setFormState({ ...formstate, regErr: true, regErrMsg: constants[lang].errors.regNum, regVal: e, ...tch && { regTch: true } });
         // } else {
@@ -70,7 +70,7 @@ const EditProfile = (props) => {
         // }
     }
     const addrValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, addrErr: true, addrErrMsg: constants[lang].errors.addrReq, addrVal: e, ...tch && { addrTch: true } });
         } else {
@@ -92,10 +92,10 @@ const EditProfile = (props) => {
                 props.navigation.navigate('MyProfile');
             } else {
                 Alert.alert(
-                    'Failed',
-                    "We coudn't update your profile please try after sometime.",
+                    constants[lang].errors.failed,
+                    constants[lang].errors.wcuypptas,
                     [
-                        { text: 'ok', onPress: () => { } },
+                        { text: constants[lang].errors.ok, onPress: () => { } },
                     ],
                 );
             }
@@ -111,13 +111,13 @@ const EditProfile = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={loginprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('MyProfile'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Edit Profile" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.editprofil} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
@@ -134,7 +134,7 @@ const EditProfile = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Business Name'>
+                                                label={constants[lang].static.buissName}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -150,7 +150,7 @@ const EditProfile = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Mobile Number'>
+                                                label={constants[lang].static.mobileno}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -166,7 +166,7 @@ const EditProfile = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Email'>
+                                                label={constants[lang].static.email}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -182,7 +182,7 @@ const EditProfile = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Address'>
+                                                label={constants[lang].static.Address}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -202,7 +202,7 @@ const EditProfile = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Entity Number or Register Number'>
+                                                label={constants[lang].static.EnoRn}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -225,10 +225,10 @@ const EditProfile = (props) => {
                                             }}
                                         />
                                         )}
-                                    </View> : <LightText>No Images Found</LightText>}
+                                    </View> : <LightText>{constants[lang].static.NIF}</LightText>}
                                 </View>
                                 <View style={{ marginVertical: 20 }}>
-                                    <PrimaryButton onPress={save} disabled={formstate.cmpErr || formstate.phErr || formstate.emailErr || formstate.addrErr} title="Save Changes" />
+                                    <PrimaryButton onPress={save} disabled={formstate.cmpErr || formstate.phErr || formstate.emailErr || formstate.addrErr} title={constants[lang].static.saveChanges} />
                                 </View>
                             </View>
                         </ScrollView>

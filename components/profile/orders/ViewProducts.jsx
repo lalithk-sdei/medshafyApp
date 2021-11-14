@@ -19,6 +19,7 @@ import PlaneText from '../../common/elements/planeText';
 import PrimaryButton from '../../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { constants } from '../../../utlits/constants';
 
 const Viewproducts = (props) => {
     const logout = async () => {
@@ -33,7 +34,7 @@ const Viewproducts = (props) => {
     }
 
     const order = props.route.params;
-
+    const { lang } = props;
     React.useEffect(() => {
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
@@ -47,7 +48,7 @@ const Viewproducts = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={false}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
@@ -71,32 +72,32 @@ const Viewproducts = (props) => {
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
                                             <RegularText nolines={1}>{pro.prodName}</RegularText>
-                                            <TitleText title={`SAR ${pro.prodPrice}`} />
+                                            <TitleText title={`${constants[lang].static.curr} ${pro.prodPrice}`} />
                                         </View>
                                     </View>
                                 </View>) : null}
                                 <View style={[styles.card, { padding: 0 }]}>
                                     <View style={{ paddingHorizontal: 15, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <RegularText title={""}>Sub total</RegularText>
-                                        <RegularText >SAR {order.subTotal}</RegularText>
+                                        <RegularText title={""}>{constants[lang].static.subtotal}</RegularText>
+                                        <RegularText >{constants[lang].static.curr} {order.subTotal}</RegularText>
                                     </View>
                                     <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <RegularText title={""}>Delivery charges</RegularText>
-                                        <RegularText >SAR 0</RegularText>
+                                        <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
+                                        <RegularText >{constants[lang].static.curr} 0</RegularText>
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <RegularText title={""}>Total</RegularText>
-                                        <TitleText styles={{ fontSize: 17 }} title={`SAR ${order.subTotal}`} />
+                                        <RegularText title={""}>{constants[lang].static.total}</RegularText>
+                                        <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${order.subTotal}`} />
                                     </View>
                                 </View>
                                 <View style={[styles.card, { padding: 0 }]}>
                                     <View style={{ paddingHorizontal: 15, paddingTop: 15, flexDirection: 'row', paddingBottom: 15 }}>
                                         <MaterialIcons name="credit-card" size={24} color="black" />
-                                        <RegularText >{"    "}Paid by Apple Pay</RegularText>
+                                        <RegularText >{"    "}{constants[lang].static.pbap}</RegularText>
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row' }}>
                                         <SimpleLineIcons name="location-pin" size={24} color="black" />
-                                        <LightText >{"    "}Delivery Address</LightText>
+                                        <LightText >{"    "}{constants[lang].static.delyAddress}</LightText>
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, flexDirection: 'row' }}>
                                         <RegularText >{order.address.address}</RegularText>
@@ -161,7 +162,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    lang: state.common.lang,
 });
 
 

@@ -49,7 +49,7 @@ const MyInvoices = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={false}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>

@@ -59,9 +59,9 @@ const Home = (props) => {
         const result = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (result.status !== 'granted') {
             Alert.alert(
-                'Insufficient permissions!',
-                'You need to grant camera permissions to use this app.',
-                [{ text: 'Okay' }]
+                constants[lang].errors.insper,
+                constants[lang].errors.yntgcptuta,
+                [{ text: constants[lang].errors.ok }]
             );
         } else {
             takeAndUploadPhotoAsync();
@@ -172,10 +172,10 @@ const Home = (props) => {
                     setSpecialProd(false);
                     setTimeout(() => {
                         Alert.alert(
-                            'Special order sent',
-                            'Your special order sent to medshafy.',
+                            constants[lang].static.sos,
+                            constants[lang].static.ysostm,
                             [
-                                { text: 'ok' },
+                                { text: constants[lang].errors.ok, },
                             ],
                         );
                     }, 1000);
@@ -190,11 +190,11 @@ const Home = (props) => {
             setSpecialProd(true);
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add product to favourite',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltaptf,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }

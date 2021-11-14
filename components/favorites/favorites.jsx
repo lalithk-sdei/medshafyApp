@@ -59,11 +59,11 @@ const Favorites = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add product to favourite',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltaptf,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }

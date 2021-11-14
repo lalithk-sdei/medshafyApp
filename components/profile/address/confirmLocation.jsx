@@ -33,14 +33,14 @@ const ConfrimLocation = (props) => {
     const [errorMsg, setErrorMsg] = React.useState(null);
     const [address, setAddress] = React.useState(null);
     const [isloding, setIsloading] = React.useState(false);
-
+    const { lang } = props;
 
     const [formstate, setFormState] = React.useState({
         feild1Tch: false, feild1Err: true, feild1ErrMsg: "", feild1Val: "",
         feild2Tch: false, feild2Err: true, feild2ErrMsg: "", feild2Val: "",
     });
     const feild1 = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, feild1Err: true, feild1ErrMsg: constants[lang].errors.companyNamereq, feild1Val: e, ...tch && { feild1Tch: true } });
         } else {
@@ -60,14 +60,14 @@ const ConfrimLocation = (props) => {
             setIsloading(true);
             if (Platform.OS === 'android' && !Constants.isDevice) {
                 setErrorMsg(
-                    'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+                    '!'
                 );
                 setIsloading(false);
                 return;
             }
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
+                setErrorMsg(constants[lang].errors.ptalwd);
                 setIsloading(false);
                 return;
             }
@@ -88,7 +88,7 @@ const ConfrimLocation = (props) => {
             setIsloading(true);
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
+                setErrorMsg(constants[lang].errors.ptalwd);
                 setIsloading(false);
                 return;
             }
@@ -110,14 +110,14 @@ const ConfrimLocation = (props) => {
             setIsloading(true);
             if (Platform.OS === 'android' && !Constants.isDevice) {
                 setErrorMsg(
-                    'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
+                    '!'
                 );
                 setIsloading(false);
                 return;
             }
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
+                setErrorMsg(constants[lang].errors.ptalwd);
                 setIsloading(false);
                 return;
             }
@@ -149,13 +149,13 @@ const ConfrimLocation = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={isloding}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('MyAddress'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Add New Address" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.anaddr} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         {/* <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}> */}
@@ -210,7 +210,7 @@ const ConfrimLocation = (props) => {
                                                         blurOnSubmit
                                                         autoCapitalize='none'
                                                         autoCorrect={false}
-                                                        label='Select Delivery Location'>
+                                                        label={constants[lang].static.selDlo}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
@@ -226,7 +226,7 @@ const ConfrimLocation = (props) => {
                                                         blurOnSubmit
                                                         autoCapitalize='none'
                                                         autoCorrect={false}
-                                                        label='Address line (Optional)'>
+                                                        label={constants[lang].static.alOpt}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
@@ -236,7 +236,7 @@ const ConfrimLocation = (props) => {
                                                     {/* AddressDetails */}
                                                     <PrimaryButton onPress={() => {
                                                         props.navigation.navigate('AddressDetails', { ...location, filed1: formstate.feild1Val, feild2: formstate.feild2Val });
-                                                    }} disabled={formstate.feild1Err} title={"Confirm Location"}></PrimaryButton>
+                                                    }} disabled={formstate.feild1Err} title={constants[lang].static.cnfLoc}></PrimaryButton>
                                                 </View>
                                             </View>
                                         </React.Fragment> : null

@@ -14,6 +14,7 @@ import SecondaryBtn from '../common/elements/secondaryButton';
 import LinkText from '../common/elements/linktext';
 import RegularText from '../common/elements/regulartext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { constants } from '../../utlits/constants';
 const ProfilelandngPage = (props) => {
     const [logoutfr, setLogfr] = React.useState(false)
     const logout = async () => {
@@ -23,16 +24,15 @@ const ProfilelandngPage = (props) => {
             const b = await AsyncStorage.removeItem('loggedin');
             const c = await AsyncStorage.removeItem('token');
             // if (a && b && c) {
-                setLogfr(true);
-                props.logoutFn();
-                props.resetAll();
-                props.navigation.navigate('Choselanguage');
+            setLogfr(true);
+            props.logoutFn();
+            props.resetAll();
+            props.navigation.navigate('Choselanguage');
             // }
         } catch (e) {
         }
     }
-
-
+    const { lang } = props;
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (props.user.loggedin === false && logoutfr === true) {
@@ -46,17 +46,17 @@ const ProfilelandngPage = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={false}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
-                            <TitleText title="My Account" />
+                            <TitleText title={constants[lang].static.myAccount} />
                         </View>
                         {!props.user.loggedin ? <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{}}>
                                 <React.Fragment>
-                                    {<RegularText>Please <LinkText onPress={() => { props.navigation.navigate('login'); }}>login</LinkText> to access your profile</RegularText>}
+                                    {<RegularText>{constants[lang].static.pls} <LinkText onPress={() => { props.navigation.navigate('login'); }}>{constants[lang].static.lgn}</LinkText> {constants[lang].static.tayp}</RegularText>}
                                 </React.Fragment>
                             </View>
                         </View> :
@@ -193,7 +193,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    lang: state.common.lang,
 });
 
 

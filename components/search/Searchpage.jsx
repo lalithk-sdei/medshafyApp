@@ -18,6 +18,7 @@ import { GetCategories } from '../../dataStore/actions/category';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import CartQty from '../common/elements/cartQty';
+import { constants } from '../../utlits/constants';
 
 
 const Searchpage = (props) => {
@@ -47,7 +48,7 @@ const Searchpage = (props) => {
     const { favprocess, favStatus, favData, } = props.fav;
     const { Prodprocess, ProdStatus, ProdData } = props.product;
     const { cartprocess, cartStatus, cartData } = props.cart;
-
+    const { lang } = props;
     const [time, setTime] = React.useState(null);
     const registerKey = (val) => {
         clearTimeout(time);
@@ -77,11 +78,11 @@ const Searchpage = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add product to favourite',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltaptf,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }
@@ -112,11 +113,12 @@ const Searchpage = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltapiyc,
                 'Please login to add products in your cart.',
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }
@@ -183,7 +185,7 @@ const Searchpage = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={Prodprocess || Catprocess || favprocess || cartprocess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         {page == "search" &&
@@ -226,7 +228,7 @@ const Searchpage = (props) => {
                                             <View style={{ flexDirection: 'row' }}>
                                                 <View style={{ flex: 1, marginRight: 10 }}>
                                                     <DropDownPicker
-                                                        placeholder="Category"
+                                                        placeholder={constants[lang].static.category}
                                                         style={styles.dropdown4BtnStyle}
                                                         modalProps={{
                                                             animationType: "fade"
@@ -247,7 +249,7 @@ const Searchpage = (props) => {
                                                 {ProdData && ProdData.items && ProdData.items.length > 0 ? <React.Fragment>
                                                     <View style={{ flex: 1, marginRight: 10 }}>
                                                         <DropDownPicker
-                                                            placeholder="Brand"
+                                                            placeholder={constants[lang].static.Brand}
                                                             style={styles.dropdown4BtnStyle}
                                                             modalProps={{
                                                                 animationType: "fade"
@@ -272,7 +274,7 @@ const Searchpage = (props) => {
                                             {ProdData && ProdData.items && ProdData.items.length > 0 ? <React.Fragment>
                                                 <View style={{ marginTop: 10 }}>
                                                     {ProdStatus == 'ok' &&
-                                                        <RegularText>{br.split('-').length == 2 ? ProdData.items.filter((e) => e.brand == br.split('-')[1]).length : ProdData.count} results {search != "" && <Text>for </Text>}
+                                                        <RegularText>{br.split('-').length == 2 ? ProdData.items.filter((e) => e.brand == br.split('-')[1]).length : ProdData.count} {constants[lang].static.results} {search != "" && <Text>{constants[lang].static.for}</Text>}
                                                             <RegularText styles={{ color: '#2F33A4' }}>
                                                                 {search != "" && <Text>"{search}"</Text>}
                                                             </RegularText>
@@ -305,12 +307,10 @@ const Searchpage = (props) => {
                                             </React.Fragment> : <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                                                 <View style={{}}>
                                                     <React.Fragment>
-                                                        {(!Prodprocess) && <RegularText>No products found</RegularText>}
+                                                        {(!Prodprocess) && <RegularText>{constants[lang].static.npf}</RegularText>}
                                                     </React.Fragment>
                                                 </View>
                                             </View>}
-
-
                                         </SafeAreaView>
                                     </View>
                                 </View>
@@ -376,7 +376,8 @@ const mapStateToProps = (state) => ({
     cat: state.category,
     user: state.user,
     fav: state.fav,
-    cart: state.cart
+    cart: state.cart,
+    lang: state.common.lang,
 });
 
 

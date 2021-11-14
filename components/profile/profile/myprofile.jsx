@@ -9,8 +9,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import LightText from '../../common/elements/lightText';
 import RegularText from '../../common/elements/regulartext';
+import { constants } from '../../../utlits/constants';
 
 const MyProfile = (props) => {
+    const { lang } = props;
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         if (props.user.loggedin === false) {
@@ -25,13 +27,13 @@ const MyProfile = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={false}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('Profile'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="My Profile" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.MyPrf} /></View>
                             <View style={{ flex: 1 }}>
                                 <Feather onPress={() => { props.navigation.navigate('EditProfile', { companyName, email, phoneNumber, regnumber, address, StoreImages }); }} name="edit-2" size={20} color="black" />
                             </View>
@@ -40,29 +42,29 @@ const MyProfile = (props) => {
                             <View style={styles.body}>
                                 <View style={styles.card}>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Business Name</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.buissName}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{companyName}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Mobile Number</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.mobileno}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{phoneNumber}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Email</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.email}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{email}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Address</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.Address}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{address}</RegularText></View>
                                     </View>
                                 </View>
                                 <View style={styles.card}>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Entity Number or Register Number</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.EnoRn}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{regnumber}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>Photos</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.EnoRn}</LightText></View>
                                     </View>
                                     {StoreImages.length > 0 ? <View style={[styles.cardClm, { flexWrap: 'wrap' }]}>
                                         {StoreImages.map((e, ind) => <Image
@@ -77,7 +79,7 @@ const MyProfile = (props) => {
                                             }}
                                         />
                                         )}
-                                    </View> : <LightText>No Images Found</LightText>}
+                                    </View> : <LightText>{constants[lang].static.NIF}</LightText>}
                                 </View>
                             </View>
                         </ScrollView>
@@ -134,7 +136,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    lang: state.common.lang,
 });
 
 

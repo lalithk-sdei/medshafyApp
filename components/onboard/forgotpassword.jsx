@@ -69,7 +69,7 @@ const ForgotPassword = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={otpSendProcess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         <View style={styles.main}>

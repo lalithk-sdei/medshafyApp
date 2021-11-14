@@ -33,8 +33,9 @@ const EditAddress = (props) => {
         addrTch: true, addrErr: false, addrErrMsg: "", addrVal: address,
         phTch: true, phErr: false, phErrMsg: "", phVal: mobileno,
     });
+    const { lang } = props;
     const Name = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, NameErr: true, NameErrMsg: constants[lang].errors.namereq, NameVal: e, ...tch && { NameTch: true } });
         } else {
@@ -43,7 +44,7 @@ const EditAddress = (props) => {
     }
 
     const addr = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, addrErr: true, addrErrMsg: constants[lang].errors.addrReq, addrVal: e, ...tch && { addrTch: true } });
         } else {
@@ -51,7 +52,7 @@ const EditAddress = (props) => {
         }
     }
     const mobilealdator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
         } else if (`${e}`.length != 10) {
@@ -78,10 +79,10 @@ const EditAddress = (props) => {
             } else {
                 setTimeout(() => {
                     Alert.alert(
-                        'Failed',
-                        "We coudn't add address please try after sometime.",
+                        constants[lang].errors.failed,
+                        constants[lang].errors.wcaaptas,
                         [
-                            { text: 'ok', onPress: () => { } },
+                            { text: constants[lang].errors.ok, onPress: () => { } },
                         ],
                     );
                 }, 100);
@@ -102,13 +103,13 @@ const EditAddress = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={isloding || addressprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('MyAddress'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Add New Address" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.anaddr} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         <View>
@@ -127,7 +128,7 @@ const EditAddress = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Name'>
+                                                label={constants[lang].static.name}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -169,7 +170,7 @@ const EditAddress = (props) => {
                                                         keyboardType={'phone-pad'}
                                                         autoCorrect={false}
                                                         maxLength={10}
-                                                        label='Mobile Number'>
+                                                        label={constants[lang].static.mobileno}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
@@ -187,7 +188,7 @@ const EditAddress = (props) => {
                                                 blurOnSubmit
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
-                                                label='Address'>
+                                                label={constants[lang].static.Address}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -199,7 +200,7 @@ const EditAddress = (props) => {
                                     <View style={{
                                         marginTop: 30
                                     }}>
-                                        <PrimaryButton disabled={formstate.NameErr || formstate.addrErr || formstate.phErr} onPress={() => { saveAddress() }} title="Save Changes" />
+                                        <PrimaryButton disabled={formstate.NameErr || formstate.addrErr || formstate.phErr} onPress={() => { saveAddress() }} title={constants[lang].static.saveChanges} />
                                     </View>
                                 </View>
                             </View>

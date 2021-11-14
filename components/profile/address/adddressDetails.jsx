@@ -2,24 +2,10 @@ import * as React from 'react';
 import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, FlatList, Button, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-import { LogBox } from 'react-native';
-import { RESET_DATA, SET_LOGOUT } from '../../../dataStore/types/types';
 import TitleText from '../../common/elements/TitleText';
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import SecondaryBtn from '../../common/elements/secondaryButton';
 import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import LightText from '../../common/elements/lightText';
-import RegularText from '../../common/elements/regulartext';
 import PrimaryButton from '../../common/elements/primaryButton';
 import MapView from 'react-native-maps';
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
-import { Marker } from 'react-native-maps';
 import Floatinginput from '../../common/elements/floatinginput';
 import { constants } from '../../../utlits/constants';
 import Errortext from '../../common/elements/errorText';
@@ -34,7 +20,7 @@ const AddressDetails = (props) => {
     const [errorMsg, setErrorMsg] = React.useState(null);
     const [address, setAddress] = React.useState(null);
     const [isloding, setIsloading] = React.useState(false);
-
+    const { lang } = props;
 
     const [formstate, setFormState] = React.useState({
         feild1Tch: false, feild1Err: true, feild1ErrMsg: "", feild1Val: "",
@@ -43,7 +29,7 @@ const AddressDetails = (props) => {
         phTch: false, phErr: true, phErrMsg: "", phVal: "",
     });
     const feild1 = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, feild1Err: true, feild1ErrMsg: constants[lang].errors.fulladdr, feild1Val: e, ...tch && { feild1Tch: true } });
         } else {
@@ -52,7 +38,7 @@ const AddressDetails = (props) => {
     }
 
     const feild2 = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, feild2Err: true, feild2ErrMsg: constants[lang].errors.namereq, feild2Val: e, ...tch && { feild2Tch: true } });
         } else {
@@ -60,7 +46,7 @@ const AddressDetails = (props) => {
         }
     }
     const mobilealdator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
         } else if (`${e}`.length != 10) {
@@ -86,10 +72,10 @@ const AddressDetails = (props) => {
             } else {
                 setTimeout(() => {
                     Alert.alert(
-                        'Failed',
-                        "We coudn't add address please try after sometime.",
+                        constants[lang].errors.failed,
+                        constants[lang].errors.wcaaptas,
                         [
-                            { text: 'ok', onPress: () => { } },
+                            { text: constants[lang].errors.ok, onPress: () => { } },
                         ],
                     );
                 }, 100);
@@ -110,16 +96,15 @@ const AddressDetails = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={isloding || addressprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('ConfrimLocation'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Add New Address" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.anaddr} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
-                        {/* <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}> */}
                         <View>
                             <View style={{
                                 flexDirection: 'row',
@@ -137,16 +122,6 @@ const AddressDetails = (props) => {
                                                         width: Dimensions.get('screen').width,
                                                         height: '90%',
                                                     }} >
-                                                    {/* <Marker
-                                                        draggable
-                                                        coordinate={location}
-                                                        onDragEnd={(e) => {
-                                                            setLocation({ ...location, ...e.nativeEvent.coordinate });
-                                                            setMapLoaded(false);
-                                                            setTimeout(() => { setMapLoaded(true); }, 20);
-                                                            updateLocation(e.nativeEvent.coordinate)
-                                                        }}
-                                                    /> */}
                                                 </MapView>
                                             </View>
                                             <View style={{
@@ -167,7 +142,7 @@ const AddressDetails = (props) => {
                                                         blurOnSubmit
                                                         autoCapitalize='none'
                                                         autoCorrect={false}
-                                                        label='Complete Address'>
+                                                        label={constants[lang].static.compaddr}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
@@ -183,7 +158,7 @@ const AddressDetails = (props) => {
                                                         blurOnSubmit
                                                         autoCapitalize='none'
                                                         autoCorrect={false}
-                                                        label='Name'>
+                                                        label={constants[lang].static.name}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
@@ -200,14 +175,14 @@ const AddressDetails = (props) => {
                                                         keyboardType={'phone-pad'}
                                                         autoCorrect={false}
                                                         maxLength={10}
-                                                        label='Mobile Number'>
+                                                        label={constants[lang].static.mobileno}>
                                                     </Floatinginput>
                                                 </View>
                                                 <View style={{ height: 20 }}>
                                                     {(formstate.phTch && formstate.phErr) && <Errortext>{formstate.phErrMsg}  </Errortext>}
                                                 </View>
                                                 <View>
-                                                    <PrimaryButton onPress={() => { saveAddress() }} disabled={formstate.feild1Err || formstate.feild2Err || formstate.phErr} title={"Save Address"}></PrimaryButton>
+                                                    <PrimaryButton onPress={() => { saveAddress() }} disabled={formstate.feild1Err || formstate.feild2Err || formstate.phErr} title={constants[lang].static.saveAddr}></PrimaryButton>
                                                 </View>
                                             </View>
                                         </React.Fragment> : null

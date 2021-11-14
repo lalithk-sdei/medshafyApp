@@ -20,6 +20,7 @@ import PrimaryButton from '../../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { getAddress } from '../../../dataStore/actions/address';
 import { getOrders } from '../../../dataStore/actions/orders';
+import { constants } from '../../../utlits/constants';
 
 const MyOrders = (props) => {
     const logout = async () => {
@@ -32,8 +33,8 @@ const MyOrders = (props) => {
             const val3 = await AsyncStorage.removeItem('token');
         } catch (e) { }
     }
-    const { ordersprocess, ordersStatus, orders = [], buyAgain=[] } = props.order;
-
+    const { ordersprocess, ordersStatus, orders = [], buyAgain = [] } = props.order;
+    const { lang } = props;
 
     React.useEffect(() => {
         props.getOrdersFn()
@@ -49,20 +50,20 @@ const MyOrders = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={ordersprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('Profile'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="My Orders" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.myOrds} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
 
                         {orders.length == 0 ? <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{}}>
                                 <React.Fragment>
-                                    {(!ordersprocess) && <RegularText>Your dont have any orders.</RegularText>}
+                                    {(!ordersprocess) && <RegularText>{constants[lang].static.ydhaords}</RegularText>}
                                 </React.Fragment>
                             </View>
                         </View> : null}
@@ -71,8 +72,8 @@ const MyOrders = (props) => {
                             <View style={styles.body}>
                                 {orders.length > 0 ? orders.map((ord, ind) => <View key={ind} style={styles.card}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <View><RegularText styles={{ fontSize: 20 }} title="Order Total" >Order Total</RegularText></View>
-                                        <View><TitleText title={`SAR ${ord.subTotal}`} /></View>
+                                        <View><RegularText styles={{ fontSize: 20 }} title={constants[lang].static.ordTtl} >{constants[lang].static.ordTtl}</RegularText></View>
+                                        <View><TitleText title={`${constants[lang].static.curr} ${ord.subTotal}`} /></View>
                                     </View>
                                     <View style={{ marginTop: 15 }}>
                                         <View><PlaneText>Order id : {ord.orderId ? ord.orderId : `ORD0000${ind}`}</PlaneText></View>
@@ -81,10 +82,10 @@ const MyOrders = (props) => {
                                     </View>
                                     <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                         <MaterialCommunityIcons name="clock" size={24} color="red" />
-                                        <RegularText>{"    "}Pending for Delivery</RegularText>
+                                        <RegularText>{"    "}{constants[lang].static.pendorDel}</RegularText>
                                     </View>
                                     <View style={{ marginTop: 20 }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts', ord); }} title={"View Products"} />
+                                        <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts', ord); }} title={constants[lang].static.viewProds} />
                                     </View>
                                 </View>) : null}
                             </View>
@@ -147,7 +148,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    order: state.order
+    order: state.order,
+    lang: state.common.lang,
 
 });
 

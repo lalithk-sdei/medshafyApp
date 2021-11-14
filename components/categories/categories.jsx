@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { Platform, View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, SafeAreaView, StatusBar, FlatList } from 'react-native';
+import { Platform, View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, SafeAreaView, FlatList } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import SearchInput from '../common/elements/searchInput';
 import { Ionicons } from '@expo/vector-icons';
-const { width, height } = Dimensions.get("window");
 import RegularText from '../common/elements/regulartext';
 import ProductCard from '../common/elements/productCard';
-import { Entypo } from '@expo/vector-icons';
-import { SimpleLineIcons } from '@expo/vector-icons';
 import ProductBoxOne from '../common/elements/productBoxOne';
 import { GetProducts } from '../../dataStore/actions/prod';
 import { GetCategories } from '../../dataStore/actions/category';
 import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import CartQty from '../common/elements/cartQty';
+import { constants } from '../../utlits/constants';
 
 const Categories = (props) => {
 
@@ -73,11 +71,11 @@ const Categories = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add products in your cart.',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltapiyc,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }

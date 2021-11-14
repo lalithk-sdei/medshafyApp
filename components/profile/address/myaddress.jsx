@@ -17,11 +17,13 @@ import LightText from '../../common/elements/lightText';
 import RegularText from '../../common/elements/regulartext';
 import PrimaryButton from '../../common/elements/primaryButton';
 import { getAddress } from '../../../dataStore/actions/address';
+import { constants } from '../../../utlits/constants';
 
 const MyAddress = (props) => {
     React.useEffect(() => {
         props.getAddressFn();
     }, []);
+    const { lang } = props;
     const { address = [], addressprocess } = props.address;
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
@@ -30,7 +32,7 @@ const MyAddress = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={addressprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1 }}>
@@ -50,10 +52,10 @@ const MyAddress = (props) => {
                                             <Image style={{ width: Dimensions.get('screen').width / 2, height: Dimensions.get('screen').width / 2 }} source={require('./../../../assets/images/noAddr.png')} />
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                            <TitleText title={"Your Address Book is Empty"}></TitleText>
+                                            <TitleText title={constants[lang].static.yabie}></TitleText>
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                            <LightText>Start adding them to your list</LightText>
+                                            <LightText>{constants[lang].static.sdttyl}</LightText>
                                         </View>
                                     </React.Fragment> : <React.Fragment>
                                         <View style={{ height: Dimensions.get('screen').height / 1.5 }}>
@@ -79,7 +81,7 @@ const MyAddress = (props) => {
                                         </View>
                                     </React.Fragment>}
                                     <View style={{ marginTop: 30, marginTop: 20, flexDirection: 'row', justifyContent: 'center' }}>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('ConfrimLocation') }} title="Add New Address"></PrimaryButton>
+                                        <PrimaryButton onPress={() => { props.navigation.navigate('ConfrimLocation') }} title={constants[lang].static.anaddr}></PrimaryButton>
                                     </View>
                                 </View>
                             </View>
@@ -142,7 +144,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    address: state.address
+    address: state.address,
+    lang: state.common.lang,
 });
 
 

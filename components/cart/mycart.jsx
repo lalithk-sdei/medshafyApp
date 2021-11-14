@@ -5,20 +5,9 @@ import { connect } from 'react-redux';
 import { LogBox } from 'react-native';
 import { RESET_DATA, SET_LOGOUT } from '../../dataStore/types/types';
 import TitleText from '../common/elements/TitleText';
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Octicons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import SecondaryBtn from '../common/elements/secondaryButton';
 import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import LightText from '../common/elements/lightText';
 import RegularText from '../common/elements/regulartext';
-import PlaneText from '../common/elements/planeText';
 import PrimaryButton from '../common/elements/primaryButton';
-import { AntDesign } from '@expo/vector-icons';
-import { SimpleLineIcons } from '@expo/vector-icons';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import { constants } from '../../utlits/constants';
 
@@ -52,11 +41,11 @@ const MyCart = (props) => {
             }
         } else {
             Alert.alert(
-                'Login Required!',
-                'Please login to add products in your cart.',
+                constants[lang].errors.loginReq,
+                constants[lang].errors.pltapiyc,
                 [
-                    { text: 'cancel', onPress: () => { } },
-                    { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                    { text: constants[lang].errors.cancel, onPress: () => { } },
+                    { text: constants[lang].errors.lgn, onPress: () => { props.navigation.navigate('login'); } }
                 ],
             );
         }
@@ -131,9 +120,6 @@ const MyCart = (props) => {
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        // if (props.user.loggedin === false) {
-        //     props.navigation.navigate('Choselanguage');
-        // }
         if (cartData.length == 0 && props.user.loggedin) {
             props.loadCart();
         }
@@ -154,7 +140,7 @@ const MyCart = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={cartprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={{ flex: 1, opacity: openQty ? 0.1 : 1 }}>
@@ -259,20 +245,6 @@ const MyCart = (props) => {
                                         <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={constants[lang].static.checkout}></PrimaryButton>
                                     </View>
                                 </React.Fragment> : null}
-
-                                {/* <View style={[styles.card, { padding: 0 }]}>
-                                    <View style={{ paddingHorizontal: 15, paddingTop: 15, flexDirection: 'row', paddingBottom: 15 }}>
-                                        <MaterialIcons name="credit-card" size={24} color="black" />
-                                        <RegularText >{"    "}Paid by Apple Pay</RegularText>
-                                    </View>
-                                    <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row' }}>
-                                        <SimpleLineIcons name="location-pin" size={24} color="black" />
-                                        <LightText >{"    "}Delivery Address</LightText>
-                                    </View>
-                                    <View style={{ paddingBottom: 20, paddingHorizontal: 15, flexDirection: 'row' }}>
-                                        <RegularText >2972 Wesithemer Rd. Santa Ana, Illinois 85486</RegularText>
-                                    </View>
-                                </View> */}
                             </View>
                         </ScrollView>
                     </View>
@@ -292,11 +264,7 @@ const styles = StyleSheet.create({
     tophead: {
         paddingHorizontal: 23,
         flexDirection: 'row',
-        // textAlign: 'center',
-        // alignItems: 'center',
-        // justifyContent: 'center',
         paddingTop: 50,
-
         backgroundColor: 'white',
         paddingBottom: 22,
         elevation: 4,
