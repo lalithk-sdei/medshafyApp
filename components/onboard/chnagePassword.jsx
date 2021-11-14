@@ -32,9 +32,8 @@ const ChangePassword = (props) => {
         regTch: false, regErr: true, regErrMsg: "", regVal: "",
         termsTch: false, termsErr: true, termsMsg: "", termsVal: false
     });
-
+    const { lang } = props;
     const cnfpassValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, cnfpassErr: true, cnfpassErrMsg: constants[lang].errors.cnfPass, cnfPassVal: e, ...tch && { cnfpassTch: true } });
         } else if (`${e}` != formstate.passVal) {
@@ -44,7 +43,6 @@ const ChangePassword = (props) => {
         }
     }
     const passValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, passErr: true, passErrMsg: constants[lang].errors.passwordRequired, passVal: e, ...tch && { passTch: true } });
         } else if (`${e}`.length < 6) {
@@ -78,7 +76,7 @@ const ChangePassword = (props) => {
         } else if (props.pageState.ChangepasStatus === 'fail') {
             Alert.alert(
                 'Failed!',
-                'Something went wrong, Please try after sometime',
+                'Something went wrong, Please try after some time.',
                 [{ text: 'Okay' }]
             );
         }
@@ -96,7 +94,7 @@ const ChangePassword = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={ChangepassProcess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         <View style={styles.main}>
@@ -109,11 +107,11 @@ const ChangePassword = (props) => {
                             </View>
                             <View style={styles.secondcol}>
                                 <View style={{ marginBottom: 23 }}>
-                                    <FirstHead>Change Password</FirstHead>
+                                    <FirstHead>{constants[lang].static.chngpass}</FirstHead>
                                 </View>
                             </View>
                             <View style={styles.thirdCol}>
-                                <LightText>Your new password must be different from previous used passwords.</LightText>
+                                <LightText>{constants[lang].static.ynpmbd}</LightText>
                             </View>
                             <View style={styles.fourth}>
                                 <View>
@@ -125,7 +123,7 @@ const ChangePassword = (props) => {
                                         blurOnSubmit
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='New Password'>
+                                        label={constants[lang].static.newpass}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -140,7 +138,7 @@ const ChangePassword = (props) => {
                                         blurOnSubmit
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='Confirm Password'>
+                                        label={constants[lang].static.cnfpass}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -151,7 +149,7 @@ const ChangePassword = (props) => {
                                 alignItems: 'center',
                                 marginTop: 55
                             }}>
-                                <PrimaryButton disabled={formstate.passErr || formstate.cnfpassErr} onPress={() => { submit(); }} style={{ width: '80%' }} title="Change Password" />
+                                <PrimaryButton disabled={formstate.passErr || formstate.cnfpassErr} onPress={() => { submit(); }} style={{ width: '80%' }} title={constants[lang].static.chngpass} />
                             </View>
                         </View>
                     </ScrollView>

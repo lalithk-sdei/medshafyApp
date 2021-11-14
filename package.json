@@ -26,6 +26,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-confirmation-code-field": "^7.1.0",
     "react-native-dropdown-picker": "^5.1.28",
+    "react-native-elements": "^3.4.2",
     "react-native-image-slider-box": "^1.1.8",
     "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-maps": "0.29.3",

@@ -13,12 +13,13 @@ import { connect } from 'react-redux';
 import { validateOTP } from '../../dataStore/actions/user';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SET_CHNAGPASS_STATUS_ONCE } from '../../dataStore/types/types';
+import { constants } from '../../utlits/constants';
 const VerifyCode = (props) => {
 
     const [phone, setPhone] = React.useState('');
     const [OTP, setOTP] = React.useState('');
 
-
+    const { lang } = props;
     const setPhoneFn = () => {
         try {
             setPhone(props.route.params.phone)
@@ -63,7 +64,7 @@ const VerifyCode = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={otpVerifyProcess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         <View style={styles.main}>
@@ -77,13 +78,13 @@ const VerifyCode = (props) => {
                                 </View>
                                 <View style={{ flex: 3 }} >
                                     <View style={{}}>
-                                        <FirstHead>Verify Code</FirstHead>
+                                        <FirstHead>{constants[lang].static.vrfcd}</FirstHead>
                                     </View>
                                 </View>
                             </View>
 
                             <View style={styles.thirdCol}>
-                                <LightText>Please enter the verification code sent to mobile number: {phone}</LightText>
+                                <LightText>{constants[lang].static.pevc}{phone}</LightText>
                             </View>
                             <View style={styles.fourth}>
                                 <OPT otpChange={otpChange} />
@@ -94,7 +95,7 @@ const VerifyCode = (props) => {
                             }}>
                                 <PrimaryButton disabled={OTP.length != 4} onPress={() => {
                                     submit()
-                                }} style={{ width: '80%' }} title="Next" />
+                                }} style={{ width: '80%' }} title={constants[lang].static.next} />
                             </View>
                         </View>
                     </ScrollView>

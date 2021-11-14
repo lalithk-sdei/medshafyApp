@@ -15,6 +15,7 @@ import { addtoFav, GetFavForUser, renoveFav } from '../../dataStore/actions/fav'
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
 import CartQty from '../common/elements/cartQty';
 import { getBuyagain } from '../../dataStore/actions/orders';
+import { constants } from '../../utlits/constants';
 
 const Favorites = (props) => {
 
@@ -158,6 +159,7 @@ const Favorites = (props) => {
         }
     };
 
+    const { lang } = props;
     React.useEffect(() => {
         setFrom(props.route.params.from);
         if (props.route.params.from === 'Home' || props.route.params.from === 'profile') {
@@ -192,7 +194,7 @@ const Favorites = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={favprocess || cartprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     <View style={[styles.main, { opacity: openQty ? 0.1 : 1 }]}>
@@ -249,7 +251,7 @@ const Favorites = (props) => {
                                                     fontSize: 20,
                                                     fontFamily: 'Quasimodasemibold',
                                                     textTransform: 'capitalize'
-                                                }}>Favourites</Text>
+                                                }}>{constants[lang].static.favourites}</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => { setpage('1'); loadBuagainProducts() }}>
@@ -264,7 +266,7 @@ const Favorites = (props) => {
                                                     fontSize: 20,
                                                     fontFamily: 'Quasimodasemibold',
                                                     textTransform: 'capitalize'
-                                                }}>Buy Again</Text>
+                                                }}>{constants[lang].static.buyagain}</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>
@@ -345,8 +347,8 @@ const Favorites = (props) => {
                                                 : <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                                                     <View style={{}}>
                                                         <React.Fragment>
-                                                            {(page == '0' && !favprocess) && <RegularText>You dont have any favorite products.</RegularText>}
-                                                            {(page == '1' && !favprocess) && <RegularText>You haven't bought any product.</RegularText>}
+                                                            {(page == '0' && !favprocess) && <RegularText>{constants[lang].static.ydhafp}</RegularText>}
+                                                            {(page == '1' && !favprocess) && <RegularText>{constants[lang].static.yhbap}</RegularText>}
                                                         </React.Fragment>
                                                     </View>
                                                 </View>}

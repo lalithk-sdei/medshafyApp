@@ -80,7 +80,7 @@ const Home = (props) => {
         }
         setImages([...images, result]);
     }
-
+    const { lang } = props;
     const [formstate, setFormState] = React.useState({
         prodNameTch: false, prodNameErr: true, prodNameErrMsg: "", prodNameVal: "",
         QtyTch: false, QtyErr: true, QtyErrMsg: "", QtyVal: "",
@@ -89,7 +89,7 @@ const Home = (props) => {
     });
 
     const prodNameValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, prodNameErr: true, prodNameErrMsg: constants[lang].errors.prodReq, prodNameVal: e, ...tch && { prodNameTch: true } });
         } else {
@@ -98,7 +98,7 @@ const Home = (props) => {
     }
 
     const QtyValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, QtyErr: true, QtyErrMsg: constants[lang].errors.qtyReq, QtyVal: e, ...tch && { QtyTch: true } });
         } else {
@@ -107,7 +107,7 @@ const Home = (props) => {
     }
 
     const PriceValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, PriceErr: true, PriceErrMsg: constants[lang].errors.priceReq, PriceVal: e, ...tch && { PriceTch: true } });
         } else {
@@ -116,7 +116,7 @@ const Home = (props) => {
     }
 
     const descValidator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, descErr: true, descErrMsg: constants[lang].errors.descReq, descVal: e, ...tch && { descTch: true } });
         } else {
@@ -226,14 +226,14 @@ const Home = (props) => {
                         <Spinner
                             color={"#9F9FA2"}
                             visible={Catprocess || favprocess || imgPrs || ordersprocess}
-                            textContent={'Please wait...'}
+                            textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />
                         {page == "home" &&
                             <View style={styles.main}>
                                 <View style={styles.firstCol}>
                                     <View>
-                                        <SearchInput cross={false} value={search} placeholder="Looking for something" onChangeText={(e) => { setSearch(e); registerKey(e) }} />
+                                        <SearchInput cross={false} value={search} placeholder={constants[lang].static.lfs} onChangeText={(e) => { setSearch(e); registerKey(e) }} />
                                     </View>
                                     {!props.user.loggedin &&
                                         <View style={{ marginTop: 20 }}>
@@ -245,7 +245,7 @@ const Home = (props) => {
                                                 borderRadius: 50,
                                                 position: 'relative'
                                             }}>
-                                                <RegularText>Complete your information so that you can order</RegularText>
+                                                <RegularText>{constants[lang].static.cyistyco}</RegularText>
                                                 <AntDesign style={{
                                                     position: 'absolute',
                                                     left: 20,
@@ -298,8 +298,8 @@ const Home = (props) => {
                                                 flexDirection: 'row',
                                                 justifyContent: 'space-between'
                                             }}>
-                                                <TitleText title={"FAVOURITES"} />
-                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '0' }); }} title={"VIEW ALL"} />
+                                                <TitleText title={constants[lang].static.favCap} />
+                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '0' }); }} title={constants[lang].static.viewAll} />
                                             </View>
                                             <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                                 {favData.slice(0, 3).map((item, ind) =>
@@ -323,8 +323,8 @@ const Home = (props) => {
                                                 flexDirection: 'row',
                                                 justifyContent: 'space-between'
                                             }}>
-                                                <TitleText title={"BUY AGAIN"} />
-                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '1' }); }} title={"VIEW ALL"} />
+                                                <TitleText title={constants[lang].static.buyagaincap} />
+                                                <SmallButton onPress={() => { props.navigation.navigate('Favorites', { from: 'Home', page: '1' }); }} title={constants[lang].static.viewAll} />
                                             </View>
                                             <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                                 {buyAgain.slice(0, 3).map((item, ind) =>
@@ -347,7 +347,7 @@ const Home = (props) => {
                                             flexDirection: 'row',
                                             justifyContent: 'space-between'
                                         }}>
-                                            <TitleText title={"CATEGORIES"} />
+                                            <TitleText title={constants[lang].static.categor} />
                                         </View>
                                         <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                             <FlatList
@@ -384,13 +384,12 @@ const Home = (props) => {
                                         justifyContent: 'space-between',
                                         flexDirection: 'row',
                                     }}>
-
                                         <RegularText styles={{ fontSize: 14 }}>
-                                            Do you have a Special Order?
+                                            {constants[lang].static.dyhaso}
                                         </RegularText >
                                         <LinkText onPress={() => {
                                             sendSpecialProds();
-                                        }} styles={{ fontSize: 14, paddingTop: 5, paddingRight: 20 }}>Click Here</LinkText>
+                                        }} styles={{ fontSize: 14, paddingTop: 5, paddingRight: 20 }}>{constants[lang].static.clickHere}</LinkText>
                                     </View>
                                 </View>
                             </View>
@@ -415,8 +414,8 @@ const Home = (props) => {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <TitleText title={"Enter the Special Order"}></TitleText>
-                                <TitleText styles={{ marginTop: 15 }} title={"Information"}></TitleText>
+                                <TitleText title={constants[lang].static.etsp}></TitleText>
+                                <TitleText styles={{ marginTop: 15 }} title={constants[lang].static.information}></TitleText>
                             </View>
                             <View>
                                 <Floatinginput
@@ -424,11 +423,11 @@ const Home = (props) => {
                                     onEndEditing={(e) => { prodNameValidator(e.nativeEvent.text, true); }}
                                     autoCapitalize='none'
                                     autoCorrect={false}
-                                    label='Product Name'>
+                                    label={constants[lang].static.productname}>
                                 </Floatinginput>
                             </View>
                             <View style={{ height: 20 }}>
-                                {(formstate.prodNameTch && formstate.prodNameErr) ? <Errortext>{formstate.prodNameErrMsg}  </Errortext> : null}
+                                {(formstate.prodNameTch && formstate.prodNameErr) ? <Errortext>{formstate.prodNameErrMsg}</Errortext> : null}
                             </View>
                             <View style={{
                                 flexDirection: 'row',
@@ -440,7 +439,7 @@ const Home = (props) => {
                                             onEndEditing={(e) => { QtyValidator(e.nativeEvent.text, true); }}
                                             autoCapitalize='none'
                                             autoCorrect={false}
-                                            label='Quantity'>
+                                            label={constants[lang].static.quantity}>
                                         </Floatinginput>
                                     </View>
                                     <View style={{ height: 20 }}>
@@ -454,7 +453,7 @@ const Home = (props) => {
                                             onEndEditing={(e) => { PriceValidator(e.nativeEvent.text, true); }}
                                             autoCapitalize='none'
                                             autoCorrect={false}
-                                            label='Expected Price'>
+                                            label={constants[lang].static.expprc}>
                                         </Floatinginput>
                                     </View>
                                     <View style={{ height: 20 }}>
@@ -468,7 +467,7 @@ const Home = (props) => {
                                     onEndEditing={(e) => { descValidator(e.nativeEvent.text, true); }}
                                     autoCapitalize='none'
                                     autoCorrect={false}
-                                    label='Description'>
+                                    label={constants[lang].static.description}>
                                 </Floatinginput>
                             </View>
                             <View style={{ height: 20 }}>
@@ -487,10 +486,10 @@ const Home = (props) => {
                                 )}
                             </View>
                             <View style={{ marginTop: 10 }}>
-                                <SecondaryBtn Txtstyle={{ fontSize: 16, paddingBottom: 0 }} disabled={images.length == 5} onPress={() => { verifyPermissions() }} iscamara={true} title="Upload a Photo / Doc (optional)" />
+                                <SecondaryBtn Txtstyle={{ fontSize: 16, paddingBottom: 0 }} disabled={images.length == 5} onPress={() => { verifyPermissions() }} iscamara={true} title={constants[lang].static.uapdo} />
                             </View>
                             <View style={{ marginTop: 15 }}>
-                                <PrimaryButton disabled={formstate.prodNameErr || formstate.QtyErr || formstate.PriceErr || formstate.descErr} onPress={() => { submit() }} title="Send"></PrimaryButton>
+                                <PrimaryButton disabled={formstate.prodNameErr || formstate.QtyErr || formstate.PriceErr || formstate.descErr} onPress={() => { submit() }} title={constants[lang].static.send}></PrimaryButton>
                             </View>
                         </View>
                         : null}

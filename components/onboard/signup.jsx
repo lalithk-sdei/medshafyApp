@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Image, TouchableHighlight, CheckBox, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableHighlight, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, TouchableOpacity, Platform } from 'react-native';
 import LightText from '../common/elements/lightText';
 import PrimaryButton from '../common/elements/primaryButton';
 import LinkText from '../common/elements/linktext';
@@ -15,6 +15,9 @@ import { registerUser, uploadStoredoc } from '../../dataStore/actions/user';
 import { ValidateEmail } from '../../utlits/helpers';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Picker } from 'react-native-web';
+import { CheckBox } from 'react-native-elements';
+
+
 const SignUp = (props) => {
     const [isSelected, setSelection] = React.useState(false);
     const [cncode, setCncode] = React.useState('+966');
@@ -35,9 +38,8 @@ const SignUp = (props) => {
         regTch: false, regErr: true, regErrMsg: "", regVal: "",
         termsTch: false, termsErr: true, termsMsg: "", termsVal: false
     });
-
+    const { lang } = props;
     const cmpValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, cmpErr: true, cmpErrMsg: constants[lang].errors.companyNamereq, cmpVal: e, ...tch && { cmpTch: true } });
         } else {
@@ -45,7 +47,6 @@ const SignUp = (props) => {
         }
     }
     const emialValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, emailErr: true, emailErrMsg: constants[lang].errors.emailRequired, emailVal: e, ...tch && { emailTch: true } });
         } else if (!ValidateEmail(e)) {
@@ -55,7 +56,6 @@ const SignUp = (props) => {
         }
     }
     const mobilealdator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
         } else if (`${e}`.length != 10) {
@@ -65,7 +65,6 @@ const SignUp = (props) => {
         }
     }
     const cnfpassValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, cnfpassErr: true, cnfpassErrMsg: constants[lang].errors.cnfPass, cnfPassVal: e, ...tch && { cnfpassTch: true } });
         } else if (`${e}` != formstate.passVal) {
@@ -75,7 +74,6 @@ const SignUp = (props) => {
         }
     }
     const passValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, passErr: true, passErrMsg: constants[lang].errors.passwordRequired, passVal: e, ...tch && { passTch: true } });
         } else if (`${e}`.length < 6) {
@@ -93,7 +91,6 @@ const SignUp = (props) => {
         }
     }
     const regValidator = (e = null, tch = false) => {
-        const { lang } = props;
         // if (["", null, undefined].includes(e)) {
         //     setFormState({ ...formstate, regErr: true, regErrMsg: constants[lang].errors.regNum, regVal: e, ...tch && { regTch: true } });
         // } else {
@@ -101,7 +98,6 @@ const SignUp = (props) => {
         // }
     }
     const termValidator = (e = null, tch = false) => {
-        const { lang } = props;
         if ([false].includes(!formstate.termsVal)) {
             setFormState({ ...formstate, termsErr: true, termsMsg: constants[lang].errors.acpectTerms, termsVal: !formstate.termsVal, termsTch: true });
         } else {
@@ -213,7 +209,7 @@ const SignUp = (props) => {
                                         onEndEditing={(e) => { cmpValidator(e.nativeEvent.text, true); }}
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='Company Name'>
+                                        label={constants[lang].static.companyName}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -225,7 +221,7 @@ const SignUp = (props) => {
                                         onEndEditing={(e) => { emialValidator(e.nativeEvent.text, true); }}
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='Email'>
+                                        label={constants[lang].static.email}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -265,7 +261,7 @@ const SignUp = (props) => {
                                                 keyboardType={'phone-pad'}
                                                 autoCorrect={false}
                                                 maxLength={10}
-                                                label='Mobile Number'>
+                                                label={constants[lang].static.mobileno}>
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>
@@ -282,7 +278,7 @@ const SignUp = (props) => {
                                         blurOnSubmit
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='New Password'>
+                                        label={constants[lang].static.newpass}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -297,7 +293,7 @@ const SignUp = (props) => {
                                         blurOnSubmit
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='Confirm Password'>
+                                        label={constants[lang].static.cnfpass}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -310,7 +306,7 @@ const SignUp = (props) => {
                                         blurOnSubmit
                                         autoCapitalize='none'
                                         autoCorrect={false}
-                                        label='Registration Number or Entity Number'>
+                                        label={constants[lang].static.rnoen}>
                                     </Floatinginput>
                                 </View>
                                 <View style={{ height: 20 }}>
@@ -319,7 +315,7 @@ const SignUp = (props) => {
                             </View>
                             <View style={[styles.fourthCol]}>
                                 <View style={[styles.lightBorder, { flex: 4 }]}></View>
-                                <View style={{ flex: 1 }}><LightText styles={{ marginHorizontal: 9 }}> or </LightText></View>
+                                <View style={{ flex: 1 }}><LightText styles={{ marginHorizontal: 0 }}>  {constants[lang].static.or} </LightText></View>
                                 <View style={[styles.lightBorder, { flex: 4 }]}></View>
                             </View>
                             <View style={{ marginLeft: 22, marginTop: 10, flexDirection: 'row' }}>
@@ -343,9 +339,11 @@ const SignUp = (props) => {
                             </View>
                             <View style={{ marginLeft: 22, marginTop: 20, marginRight: 22, flexDirection: 'row' }}>
                                 <CheckBox
-                                    value={formstate.termsVal}
-                                    onValueChange={(e) => { termValidator(e) }} />
-                                <LightText styles={{ paddingTop: 5 }}> I Accept terms {'&'} conditions</LightText>
+                                    checked={formstate.termsVal}
+                                    onPress={() => { setFormState({ termsVal: !formstate.termsVal }); termValidator(!formstate.termsVal) }}
+                                // onValueChange={(e) => { termValidator(e) }}
+                                />
+                                <LightText styles={{ paddingTop: 12 }}>{constants[lang].static.iatc}</LightText>
                             </View>
                             <View style={{ marginLeft: 22, height: 20 }}>
                                 {(formstate.termsTch && formstate.termsErr) && <Errortext>{formstate.termsMsg}  </Errortext>}
@@ -355,7 +353,7 @@ const SignUp = (props) => {
                                 marginTop: 30
                             }}>
                                 {/* <PrimaryButton onPress={() => { submit(); }} disabled={false} style={{ width: '80%' }} title="Sign Up" /> */}
-                                <PrimaryButton onPress={() => { submit(); }} disabled={formstate.cmpErr || formstate.emailErr || formstate.phErr || formstate.cnfpassErr || formstate.regErr || formstate.termsErr} style={{ width: '80%' }} title="Sign Up" />
+                                <PrimaryButton onPress={() => { submit(); }} disabled={formstate.cmpErr || formstate.emailErr || formstate.phErr || formstate.cnfpassErr || formstate.regErr || formstate.termsErr} style={{ width: '80%' }} title={constants[lang].static.singup} />
                             </View>
                             <View style={{
                                 alignItems: 'center',
@@ -364,7 +362,7 @@ const SignUp = (props) => {
                                 flexDirection: 'row'
                             }}>
                                 <LightText>Already a user?</LightText>
-                                <LinkText onPress={() => { props.navigation.navigate('login') }} styles={{ marginLeft: 15 }} >Sign In</LinkText>
+                                <LinkText onPress={() => { props.navigation.navigate('login') }} styles={{ marginLeft: 15 }} >{constants[lang].static.singin}</LinkText>
                             </View>
 
                             <View style={{ minHeight: 50 }}>

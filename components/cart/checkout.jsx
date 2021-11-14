@@ -25,6 +25,7 @@ import RadioButton from '../common/elements/radiobutton';
 import ApplePayBtn from '../common/elements/applyePay';
 import { addOrder } from '../../dataStore/actions/orders';
 import LinkText from '../common/elements/linktext';
+import { constants } from '../../utlits/constants';
 
 const Checkout = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -32,7 +33,6 @@ const Checkout = (props) => {
     const [seladdr, setseladdr] = React.useState(null);
     const [qtys, setQtys] = React.useState(false);
     const { cartprocess, cartStatus, cartData = [] } = props.cart;
-
 
     const cartUpdate = (cd, ope) => {
         const b = {
@@ -94,7 +94,7 @@ const Checkout = (props) => {
     }
 
     const { address = [], addressprocess } = props.address;
-
+    const { lang } = props;
 
     const submit = () => {
         try {
@@ -125,7 +125,7 @@ const Checkout = (props) => {
                     setTimeout(() => {
                         Alert.alert(
                             'Oops',
-                            "We are not able to process your order. please reach to support",
+                            "Something went wrong, Please try after some time.",
                             [
                                 { text: 'ok', onPress: () => { } },
                             ],
@@ -138,7 +138,7 @@ const Checkout = (props) => {
             setTimeout(() => {
                 Alert.alert(
                     'Oops',
-                    "Some products in your cart are not avaliable. Please try after sometime.",
+                    "Something went wrong, Please try after some time.",
                     [
                         { text: 'ok', onPress: () => { } },
                     ],
@@ -171,7 +171,7 @@ const Checkout = (props) => {
                     <View style={{ flex: 1, opacity: openQty ? 0.1 : 1 }}>
                         <View style={styles.tophead}>
                             <View style={{ flex: 1 }}>
-                                <Ionicons onPress={() => {  props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
+                                <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                             </View>
                             <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Checkout" /></View>
                             <View style={{ flex: 1 }}></View>
@@ -179,7 +179,7 @@ const Checkout = (props) => {
                         {cartData.length == 0 ? <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{}}>
                                 <React.Fragment>
-                                    {(!cartprocess) && <RegularText>Your cart is empty.</RegularText>}
+                                    {(!cartprocess) && <RegularText>{constants[lang].static.ycie}</RegularText>}
                                 </React.Fragment>
                             </View>
                         </View> : null}
@@ -228,11 +228,11 @@ const Checkout = (props) => {
                                                             <RegularText styles={{}}>Your address book is empty</RegularText>
                                                         </View>
                                                         <View style={{ paddingTop: 20 }}>
-                                                            <LinkText onPress={() => { props.navigation.navigate('MyAddress'); }}>Click here to manage your address</LinkText>
+                                                            <LinkText onPress={() => { props.navigation.navigate('MyAddress'); }}>{constants[lang].static.chtmyd}</LinkText>
                                                         </View>
                                                     </View>}
                                                 </View>
-                                                <View style={{ margin: 20 }}><PrimaryButton onPress={() => { setTab(1) }} disabled={seladdr == null} title="Next"></PrimaryButton></View>
+                                                <View style={{ margin: 20 }}><PrimaryButton onPress={() => { setTab(1) }} disabled={seladdr == null} title={constants[lang].static.next}></PrimaryButton></View>
                                             </View>
                                         </View> : null}
                                 </View>
@@ -248,12 +248,12 @@ const Checkout = (props) => {
                                                 {/* Payment */}
                                                 <View style={{ backgroundColor: '#E2E6E9' }}>
                                                     <View style={{ flexDirection: 'row', padding: 23 }}>
-                                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 18 }}>Payable Amount</LightText></View>
+                                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 18 }}>{constants[lang].static.payamt}</LightText></View>
                                                         <View style={{ flex: 1 }}><TitleText title="SAR 306.00"></TitleText></View>
                                                     </View>
                                                 </View>
-                                                <View style={{ margin: 20 }}><ApplePayBtn onPress={() => { setTab(2) }} disabled={seladdr == null} title="Next"></ApplePayBtn></View>
-                                                <View style={{ marginHorizontal: 20, marginBottom: 10 }}><SecondaryBtn style={{ borderRadius: 10, padding: 10 }} onPress={() => { setTab(2) }} disabled={seladdr == null} title="COD"></SecondaryBtn></View>
+                                                <View style={{ margin: 20 }}><ApplePayBtn onPress={() => { setTab(2) }} disabled={seladdr == null} title={constants[lang].static.next}></ApplePayBtn></View>
+                                                <View style={{ marginHorizontal: 20, marginBottom: 10 }}><SecondaryBtn style={{ borderRadius: 10, padding: 10 }} onPress={() => { setTab(2) }} disabled={seladdr == null} title={constants[lang].static.cod}></SecondaryBtn></View>
                                             </View>
                                         </View> : null}
                                 </View>
@@ -285,27 +285,27 @@ const Checkout = (props) => {
                                                                     {getPriceName(pro)}
                                                                 </Text> : null}
                                                                 <TitleText title={`SAR ${getPriceval(pro)}`} />
-                                                                <Text style={{ fontFamily: 'Quasimoda', fontSize: 14, color: '#3F3F46' }} nolines={1}>Qty : {pro.qty}</Text>
+                                                                <Text style={{ fontFamily: 'Quasimoda', fontSize: 14, color: '#3F3F46' }} nolines={1}>{constants[lang].static.qty} : {pro.qty}</Text>
                                                             </View>
                                                         </View>
                                                     </View>) : null}
                                                     {cartData.length > 0 ? <React.Fragment>
                                                         <View style={[styles.card, { padding: 0 }]}>
                                                             <View style={{ paddingHorizontal: 15, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                <RegularText title={""}>Sub total </RegularText>
-                                                                <RegularText >SAR {getSubtotal()}</RegularText>
+                                                                <RegularText title={""}>{constants[lang].static.subtotal}</RegularText>
+                                                                <RegularText >{constants[lang].static.curr} {getSubtotal()}</RegularText>
                                                             </View>
                                                             <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                <RegularText title={""}>Delivery charges</RegularText>
-                                                                <RegularText >SAR 0</RegularText>
+                                                                <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
+                                                                <RegularText >{constants[lang].static.curr} 0</RegularText>
                                                             </View>
                                                             <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                <RegularText title={""}>Vat (2%)</RegularText>
-                                                                <RegularText >SAR 0</RegularText>
+                                                                <RegularText title={""}>{constants[lang].static.vat} (2%)</RegularText>
+                                                                <RegularText >{constants[lang].static.curr} 0</RegularText>
                                                             </View>
                                                             <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                <RegularText title={""}>Total</RegularText>
-                                                                <TitleText styles={{ fontSize: 17 }} title={`SAR ${getSubtotal()}`} />
+                                                                <RegularText title={""}>{constants[lang].static.total}</RegularText>
+                                                                <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${getSubtotal()}`} />
                                                             </View>
                                                         </View>
                                                     </React.Fragment> : null}
@@ -407,7 +407,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     user: state.user,
     cart: state.cart,
-    address: state.address
+    address: state.address,
+    lang: state.common.lang,
 });
 
 

@@ -20,6 +20,7 @@ import PrimaryButton from '../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import { constants } from '../../utlits/constants';
 
 const MyCart = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -126,6 +127,8 @@ const MyCart = (props) => {
         return val;
     }
 
+    const { lang } = props;
+
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
@@ -159,13 +162,13 @@ const MyCart = (props) => {
                             <View style={{ flex: 1 }}>
                                 <Ionicons onPress={() => { props.navigation.goBack(null); }} name="arrow-back" size={24} color="black" />
                             </View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Cart" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.cart} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         {cartData.length == 0 ? <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{}}>
                                 <React.Fragment>
-                                    {(!cartprocess) && <RegularText>Your cart is empty.</RegularText>}
+                                    {(!cartprocess) && <RegularText>{constants[lang].static.ycie}</RegularText>}
                                 </React.Fragment>
                             </View>
                         </View> : null}
@@ -236,24 +239,24 @@ const MyCart = (props) => {
                                 {cartData.length > 0 ? <React.Fragment>
                                     <View style={[styles.card, { padding: 0 }]}>
                                         <View style={{ paddingHorizontal: 15, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <RegularText title={""}>Sub total </RegularText>
-                                            <RegularText >SAR {getSubtotal()}</RegularText>
+                                            <RegularText title={""}>{constants[lang].static.subtotal} </RegularText>
+                                            <RegularText >{constants[lang].static.curr} {getSubtotal()}</RegularText>
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <RegularText title={""}>Delivery charges</RegularText>
-                                            <RegularText >SAR 0</RegularText>
+                                            <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
+                                            <RegularText >{constants[lang].static.curr} 0</RegularText>
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <RegularText title={""}>Vat (2%)</RegularText>
-                                            <RegularText >SAR 0</RegularText>
+                                            <RegularText title={""}>{constants[lang].static.vat}</RegularText>
+                                            <RegularText >{constants[lang].static.curr} 0</RegularText>
                                         </View>
                                         <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                            <RegularText title={""}>Total</RegularText>
+                                            <RegularText title={""}>{constants[lang].static.total}</RegularText>
                                             <TitleText styles={{ fontSize: 17 }} title={`SAR ${getSubtotal()}`} />
                                         </View>
                                     </View>
                                     <View>
-                                        <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={"Checkout"}></PrimaryButton>
+                                        <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={constants[lang].static.checkout}></PrimaryButton>
                                     </View>
                                 </React.Fragment> : null}
 
@@ -330,7 +333,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    cart: state.cart
+    cart: state.cart,
+    lang: state.common.lang,
 
 });
 

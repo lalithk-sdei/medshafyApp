@@ -141,6 +141,8 @@ const Categories = (props) => {
         }
     }
 
+    const { lang } = props;
+
 
     React.useEffect(() => {
         if (cat == null) {
@@ -175,7 +177,7 @@ const Categories = (props) => {
                     <Spinner
                         color={"#9F9FA2"}
                         visible={Prodprocess || Catprocess || favprocess || cartprocess}
-                        textContent={'Please wait...'}
+                        textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
                     {page == "search" &&
@@ -336,7 +338,7 @@ const Categories = (props) => {
                                                 </View> : <View style={{ flex: 1, marginTop: Dimensions.get('screen').height / 4, justifyContent: 'center', alignItems: 'center' }}>
                                                     <View style={{}}>
                                                         <React.Fragment>
-                                                            {(!Prodprocess) && <RegularText>No products found</RegularText>}
+                                                            {(!Prodprocess) && <RegularText>{constants[lang].static.npf}</RegularText>}
                                                         </React.Fragment>
                                                     </View>
                                                 </View>}
@@ -399,7 +401,8 @@ const mapStateToProps = (state) => ({
     cat: state.category,
     user: state.user,
     fav: state.fav,
-    cart: state.cart
+    cart: state.cart,
+    lang: state.common.lang,
 });
 
 

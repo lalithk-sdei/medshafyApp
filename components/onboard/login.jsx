@@ -26,10 +26,9 @@ const Login = (props) => {
     const [email, setemail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [alertOpen, setIsalertOpen] = React.useState(false);
-
+    const { lang } = props;
     const emialValidator = (e = null, touched = false) => {
         setemail(e);
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setErrors({ ...Errors, emailError: true, errorMessage: constants[lang].errors.emailRequired, ...touched && { emailTouched: true } });
         } else if (!ValidateEmail(e)) {
@@ -40,7 +39,6 @@ const Login = (props) => {
     }
     const passwordValidator = (e = null, touched = false) => {
         setPassword(e);
-        const { lang } = props;
         if (["", null, undefined].includes(e)) {
             setErrors({ ...Errors, passwordError: true, passwordMessage: constants[lang].errors.passwordRequired, ...touched && { passwordTouched: true } });
         } else {
@@ -84,7 +82,7 @@ const Login = (props) => {
                             />
                             <View style={styles.main}>
                                 <View style={styles.firstCol}>
-                                    <LinkText onPress={() => { props.navigation.navigate('layout'); }} styles={{ fontSize: 22 }}> SKIP </LinkText>
+                                    <LinkText onPress={() => { props.navigation.navigate('layout'); }} styles={{ fontSize: 22 }}> {constants[lang].static.skip} </LinkText>
                                 </View>
                                 <View style={styles.secondCol}>
                                     <View style={{ width: Dimensions.get('window').width / 1.5 }} >
@@ -98,7 +96,7 @@ const Login = (props) => {
                                             onEndEditing={(e) => { emialValidator(e.nativeEvent.text, true); }}
                                             autoCapitalize='none'
                                             autoCorrect={false}
-                                            label='Email'>
+                                            label={constants[lang].static.email}>
                                         </Floatinginput>
                                     </View>
                                     <View style={{ height: 20 }}>
@@ -111,7 +109,7 @@ const Login = (props) => {
                                             secureTextEntry={true}
                                             autoCapitalize='none'
                                             autoCorrect={false}
-                                            label='Password'>
+                                            label={constants[lang].static.pass}>
                                         </Floatinginput>
                                     </View>
                                     <View style={{ height: 20 }}>
@@ -119,33 +117,33 @@ const Login = (props) => {
                                     </View>
                                 </View>
                                 <View style={{ height: 20, paddingHorizontal: 22 }}>
-                                    {(props.pageState.loginStatus === 'fail' && (!Errors.emailError && !Errors.passwordError)) && <Errortext>Invalid Username or password</Errortext>}
+                                    {(props.pageState.loginStatus === 'fail' && (!Errors.emailError && !Errors.passwordError)) && <Errortext>{constants[lang].static.ivusp}</Errortext>}
                                 </View>
                                 <View style={{
                                     alignItems: 'center',
                                     marginTop: 30
                                 }}>
-                                    <PrimaryButton disabled={Errors.emailError || Errors.passwordError} onPress={() => { submit() }} style={{ width: '80%' }} title="Sign In" />
+                                    <PrimaryButton disabled={Errors.emailError || Errors.passwordError} onPress={() => { submit() }} style={{ width: '80%' }} title={constants[lang].static.singin} />
                                 </View>
                                 <View style={{
                                     alignItems: 'center',
                                     marginTop: 20
                                 }}>
-                                    <LinkText onPress={() => { props.navigation.navigate('ForgotPassword', { name: 'Jane' }) }} style={{ width: '80%' }} >Forgot Password?</LinkText>
+                                    <LinkText onPress={() => { props.navigation.navigate('ForgotPassword', { name: 'Jane' }) }} style={{ width: '80%' }} >{constants[lang].static.forpass}</LinkText>
                                 </View>
 
                                 <View style={styles.fourthCol}>
                                     <View style={[styles.lightBorder, { flex: 4 }]}></View>
-                                    <View style={{ flex: 1 }}><LightText styles={{ marginHorizontal: 9 }}> or </LightText></View>
+                                    <View style={{ flex: 1 }}><LightText styles={{ marginHorizontal: 9 }}> {constants[lang].static.or} </LightText></View>
                                     <View style={[styles.lightBorder, { flex: 4 }]}></View>
                                 </View>
 
                                 <View style={styles.fifthCol}>
-                                    <LightText>Don’t have an account?</LightText>
+                                    <LightText>{constants[lang].static.dhac}</LightText>
                                 </View>
 
                                 <View style={[styles.fifthCol, { marginTop: 20 }]}>
-                                    <LinkText onPress={() => { props.navigation.navigate('SignUp') }}>Click Here to Register</LinkText>
+                                    <LinkText onPress={() => { props.navigation.navigate('SignUp') }}>{constants[lang].static.chtr}</LinkText>
                                 </View>
                             </View>
                         </ScrollView>

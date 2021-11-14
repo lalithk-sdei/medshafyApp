@@ -20,6 +20,7 @@ import PrimaryButton from '../common/elements/primaryButton';
 import { AntDesign } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import LinkText from '../common/elements/linktext';
+import { constants } from '../../utlits/constants';
 
 const MyInvoices = (props) => {
     const logout = async () => {
@@ -33,6 +34,7 @@ const MyInvoices = (props) => {
         } catch (e) { }
     }
 
+    const { lang } = props;
 
     React.useEffect(() => {
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -55,13 +57,13 @@ const MyInvoices = (props) => {
                             <View style={{ flex: 1 }}>
                                 {/* <Ionicons onPress={() => { props.navigation.navigate('myOrders'); }} name="arrow-back" size={24} color="black" /> */}
                             </View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title="Invoice" /></View>
+                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.Invoice} /></View>
                             <View style={{ flex: 1 }}></View>
                         </View>
                         {!props.user.loggedin ? <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <View style={{}}>
                                 <React.Fragment>
-                                    {<RegularText>Please <LinkText onPress={() => { props.navigation.navigate('login'); }}>login</LinkText> to access your invoices</RegularText>}
+                                    {<RegularText>{constants[lang].static.pls} <LinkText onPress={() => { props.navigation.navigate('login'); }}>{constants[lang].static.lgn}</LinkText> {constants[lang].static.tayi}</RegularText>}
                                 </React.Fragment>
                             </View>
                         </View> :
@@ -72,7 +74,7 @@ const MyInvoices = (props) => {
                                             <View >
                                                 <View style={{ flexDirection: 'column' }}>
                                                     <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>{constants[lang].static.curr} 306.00</Text>
                                                 </View>
                                             </View>
                                             <View>
@@ -88,7 +90,7 @@ const MyInvoices = (props) => {
                                                             justifyContent: 'center',
                                                             alignItems: 'center'
                                                         }}>
-                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> {constants[lang].static.download} </Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
@@ -100,7 +102,7 @@ const MyInvoices = (props) => {
                                             <View >
                                                 <View style={{ flexDirection: 'column' }}>
                                                     <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>{constants[lang].static.curr} 306.00</Text>
                                                 </View>
                                             </View>
                                             <View>
@@ -116,7 +118,7 @@ const MyInvoices = (props) => {
                                                             justifyContent: 'center',
                                                             alignItems: 'center'
                                                         }}>
-                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> {constants[lang].static.download}</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
@@ -128,7 +130,7 @@ const MyInvoices = (props) => {
                                             <View >
                                                 <View style={{ flexDirection: 'column' }}>
                                                     <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>{constants[lang].static.curr} 306.00</Text>
                                                 </View>
                                             </View>
                                             <View>
@@ -144,7 +146,7 @@ const MyInvoices = (props) => {
                                                             justifyContent: 'center',
                                                             alignItems: 'center'
                                                         }}>
-                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> {constants[lang].static.download}</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
@@ -156,7 +158,7 @@ const MyInvoices = (props) => {
                                             <View >
                                                 <View style={{ flexDirection: 'column' }}>
                                                     <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, color: '#2F33A4' }}>21 June 2020</Text>
-                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>SAR 306.00</Text>
+                                                    <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 15, marginTop: 10 }}>{constants[lang].static.curr} 306.00</Text>
                                                 </View>
                                             </View>
                                             <View>
@@ -172,14 +174,13 @@ const MyInvoices = (props) => {
                                                             justifyContent: 'center',
                                                             alignItems: 'center'
                                                         }}>
-                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> Download</Text>
+                                                            <Text style={{ fontFamily: 'QuasimodaMedium', fontSize: 13 }}> {constants[lang].static.download}</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
                                         </View>
                                     </View>
-
                                     {/* <View style={[styles.card, { padding: 0 }]}>
                                     <View style={{ paddingHorizontal: 15, paddingTop: 15, flexDirection: 'row', paddingBottom: 15 }}>
                                         <MaterialIcons name="credit-card" size={24} color="black" />
@@ -253,7 +254,8 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    lang: state.common.lang,
 });
 
 

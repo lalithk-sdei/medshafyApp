@@ -30,9 +30,9 @@ const ForgotPassword = (props) => {
             setCncode('+966');
         }
     }
-
+    const { lang } = props;
     const mobilealdator = (e = null, tch = false) => {
-        const { lang } = props;
+
         if (["", null, undefined].includes(e)) {
             setFormState({ ...formstate, phErr: true, phErrMsg: constants[lang].errors.phonereq, phVal: e, ...tch && { phTch: true } });
         } else if (`${e}`.length != 10) {
@@ -82,11 +82,11 @@ const ForgotPassword = (props) => {
                             </View>
                             <View style={styles.secondcol}>
                                 <View style={{ marginBottom: 23 }}>
-                                    <FirstHead>Forgot Password</FirstHead>
+                                    <FirstHead>{constants[lang].static.forpass}</FirstHead>
                                 </View>
                             </View>
                             <View style={styles.thirdCol}>
-                                <LightText>A verification code will be sent to the email address. Please verify your email by entering the code on the next screen.</LightText>
+                                <LightText>{constants[lang].static.avcwbste}</LightText>
                             </View>
                             <View style={styles.fourth}>
                                 <View style={{ flex: 1 }}>
@@ -126,7 +126,7 @@ const ForgotPassword = (props) => {
                                             keyboardType={'phone-pad'}
                                             autoCorrect={false}
                                             maxLength={10}
-                                            label='Mobile Number'>
+                                            label={constants[lang].static.mobileno}>
                                         </Floatinginput>
                                     </View>
                                     <View style={{ height: 20 }}>
@@ -141,7 +141,7 @@ const ForgotPassword = (props) => {
                             }}>
                                 <PrimaryButton disabled={formstate.phErr} onPress={() => {
                                     submit();
-                                }} style={{ width: '80%' }} title="Submit" />
+                                }} style={{ width: '80%' }} title={constants[lang].static.submit} />
                             </View>
                         </View>
                     </ScrollView>

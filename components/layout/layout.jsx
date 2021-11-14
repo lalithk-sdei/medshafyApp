@@ -13,10 +13,12 @@ import mycart from '../cart/mycart';
 import MyInvoices from "../invoices/invoice";
 import { GetCartForUser } from '../../dataStore/actions/cart';
 import { connect } from 'react-redux';
+import { constants } from '../../utlits/constants';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs({ cartData = [] }) {
+function MyTabs({ cartData = [], lang }) {
+
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -30,7 +32,7 @@ function MyTabs({ cartData = [] }) {
           name="Home"
           component={Home}
           options={{
-            tabBarLabel: 'Home',
+            tabBarLabel: constants[lang].static.home,
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="home" color={color} size={size} />
               <Feather name="home" size={size} color={color} />
@@ -41,7 +43,7 @@ function MyTabs({ cartData = [] }) {
           name="Invoice"
           component={MyInvoices}
           options={{
-            tabBarLabel: 'Invoice',
+            tabBarLabel: constants[lang].static.Invoice,
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="file" />
               <AntDesign name="filetext1" color={color} size={size} />
@@ -52,7 +54,7 @@ function MyTabs({ cartData = [] }) {
           name="Profile"
           component={ProfilelandngPage}
           options={{
-            tabBarLabel: 'Profile',
+            tabBarLabel: constants[lang].static.Profile,
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="account" />
               // <AntDesign name="profile" color={color} size={size} />
@@ -64,7 +66,7 @@ function MyTabs({ cartData = [] }) {
           name="Cart"
           component={mycart}
           options={{
-            tabBarLabel: 'Cart',
+            tabBarLabel: constants[lang].static.cart,
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="cart" color={color} size={size} />
               <React.Fragment>
@@ -112,7 +114,8 @@ export function Layout(props) {
 
 const mapStateToProps = (state) => ({
   user: state.user,
-  cart: state.cart
+  cart: state.cart,
+  lang: state.common.lang,
 });
 
 
