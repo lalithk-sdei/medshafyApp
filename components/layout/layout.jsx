@@ -17,7 +17,7 @@ import { constants } from '../../utlits/constants';
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs({ cartData = [], lang }) {
+function MyTabs({ cartData = [], lang = "en" }) {
 
   return (
     <React.Fragment>

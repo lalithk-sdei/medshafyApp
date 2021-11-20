@@ -12,18 +12,21 @@ export const uploadStoredoc = (body, done) => async (dispatch) => {
     }
 }
 
-export const registerUser = (body) => async (dispatch) => {
+export const registerUser = (body, done) => async (dispatch) => {
     dispatch({ type: SET_SIGNUP_PROCESS, payload: true });
     try {
         let res = await users.registerUser(body);
         if (res.data && res.code === 200) {
             dispatch(login({ email: body.email, password: body.password }));
             dispatch({ type: SET_SIGNUP_STATUS, payload: 'ok' });
+            done(res);
         } else {
             dispatch({ type: SET_SIGNUP_STATUS, payload: 'fail' });
+            done(res);
         }
         dispatch({ type: SET_SIGNUP_PROCESS, payload: false });
     } catch (error) {
+        done(error);
         dispatch({ type: SET_SIGNUP_STATUS, payload: 'fail' });
         dispatch({ type: SET_SIGNUP_PROCESS, payload: false });
     }

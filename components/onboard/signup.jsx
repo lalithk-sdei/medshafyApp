@@ -169,8 +169,45 @@ const SignUp = (props) => {
                     isActive: false,
                     StoreImages: res.map((e) => e.data),
                     phoneNumber: `${cncode}${phVal}`
-                });
-            }).then((err) => { })
+                }, ((responseData) => {
+                    console.log(responseData);
+                    if (responseData.code == 400 && responseData.message == "ERR_EMAIL_ALREADY_TAKEN") {
+                        setTimeout(() => {
+                            Alert.alert(
+                                'Invalid Email',
+                                'This email has already used. please use other email or try login.',
+                                [
+                                    { text: 'okay', onPress: () => { } },
+                                    // { text: 'login', onPress: () => { props.navigation.navigate('login'); } }
+                                ],
+                            );
+                        }, 100);
+                    } else if (responseData.code !== 200) {
+                        setTimeout(() => {
+                            Alert.alert(
+                                constants[lang].errors.oops,
+                                constants[lang].errors.swwptast,
+                                [
+                                    { text: constants[lang].errors.ok, onPress: () => { } },
+                                ],
+                            );
+                        }, 100);
+                    }
+                }));
+            }).then((respData) => {
+
+            }).catch((err) => {
+                console.log(err);
+                setTimeout(() => {
+                    Alert.alert(
+                        constants[lang].errors.oops,
+                        constants[lang].errors.swwptast,
+                        [
+                            { text: constants[lang].errors.ok, onPress: () => { } },
+                        ],
+                    );
+                }, 100);
+            })
         }, 10);
     }
 
@@ -428,7 +465,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    signup: (body) => { dispatch(registerUser(body)) },
+    signup: (body, done) => { dispatch(registerUser(body, done)) },
     uploadStorImages: (body, done) => { dispatch(uploadStoredoc(body, done)) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
