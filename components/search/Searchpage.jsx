@@ -180,7 +180,7 @@ const Searchpage = (props) => {
                         top: '30%',
                         left: '5%',
                         borderRadius: 10
-                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
+                    }}><CartQty lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <ScrollView>
                         <Spinner
                             color={"#9F9FA2"}
@@ -236,7 +236,7 @@ const Searchpage = (props) => {
                                                         listMode="MODAL"
                                                         open={open}
                                                         value={cat}
-                                                        items={CatData.map((e) => ({ label: e.name, value: e._id }))}
+                                                        items={CatData.map((e) => ({ label: lang === 'ar' ? e.arabicName : e.name, value: e._id }))}
                                                         setOpen={setOpen}
                                                         setValue={(setCat)}
                                                         setItems={setItems}
@@ -298,7 +298,7 @@ const Searchpage = (props) => {
                                                                     onpressfav={(type) => { favEvent(item, type) }}
                                                                     img={item.mainImage ? item.mainImage.mediumUrl : img}
                                                                     mrp={item.price} salePrice={item.salePrice}
-                                                                    name={item.name} />
+                                                                    name={lang === 'ar' ? item.arabicName : item.name} />
                                                             </View>)}
                                                             keyExtractor={item => item._id}
                                                         />

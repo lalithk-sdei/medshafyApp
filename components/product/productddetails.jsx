@@ -37,7 +37,7 @@ const ProductDetails = (props) => {
         return d[0];
     }
 
-    const { offeredPrices = [], mainImage = null, salePrice = 0, price = 10, name = "Product", from, val, brand, model, country, description, _id } = props.route.params;
+    const { offeredPrices = [], mainImage = null, salePrice = 0, price = 10, name = "Product", arabicName = "", from, val, brand, model, country, description, descriptionArabic, _id } = props.route.params;
 
     const [openQty, setOIpenQty] = React.useState(false);
     const [qtys, setQtys] = React.useState(false);
@@ -179,7 +179,7 @@ const ProductDetails = (props) => {
                         top: '30%',
                         left: '5%',
                         borderRadius: 10
-                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
+                    }}><CartQty lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <ScrollView>
                         <Spinner
                             color={"#9F9FA2"}
@@ -258,7 +258,7 @@ const ProductDetails = (props) => {
                                     }
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 30 }} >
-                                    <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24 }}>{name}</Text>
+                                    <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24 }}>{lang === 'ar' ? arabicName : name}</Text>
                                 </View>
                                 {/* <View style={{ marginLeft: 43, marginTop: 5 }} >
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>
@@ -278,7 +278,7 @@ const ProductDetails = (props) => {
                                         {offeredPrices.length > 0 ?
                                             <TouchableOpacity onPress={() => { cartPressed() }}>
                                                 <View style={{ flexDirection: 'row', borderRadius: 5, justifyContent: 'space-between', marginBottom: 15, backgroundColor: '#E2E7E6', padding: 8 }}>
-                                                    <Text style={{ width: '85%' }} numberOfLines={1}>{selQty != null ? selQty._id == 'def' ? 'single' : selQty.qtyname : "Choose Quantity"}</Text>
+                                                    <Text style={{ width: '85%' }} numberOfLines={1}>{selQty != null ? (selQty._id == 'def' ? constants[lang].static.single : (lang === 'ar' ? selQty.qtynameArabic : selQty.qtyname)) : "Choose Quantity"}</Text>
                                                     <AntDesign name="down" size={20} color="black" />
                                                 </View>
                                             </TouchableOpacity> : null}
@@ -368,10 +368,10 @@ const ProductDetails = (props) => {
                             </View>
                             <View style={{ paddingLeft: 43, paddingTop: 20, paddingBottom: 20, marginTop: 30, backgroundColor: 'white', flexDirection: 'column' }}>
                                 <View>
-                                    <TitleText title={`Product Name : ${name}`}></TitleText>
+                                    <TitleText title={`Product Name : ${lang === 'ar' ? arabicName : name}`}></TitleText>
                                 </View>
                                 <View style={{ marginTop: 15 }}>
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} :  {brand} </Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} : {brand} </Text>
                                 </View>
                                 <View >
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
@@ -380,7 +380,7 @@ const ProductDetails = (props) => {
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
                                 </View>
                                 <View style={{ marginTop: 20 }}>
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}> {description} </Text>
+                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}> {lang === 'ar' ? descriptionArabic : description} </Text>
                                 </View>
                             </View>
                         </View>

@@ -271,9 +271,11 @@ const Checkout = (props) => {
                                                                 />
                                                             </View>
                                                             <View style={{ flex: 1, justifyContent: 'center' }}>
-                                                                <RegularText nolines={1}>{pro.prodId.name}</RegularText>
+                                                                <RegularText nolines={1}>
+                                                                    {lang === 'ar' ? pro.prodId.arabicName : pro.prodId.name}
+                                                                    { }</RegularText>
                                                                 {pro.prodQty != 'def' ? <Text style={{ fontFamily: 'Quasimoda', fontSize: 14, color: '#3F3F46' }} nolines={1}>
-                                                                    {getPriceName(pro)}
+                                                                    {getPriceName(pro, props.lang)}
                                                                 </Text> : null}
                                                                 <TitleText title={`SAR ${getPriceval(pro)}`} />
                                                                 <Text style={{ fontFamily: 'Quasimoda', fontSize: 14, color: '#3F3F46' }} nolines={1}>{constants[lang].static.qty} : {pro.qty}</Text>

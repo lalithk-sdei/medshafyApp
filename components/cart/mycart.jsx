@@ -93,7 +93,12 @@ const MyCart = (props) => {
         if (d.length == 0) {
             cartUpdate({ ...prod, qty: 1 }, 'dec');
         }
-        return d[0].qtyname;
+        if (lang === 'ar') {
+            return d[0].qtynameArabic
+        } else {
+            return d[0].qtyname;
+        }
+
     }
 
     const getPriceval = (prod) => {
@@ -136,7 +141,7 @@ const MyCart = (props) => {
                         top: '30%',
                         left: '5%',
                         borderRadius: 10
-                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
+                    }}><CartQty lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
                         visible={cartprocess}
@@ -171,7 +176,7 @@ const MyCart = (props) => {
                                             />
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
-                                            <RegularText nolines={1}>{pro.prodId.name}</RegularText>
+                                            <RegularText nolines={1}>{lang === 'ar' ? pro.prodId.arabicName : pro.prodId.name}</RegularText>
                                             {pro.prodQty != 'def' ? <Text style={{ fontFamily: 'Quasimoda', fontSize: 14, color: '#3F3F46' }} nolines={1}>
                                                 {getPriceName(pro)}
                                             </Text> : null}

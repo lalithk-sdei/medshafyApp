@@ -55,7 +55,7 @@ const Choselanguage = (props) => {
                     </View>
                 </View>
                 <View style={styles.langContainer}>
-                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('en') }}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('ar') }}>
                         <View style={styles.langInp}>
                             <View style={{ flex: 1 }}>
                                 <Image style={{ width: 35, height: 28 }} source={require('../../assets/images/arabicflag.png')} />

@@ -2,17 +2,19 @@ import React, { useState } from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, TouchableNativeFeedback, ScrollView } from 'react-native';
 import RadioButton from './radiobutton';
 import { AntDesign } from '@expo/vector-icons';
+import { constants } from '../../../utlits/constants';
 
 const CartQty = ({
     onPress = () => { },
     close = () => { },
-    qtys = []
+    qtys = [],
+    lang = 'en'
 }) => {
     const [pressed, setpressed] = useState(false)
     return <View>
         <View style={{ flexDirection: 'column' }}>
             <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ddd6d6', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text numberOfLines={1} style={{ fontFamily: 'Quasimodasemibold', fontSize: 18 }}>Choose an Option...</Text>
+                <Text numberOfLines={1} style={{ fontFamily: 'Quasimodasemibold', fontSize: 18 }}>{constants[lang].static.chosqty}</Text>
                 <AntDesign onPress={() => { close() }} name="closecircleo" size={24} color="black" />
             </View>
             <View style={{ maxHeight: 250, }}>
@@ -21,7 +23,7 @@ const CartQty = ({
                         <View key={"XCD"} style={{ padding: 15, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#ddd6d6' }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View>
-                                    <Text style={{ fontFamily: 'Quasimodasemibold', fontSize: 16, marginRight: 40 }}>Single</Text>
+                                    <Text style={{ fontFamily: 'Quasimodasemibold', fontSize: 16, marginRight: 40 }}>{constants[lang].static.single}</Text>
                                 </View>
                                 <View><RadioButton selected={pressed}></RadioButton></View>
                             </View>
@@ -31,7 +33,7 @@ const CartQty = ({
                         <View style={{ padding: 15, paddingBottom: 10, borderBottomWidth: 1, borderBottomColor: '#ddd6d6' }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <View>
-                                    <Text style={{ fontFamily: 'Quasimodasemibold', fontSize: 16, marginRight: 40 }}>{e.qtyname} - SAR {e.OfferdPrice}</Text>
+                                    <Text style={{ fontFamily: 'Quasimodasemibold', fontSize: 16, marginRight: 40 }}>{lang === 'ar' ? e.qtynameArabic : e.qtyname} - SAR {e.OfferdPrice}</Text>
                                 </View>
                                 <View><RadioButton selected={pressed}></RadioButton></View>
                             </View>

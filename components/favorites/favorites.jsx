@@ -190,7 +190,7 @@ const Favorites = (props) => {
                         top: '30%',
                         left: '5%',
                         borderRadius: 10
-                    }}><CartQty qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
+                    }}><CartQty  lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
                         visible={favprocess || cartprocess}
@@ -304,7 +304,7 @@ const Favorites = (props) => {
                                                                             img={item.mainImage != null ? item.mainImage.fileUrl : img}
                                                                             mrp={item.price}
                                                                             salePrice={item.salePrice}
-                                                                            name={item.name} />
+                                                                            name={lang === 'ar' ? item.arabicName : item.name} />
                                                                     </View>}
                                                                     keyExtractor={item => item._id}
                                                                     numColumns={2}
@@ -336,7 +336,7 @@ const Favorites = (props) => {
                                                                             img={item.mainImage != null ? item.mainImage.fileUrl : img}
                                                                             mrp={item.price}
                                                                             salePrice={item.salePrice}
-                                                                            name={item.name} />
+                                                                            name={lang === 'ar' ? item.arabicName : item.name} />
                                                                     </View>}
                                                                     keyExtractor={item => item._id}
                                                                 />

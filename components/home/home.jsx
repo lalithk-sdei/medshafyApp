@@ -309,7 +309,7 @@ const Home = (props) => {
                                                             img={item.prodId.mainImage != null ? item.prodId.mainImage.fileUrl : img}
                                                             mrp={item.prodId.price}
                                                             salePrice={item.prodId.salePrice}
-                                                            name={item.prodId.name}
+                                                            name={lang === 'ar' ? item.prodId.arabicName : item.prodId.name}
                                                         />
                                                     </View>
                                                 )}
@@ -334,7 +334,7 @@ const Home = (props) => {
                                                             img={item.mainImage != null ? item.mainImage.fileUrl : img}
                                                             mrp={item.price}
                                                             salePrice={item.salePrice}
-                                                            name={item.name}
+                                                            name={lang === 'ar' ? item.arabicName : item.name}
                                                         />
                                                     </View>
                                                 )}
@@ -352,7 +352,7 @@ const Home = (props) => {
                                         <View style={{ flexDirection: 'row', marginTop: 30 }}>
                                             <FlatList
                                                 data={CatData.filter((e) => e.isTopCategory)}
-                                                renderItem={({ item }) => <View style={{ flex: 1, marginRight: 17, marginBottom: 15 }}><ProductBox onPress={() => { props.navigation.navigate('Categories', { cat: item }); }} isCategory={true} img={item.mainImage ? item.mainImage.mediumUrl : img} name={item.name} /></View>}
+                                                renderItem={({ item }) => <View style={{ flex: 1, marginRight: 17, marginBottom: 15 }}><ProductBox onPress={() => { props.navigation.navigate('Categories', { cat: item }); }} isCategory={true} img={item.mainImage ? item.mainImage.mediumUrl : img} name={lang === 'ar' ? item.arabicName : item.name} /></View>}
                                                 keyExtractor={item => item._id}
                                                 numColumns={2}
                                                 columnWrapperStyle={{
@@ -364,7 +364,7 @@ const Home = (props) => {
                                         <View style={{ flexDirection: 'row', marginTop: 20 }}>
                                             <FlatList
                                                 data={CatData.filter((e) => !e.isTopCategory)}
-                                                renderItem={({ item }) => <View style={{ flex: 0.5, marginRight: 17, marginBottom: 15 }}><ProductBox onPress={() => { props.navigation.navigate('Categories', { cat: item }); }} isCategory={true} img={item.mainImage ? item.mainImage.mediumUrl : img} name={item.name} /></View>}
+                                                renderItem={({ item }) => <View style={{ flex: 0.5, marginRight: 17, marginBottom: 15 }}><ProductBox onPress={() => { props.navigation.navigate('Categories', { cat: item }); }} isCategory={true} img={item.mainImage ? item.mainImage.mediumUrl : img} name={lang === 'ar' ? item.arabicName : item.name} /></View>}
                                                 keyExtractor={item => item._id}
                                                 numColumns={4}
                                                 columnWrapperStyle={{
