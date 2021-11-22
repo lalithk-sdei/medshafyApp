@@ -171,7 +171,7 @@ const Categories = (props) => {
                         top: '30%',
                         left: '5%',
                         borderRadius: 10
-                    }}><CartQty  lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
+                    }}><CartQty lang={lang} qtys={qtys} close={() => { setOIpenQty(false); }} onPress={(val) => { cartQtyRecived(val); setOIpenQty(false); }} /></View> : null}
                     <Spinner
                         color={"#9F9FA2"}
                         visible={Prodprocess || Catprocess || favprocess || cartprocess}
@@ -284,6 +284,7 @@ const Categories = (props) => {
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item, index }) => <View style={{ flex: 1, marginRight: 10, marginBottom: item.ind == ProdData.items.length ? 200 : 20 }}>
                                                                         <ProductBoxOne
+                                                                            lang={lang}
                                                                             cartData={{
                                                                                 inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
                                                                                 cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
@@ -314,6 +315,7 @@ const Categories = (props) => {
                                                                     data={ProdData.items.map((e, i) => ({ ...e, ind: i + 1 }))}
                                                                     renderItem={({ item }) => <View style={{ marginBottom: item.ind == ProdData.items.length ? 200 : 15 }}>
                                                                         <ProductCard
+                                                                            lang={lang}
                                                                             cartData={{
                                                                                 inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
                                                                                 cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
@@ -400,7 +402,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     fav: state.fav,
     cart: state.cart,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 });
 
 

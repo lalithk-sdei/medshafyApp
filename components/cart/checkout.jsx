@@ -401,7 +401,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     cart: state.cart,
     address: state.address,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 });
 
 

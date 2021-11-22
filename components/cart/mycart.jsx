@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     user: state.user,
     cart: state.cart,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 
 });
 

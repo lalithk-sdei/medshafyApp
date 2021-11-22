@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     cat: state.category,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
     fav: state.fav,
     user: state.user,
     order: state.order

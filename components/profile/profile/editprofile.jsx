@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
     user: state.user
 });
 

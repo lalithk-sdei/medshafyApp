@@ -3,6 +3,7 @@ import { Text, StyleSheet, View, Image, TouchableOpacity, Dimensions, Platform }
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 import { EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { constants } from '../../../utlits/constants';
 const ProductBoxOne = ({
     onPress = () => { },
     img = "",
@@ -17,7 +18,8 @@ const ProductBoxOne = ({
     cartData = {
         inCart: false,
         cartValues: null
-    }
+    },
+    lang = "en"
 }) => {
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
     return <TouchableOpacity onPress={() => { onPress() }}>
@@ -144,7 +146,7 @@ const ProductBoxOne = ({
                                                 fontFamily: 'Quasimodabold',
                                                 fontWeight: 'bold',
                                                 color: 'black'
-                                            }}>View Details</Text>
+                                            }}>{constants[lang].static.viewDetails}</Text>
                                         </View>
                                         {/* <View style={{
                                         flex: 1.5,

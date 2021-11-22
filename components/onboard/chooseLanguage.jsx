@@ -18,7 +18,9 @@ const Choselanguage = (props) => {
         try {
             await AsyncStorage.setItem('userLang', `${selected}`);
             props.setLangFn();
-            props.navigation.navigate('login', { lang: `${selected}` });
+            setTimeout(() => {
+                props.navigation.navigate('login', { lang: `${selected}` });
+            }, 20);
         } catch (e) {
             // saving error
         }

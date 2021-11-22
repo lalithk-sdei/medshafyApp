@@ -140,7 +140,13 @@ export const constants = {
             results: "results",
             for: "for",
             chosqty: "Choose an Option...",
-            single:"Single"
+            single: "Single",
+            AdrBk: "Address Book",
+            favPros: "Favourite Products",
+            Logout: "Logout",
+            chosQtyPlace: "Choose Quantity",
+            addToCart: "Add to cart",
+            viewDetails: "View Details"
         }
     },
     ar: {
@@ -284,7 +290,13 @@ export const constants = {
             results: "نتيجه",
             for: "لأجل",
             chosqty: "إختر خيار",
-            single:"غير مرتبطة"
+            single: "غير مرتبطة",
+            AdrBk: "دليل العناوين",
+            favPros: "المنتجات المفضلة",
+            Logout: "تسجيل خروج",
+            chosQtyPlace: "اختر الكمية",
+            addToCart: "أضف إلى السلة",
+            viewDetails: "عرض التفاصيل"
         }
     }
 }

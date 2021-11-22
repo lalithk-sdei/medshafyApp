@@ -278,7 +278,7 @@ const ProductDetails = (props) => {
                                         {offeredPrices.length > 0 ?
                                             <TouchableOpacity onPress={() => { cartPressed() }}>
                                                 <View style={{ flexDirection: 'row', borderRadius: 5, justifyContent: 'space-between', marginBottom: 15, backgroundColor: '#E2E7E6', padding: 8 }}>
-                                                    <Text style={{ width: '85%' }} numberOfLines={1}>{selQty != null ? (selQty._id == 'def' ? constants[lang].static.single : (lang === 'ar' ? selQty.qtynameArabic : selQty.qtyname)) : "Choose Quantity"}</Text>
+                                                    <Text style={{ width: '85%' }} numberOfLines={1}>{selQty != null ? (selQty._id == 'def' ? constants[lang].static.single : (lang === 'ar' ? selQty.qtynameArabic : selQty.qtyname)) : constants[lang].static.chosQtyPlace}</Text>
                                                     <AntDesign name="down" size={20} color="black" />
                                                 </View>
                                             </TouchableOpacity> : null}
@@ -344,7 +344,7 @@ const ProductDetails = (props) => {
                                                                 fontFamily: 'Quasimodabold',
                                                                 fontWeight: 'bold',
                                                                 color: 'black'
-                                                            }}>Add to card</Text>
+                                                            }}>{constants[lang].static.addToCart}</Text>
                                                         </View>
                                                         <View style={{
                                                             flex: 1.5,
@@ -405,7 +405,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     fav: state.fav,
     cart: state.cart,
-    lang: state.common.lang
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 });
 
 

@@ -26,7 +26,7 @@ const Login = (props) => {
     const [email, setemail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [alertOpen, setIsalertOpen] = React.useState(false);
-    const { lang } = props;
+    const { lang = props.route.params.lang } = props;
     const emialValidator = (e = null, touched = false) => {
         setemail(e);
         if (["", null, undefined].includes(e)) {
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
     pageState: state.user
 });
 

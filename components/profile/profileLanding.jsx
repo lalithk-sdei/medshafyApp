@@ -23,12 +23,10 @@ const ProfilelandngPage = (props) => {
             const a = await AsyncStorage.removeItem('userLang');
             const b = await AsyncStorage.removeItem('loggedin');
             const c = await AsyncStorage.removeItem('token');
-            // if (a && b && c) {
             setLogfr(true);
+            props.navigation.navigate('Choselanguage');
             props.logoutFn();
             props.resetAll();
-            props.navigation.navigate('Choselanguage');
-            // }
         } catch (e) {
         }
     }
@@ -69,7 +67,7 @@ const ProfilelandngPage = (props) => {
                                         <View style={styles.card}>
                                             <View style={styles.cardIcon}><FontAwesome name="user-o" color={'#3F3F46'} size={20} /></View>
                                             <View style={styles.CardTextDiv}>
-                                                <Text style={styles.CardtextStyle}>My Profile</Text>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.MyPrf}</Text>
                                             </View>
                                             <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
@@ -81,7 +79,7 @@ const ProfilelandngPage = (props) => {
                                         <View style={styles.card}>
                                             <View style={styles.cardIcon}><MaterialCommunityIcons name="clipboard-text-outline" size={26} color="#3F3F46" /></View>
                                             <View style={styles.CardTextDiv}>
-                                                <Text style={styles.CardtextStyle}>My Order</Text>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.myOrds}</Text>
                                             </View>
                                             <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
@@ -93,7 +91,7 @@ const ProfilelandngPage = (props) => {
                                         <View style={styles.card}>
                                             <View style={styles.cardIcon}><Octicons name="location" color={'#3F3F46'} size={25} /></View>
                                             <View style={styles.CardTextDiv}>
-                                                <Text style={styles.CardtextStyle}>Address Book</Text>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.AdrBk}</Text>
                                             </View>
                                             <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
@@ -105,7 +103,7 @@ const ProfilelandngPage = (props) => {
                                         <View style={styles.card}>
                                             <View style={styles.cardIcon}><MaterialIcons name="favorite-outline" color={'#3F3F46'} size={26} /></View>
                                             <View style={styles.CardTextDiv}>
-                                                <Text style={styles.CardtextStyle}>Favourite Products</Text>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.favPros}</Text>
                                             </View>
                                             <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
@@ -117,14 +115,14 @@ const ProfilelandngPage = (props) => {
                                         <View style={styles.card}>
                                             <View style={styles.cardIcon}><Entypo name="back-in-time" size={24} color="black" /></View>
                                             <View style={styles.CardTextDiv}>
-                                                <Text style={styles.CardtextStyle}>Buy Again</Text>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.buyagain}</Text>
                                             </View>
                                             <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
                                             </View>
                                         </View>
                                         <View style={{ marginVertical: 10 }}>
-                                            <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={'Logout'} onPress={() => { logout(); }}></SecondaryBtn>
+                                            <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={constants[lang].static.Logout} onPress={() => { logout(); }}></SecondaryBtn>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -194,7 +192,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 });
 
 

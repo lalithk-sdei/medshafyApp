@@ -287,6 +287,7 @@ const Searchpage = (props) => {
                                                             data={br.split('-').length == 2 ? ProdData.items.filter((e) => e.brand == br.split('-')[1]) : ProdData.items}
                                                             renderItem={({ item }) => (<View style={{ marginBottom: 15 }}>
                                                                 <ProductCard
+                                                                    lang={lang}
                                                                     cartData={{
                                                                         inCart: (cartData || []).map((e) => e.prodId._id).includes(item._id),
                                                                         cartValues: (cartData || []).filter((e) => e.prodId._id == item._id),
@@ -377,7 +378,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     fav: state.fav,
     cart: state.cart,
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
 });
 
 

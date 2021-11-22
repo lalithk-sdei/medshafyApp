@@ -170,7 +170,6 @@ const SignUp = (props) => {
                     StoreImages: res.map((e) => e.data),
                     phoneNumber: `${cncode}${phVal}`
                 }, ((responseData) => {
-                    console.log(responseData);
                     if (responseData.code == 400 && responseData.message == "ERR_EMAIL_ALREADY_TAKEN") {
                         setTimeout(() => {
                             Alert.alert(
@@ -197,7 +196,6 @@ const SignUp = (props) => {
             }).then((respData) => {
 
             }).catch((err) => {
-                console.log(err);
                 setTimeout(() => {
                     Alert.alert(
                         constants[lang].errors.oops,
@@ -460,7 +458,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang,
+    lang: state.common.lang ?  state.common.lang : 'en' ,
     pageState: state.user
 });
 

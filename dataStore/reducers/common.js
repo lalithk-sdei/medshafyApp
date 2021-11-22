@@ -3,7 +3,7 @@ import { RESET_DATA, SET_LANG } from "../types/types";
 
 
 const initialData = {
-    lang: 'en',
+    lang: null,
 };
 
 export default function (state = initialData, action) {

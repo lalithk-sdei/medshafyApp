@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import { constants } from '../../../utlits/constants';
 const ProductCard = ({
     onPress = () => { },
     img = "",
@@ -16,7 +17,8 @@ const ProductCard = ({
     cartData = {
         inCart: false,
         cartValues: null
-    }
+    },
+    lang = "en"
 }) => {
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
     return <View>
@@ -129,7 +131,7 @@ const ProductCard = ({
                         </View>
                     </React.Fragment> :
                         <React.Fragment>
-                            <TouchableOpacity onPress={() => {  onPress(); }}>
+                            <TouchableOpacity onPress={() => { onPress(); }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <View style={{
                                         flex: 4,
@@ -145,7 +147,7 @@ const ProductCard = ({
                                             fontFamily: 'Quasimodabold',
                                             fontWeight: 'bold',
                                             color: 'black'
-                                        }}>View Details</Text>
+                                        }}>{constants[lang].static.viewDetails}</Text>
                                     </View>
                                     {/* <View style={{
                                         flex: 1.5,

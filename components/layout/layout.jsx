@@ -18,7 +18,6 @@ import { constants } from '../../utlits/constants';
 const Tab = createBottomTabNavigator();
 
 function MyTabs({ cartData = [], lang = "en" }) {
-
   return (
     <React.Fragment>
       <Tab.Navigator
@@ -101,13 +100,17 @@ function MyTabs({ cartData = [], lang = "en" }) {
 
 export function Layout(props) {
   const { cartprocess, cartStatus, cartData } = props.cart;
+  const { lang } = props;
   React.useEffect(() => {
     if (cartData.length == 0 && props.user.loggedin) {
       props.loadCart();
     }
   }, []);
   return (
-    <MyTabs cartData={cartData} />
+    <MyTabs
+      lang={lang}
+      cartData={cartData}
+    />
   );
 }
 
@@ -115,7 +118,7 @@ export function Layout(props) {
 const mapStateToProps = (state) => ({
   user: state.user,
   cart: state.cart,
-  lang: state.common.lang,
+  lang: state.common.lang ? state.common.lang : 'en',
 });
 
 
