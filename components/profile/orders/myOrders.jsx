@@ -80,10 +80,36 @@ const MyOrders = (props) => {
                                         <View><PlaneText>Created : {new Date(ord.updatedAt).toDateString()} {new Date(ord.updatedAt).toLocaleTimeString()} </PlaneText></View>
                                         <View><PlaneText>Ship to : {ord.address ? ord.address.name : "Unknown"}</PlaneText></View>
                                     </View>
-                                    <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                    {/* Penfing for delivery */}
+                                    {ord.status === 0 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                         <MaterialCommunityIcons name="clock" size={24} color="red" />
                                         <RegularText>{"    "}{constants[lang].static.pendorDel}</RegularText>
-                                    </View>
+                                    </View> : null}
+                                    {/* Processing */}
+                                    {ord.status === 1 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <MaterialCommunityIcons name="truck-delivery" size={24} color="red" />
+                                        <RegularText>{"    "}{constants[lang].static.ordPrc}</RegularText>
+                                    </View> : null}
+                                    {/* Out for delivery */}
+                                    {ord.status === 2 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <MaterialCommunityIcons name="clock" size={24} color="red" />
+                                        <RegularText>{"    "}{constants[lang].static.outofordel}</RegularText>
+                                    </View> : null}
+                                    {/* Delvered */}
+                                    {ord.status === 3 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <MaterialIcons name="done" size={24} color="red" />
+                                        <RegularText>{"    "}{constants[lang].static.delivered}</RegularText>
+                                    </View> : null}
+                                    {/* Canceled */}
+                                    {ord.status === 4 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <MaterialIcons name="cancel" size={24} color="red" />
+                                        <RegularText>{"    "}{constants[lang].static.cancelled}</RegularText>
+                                    </View> : null}
+                                    {/* Refunded */}
+                                    {ord.status === 5 ? <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                        <MaterialCommunityIcons name="cash-refund" size={24} color="red" />
+                                        <RegularText>{"    "}{constants[lang].static.Refunded}</RegularText>
+                                    </View> : null}
                                     <View style={{ marginTop: 20 }}>
                                         <PrimaryButton onPress={() => { props.navigation.navigate('Viewproducts', ord); }} title={constants[lang].static.viewProds} />
                                     </View>
@@ -149,7 +175,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     user: state.user,
     order: state.order,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 
 });
 

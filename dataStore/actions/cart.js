@@ -1,5 +1,5 @@
 import { cart } from "../ApiServices/index";
-import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, ADD_TO_CART, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM, CLEAR_CART } from "../types/types";
+import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, ADD_TO_CART, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM, CLEAR_CART, SET_CHARGES } from "../types/types";
 
 export const GetCartForUser = () => async (dispatch) => {
     setTimeout(() => {
@@ -88,6 +88,23 @@ export const deleteCart = (body) => async (dispatch) => {
         if (res.code === 200) {
             dispatch({ type: SET_LOAD_CART_STATUS, payload: 'ok' });
             dispatch({ type: DEL_CART_ITEM, payload: body });
+        } else {
+            dispatch({ type: SET_LOAD_CART_STATUS, payload: 'fail' });
+        }
+        dispatch({ type: SET_LOAD_CART_PROCESS, payload: false });
+    } catch (error) {
+        dispatch({ type: SET_LOAD_CART_STATUS, payload: 'fail' });
+        dispatch({ type: SET_LOAD_CART_PROCESS, payload: false });
+    }
+}
+
+export const getCharges = () => async (dispatch) => {
+    dispatch({ type: SET_LOAD_CART_PROCESS, payload: true });
+    try {
+        let { code, data = [{}] } = await cart.getCharges();
+        if (code === 200) {
+            dispatch({ type: SET_LOAD_CART_STATUS, payload: 'ok' });
+            dispatch({ type: SET_CHARGES, payload: data[0] });
         } else {
             dispatch({ type: SET_LOAD_CART_STATUS, payload: 'fail' });
         }

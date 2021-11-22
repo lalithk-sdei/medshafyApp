@@ -7,6 +7,7 @@ import fav from "./fav";
 import address from "./address";
 import cart from "./cart";
 import orders from "./orders";
+import banners from "./banners";
 
 export default combineReducers({
     common: common,
@@ -16,5 +17,6 @@ export default combineReducers({
     fav: fav,
     address: address,
     cart: cart,
-    order:orders
+    order: orders,
+    banners: banners
 });

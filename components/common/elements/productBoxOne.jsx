@@ -76,8 +76,8 @@ const ProductBoxOne = ({
                     }
                 </View>
                 <View style={{ marginTop: 0, alignItems: 'center' }}>
-                    <Text numberOfLines={1} style={{ paddingHorizontal: 10, fontFamily: 'QuasimodaMedium', fontSize: 18 }}>{name}</Text>
-                    <Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text>
+                    <Text numberOfLines={1} style={{ textAlign: 'left', paddingHorizontal: 10, fontFamily: 'QuasimodaMedium', fontSize: 18 }}>{name}</Text>
+                    <Text style={{ textAlign: 'left', fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text>
                 </View>
                 <View style={{
                     margin: 15,
@@ -176,7 +176,7 @@ const ProductBoxOne = ({
                 </View>
             </View>
         </View>
-    </TouchableOpacity>
+    </TouchableOpacity >
 }
 
 const styles = StyleSheet.create({

@@ -17,6 +17,7 @@ import ApplePayBtn from '../common/elements/applyePay';
 import { addOrder } from '../../dataStore/actions/orders';
 import LinkText from '../common/elements/linktext';
 import { constants } from '../../utlits/constants';
+import { chargecutoff, getDeliveryCahrgs, getTotalAmt } from '../../utlits/helpers';
 
 const Checkout = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -24,6 +25,7 @@ const Checkout = (props) => {
     const [seladdr, setseladdr] = React.useState(null);
     const [qtys, setQtys] = React.useState(false);
     const { cartprocess, cartStatus, cartData = [] } = props.cart;
+    const { shipppingCharges = 23, vat = 14 } = props.cart.charges
 
     const cartUpdate = (cd, ope) => {
         const b = {
@@ -83,6 +85,8 @@ const Checkout = (props) => {
         cartData.map((a) => { val = val + getPriceval(a); });
         return val;
     }
+
+
 
     const { address = [], addressprocess } = props.address;
     const { lang } = props;
@@ -290,15 +294,15 @@ const Checkout = (props) => {
                                                             </View>
                                                             <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                                                 <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
-                                                                <RegularText >{constants[lang].static.curr} 0</RegularText>
+                                                                <RegularText >{constants[lang].static.curr} {chargecutoff(shipppingCharges, getSubtotal())}</RegularText>
                                                             </View>
                                                             <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                                <RegularText title={""}>{constants[lang].static.vat} (2%)</RegularText>
-                                                                <RegularText >{constants[lang].static.curr} 0</RegularText>
+                                                                <RegularText title={""}>{constants[lang].static.vat} ({vat})</RegularText>
+                                                                <RegularText >{constants[lang].static.curr} {chargecutoff(vat, getSubtotal())}</RegularText>
                                                             </View>
                                                             <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                                                 <RegularText title={""}>{constants[lang].static.total}</RegularText>
-                                                                <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${getSubtotal()}`} />
+                                                                <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${getTotalAmt(getSubtotal(), shipppingCharges, vat)}`} />
                                                             </View>
                                                         </View>
                                                     </React.Fragment> : null}
@@ -401,7 +405,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     cart: state.cart,
     address: state.address,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 
@@ -414,7 +418,8 @@ const mapDispatchToProps = dispatch => ({
     addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
     getAddressFn: () => { dispatch(getAddress()) },
     addOrderFn: (body, done) => { dispatch(addOrder(body, done)) },
-    clearCartFn: (done) => { dispatch(clearCart(done)) }
+    clearCartFn: (done) => { dispatch(clearCart(done)) },
+    getChargsFn: () => { dispatch(getCharges()) },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
 

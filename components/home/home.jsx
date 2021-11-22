@@ -24,6 +24,7 @@ import { constants } from '../../utlits/constants';
 import * as ImagePicker from 'expo-image-picker';
 import { uploadStoredoc } from '../../dataStore/actions/user';
 import { getBuyagain } from '../../dataStore/actions/orders';
+import { getBanners } from '../../dataStore/actions/banners';
 
 const Home = (props) => {
 
@@ -34,16 +35,17 @@ const Home = (props) => {
     const [search, setSearch] = React.useState("");
     const [images, setImages] = React.useState([]);
     const [specialProd, setSpecialProd] = React.useState(false);
-    const [banners, setbanners] = React.useState([
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-        'https://i.ibb.co/ncXVCBt/Screenshot-2021-10-03-at-7-49-30-PM.png',
-        'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
-        'https://i.ibb.co/ncXVCBt/Screenshot-2021-10-03-at-7-49-30-PM.png',
-    ]);
+    // const [banners, setbanners] = React.useState([
+    //     'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
+    //     'https://i.ibb.co/ncXVCBt/Screenshot-2021-10-03-at-7-49-30-PM.png',
+    //     'https://i.ibb.co/W32fQwF/Screenshot-2021-10-03-at-2-05-40-AM.png',
+    //     'https://i.ibb.co/ncXVCBt/Screenshot-2021-10-03-at-7-49-30-PM.png',
+    // ]);
 
     const img = "https://gcdn.pbrd.co/images/grEHL3gquLuy.png";
     const { Catprocess, CatStatus, CatData, } = props.cat;
     const { favprocess, favStatus, favData, } = props.fav;
+    const { banners = [] } = props.bannersProp;
     const { ordersprocess, ordersStatus, orders = [], buyAgain = [] } = props.order;
     const [time, setTime] = React.useState(null);
     const registerKey = (val) => {
@@ -127,7 +129,6 @@ const Home = (props) => {
 
 
 
-
     const submit = async () => {
         setimgPrs(true);
         const { prodNameVal, QtyVal, PriceVal, descVal } = formstate;
@@ -200,12 +201,12 @@ const Home = (props) => {
         }
     }
     React.useEffect(() => {
+        props.getBannersFn();
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         props.callCat();
         BackHandler.addEventListener('hardwareBackPress', (e) => {
             setSearch("");
         });
-
         if (isFocused) {
             if (props.user.loggedin) {
                 props.getFavs();
@@ -258,7 +259,7 @@ const Home = (props) => {
                                 <View style={styles.secondCol}>
                                     <View>
                                         <SliderBox
-                                            images={banners}
+                                            images={banners.map((e) => e.media.fileUrl)}
                                             sliderBoxHeight={200}
                                             dotColor="#FFEE58"
                                             inactiveDotColor="#90A4AE"
@@ -522,10 +523,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     cat: state.category,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
     fav: state.fav,
     user: state.user,
-    order: state.order
+    order: state.order,
+    bannersProp: state.banners
 });
 
 
@@ -534,6 +536,7 @@ const mapDispatchToProps = dispatch => ({
     getFavs: () => { dispatch(GetFavForUser()) },
     sendSplOrd: (body, done) => { dispatch(sendSpecialOrder(body, done)) },
     uploadStorImages: (body, done) => { dispatch(uploadStoredoc(body, done)) },
-    fetBuyAgainOrdersFn: () => { dispatch(getBuyagain()) }
+    fetBuyAgainOrdersFn: () => { dispatch(getBuyagain()) },
+    getBannersFn: () => { dispatch(getBanners()) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

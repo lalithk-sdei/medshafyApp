@@ -258,7 +258,7 @@ const ProductDetails = (props) => {
                                     }
                                 </View>
                                 <View style={{ marginLeft: 43, marginTop: 30 }} >
-                                    <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24 }}>{lang === 'ar' ? arabicName : name}</Text>
+                                    <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 24, textAlign: 'left' }}>{lang === 'ar' ? `${arabicName}` : name}</Text>
                                 </View>
                                 {/* <View style={{ marginLeft: 43, marginTop: 5 }} >
                                     <Text style={{ fontFamily: 'Quasimoda', fontSize: 18 }}>
@@ -371,16 +371,16 @@ const ProductDetails = (props) => {
                                     <TitleText title={`Product Name : ${lang === 'ar' ? arabicName : name}`}></TitleText>
                                 </View>
                                 <View style={{ marginTop: 15 }}>
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} : {brand} </Text>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} : {brand} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
+                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
+                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
                                 </View>
                                 <View style={{ marginTop: 20 }}>
-                                    <Text style={{ fontFamily: 'Quasimoda', fontSize: 15 }}> {lang === 'ar' ? descriptionArabic : description} </Text>
+                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}> {lang === 'ar' ? descriptionArabic : description} </Text>
                                 </View>
                             </View>
                         </View>
@@ -405,7 +405,7 @@ const mapStateToProps = (state) => ({
     user: state.user,
     fav: state.fav,
     cart: state.cart,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 

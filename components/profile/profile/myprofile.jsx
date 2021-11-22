@@ -42,29 +42,29 @@ const MyProfile = (props) => {
                             <View style={styles.body}>
                                 <View style={styles.card}>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.buissName}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.buissName}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{companyName}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.mobileno}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.mobileno}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{phoneNumber}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.email}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.email}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{email}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.Address}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.Address}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{address}</RegularText></View>
                                     </View>
                                 </View>
                                 <View style={styles.card}>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.EnoRn}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.EnoRn}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{regnumber}</RegularText></View>
                                     </View>
                                     <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16 }}>{constants[lang].static.EnoRn}</LightText></View>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.EnoRn}</LightText></View>
                                     </View>
                                     {StoreImages.length > 0 ? <View style={[styles.cardClm, { flexWrap: 'wrap' }]}>
                                         {StoreImages.map((e, ind) => <Image
@@ -79,7 +79,7 @@ const MyProfile = (props) => {
                                             }}
                                         />
                                         )}
-                                    </View> : <LightText>{constants[lang].static.NIF}</LightText>}
+                                    </View> : <LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.NIF}</LightText>}
                                 </View>
                             </View>
                         </ScrollView>
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 

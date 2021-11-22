@@ -72,7 +72,7 @@ const Viewproducts = (props) => {
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center' }}>
                                             <RegularText nolines={1}>{pro.prodName}</RegularText>
-                                            <TitleText title={`${constants[lang].static.curr} ${pro.prodPrice}`} />
+                                            <TitleText styles={{ textAlign: 'left' }} title={`${constants[lang].static.curr} ${pro.prodPrice}`} />
                                         </View>
                                     </View>
                                 </View>) : null}
@@ -87,7 +87,7 @@ const Viewproducts = (props) => {
                                     </View>
                                     <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <RegularText title={""}>{constants[lang].static.total}</RegularText>
-                                        <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${order.subTotal}`} />
+                                        <TitleText styles={{ fontSize: 17, textAlign: 'left' }} title={`${constants[lang].static.curr} ${order.subTotal}`} />
                                     </View>
                                 </View>
                                 <View style={[styles.card, { padding: 0 }]}>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 

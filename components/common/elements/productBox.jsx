@@ -64,7 +64,7 @@ const ProductBox = ({
                 }
             </View>
             <View style={{ alignItems: 'center', marginTop: 5 }}>
-                <Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 14 }}>{name}</Text>
+                <Text numberOfLines={1} style={{ textAlign: 'left', fontFamily: 'QuasimodaMedium', fontSize: 14 }}>{name}</Text>
                 {!isCategory &&
                     <Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 16, marginTop: 5 }}>SAR {salePrice}</Text>
                 }

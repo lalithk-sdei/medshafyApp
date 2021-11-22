@@ -8,15 +8,18 @@ import TitleText from '../common/elements/TitleText';
 import { Ionicons } from '@expo/vector-icons';
 import RegularText from '../common/elements/regulartext';
 import PrimaryButton from '../common/elements/primaryButton';
-import { AddToCart, deleteCart, GetCartForUser, UpdateCart } from '../../dataStore/actions/cart';
+import { AddToCart, deleteCart, GetCartForUser, getCharges, UpdateCart } from '../../dataStore/actions/cart';
 import { constants } from '../../utlits/constants';
+import { chargecutoff, getTotalAmt, roundnum } from '../../utlits/helpers';
 
 const MyCart = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
     const [Selprod, setSelProd] = React.useState(null);
     const [qtys, setQtys] = React.useState(false);
-    const { cartprocess, cartStatus, cartData = [] } = props.cart;
+    const { cartprocess, cartStatus, cartData = [], } = props.cart;
+    const { shipppingCharges = 23, vat = 14 } = props.cart.charges
     const AddtoCart = (prod) => {
+        props.getChargsFn();
         const b = {
             "prods": {
                 "prodId": prod._id,
@@ -51,6 +54,7 @@ const MyCart = (props) => {
         }
     };
     const cartQtyRecived = (item) => {
+        props.getChargsFn();
         const b = {
             "prods": {
                 "prodId": Selprod._id,
@@ -63,6 +67,7 @@ const MyCart = (props) => {
     }
     // Update Cart
     const cartUpdate = (cd, ope) => {
+        props.getChargsFn();
         const b = {
             "prods": {
                 "prodId": cd.prodId._id,
@@ -125,6 +130,7 @@ const MyCart = (props) => {
 
     React.useEffect(() => {
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+        props.getChargsFn();
         if (cartData.length == 0 && props.user.loggedin) {
             props.loadCart();
         }
@@ -235,15 +241,15 @@ const MyCart = (props) => {
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
-                                            <RegularText >{constants[lang].static.curr} 0</RegularText>
+                                            <RegularText >{constants[lang].static.curr} {chargecutoff(shipppingCharges, getSubtotal())}</RegularText>
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.vat}</RegularText>
-                                            <RegularText >{constants[lang].static.curr} 0</RegularText>
+                                            <RegularText >{constants[lang].static.curr}  {chargecutoff(vat, getSubtotal())}</RegularText>
                                         </View>
                                         <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.total}</RegularText>
-                                            <TitleText styles={{ fontSize: 17 }} title={`SAR ${getSubtotal()}`} />
+                                            <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${getTotalAmt(getSubtotal(), shipppingCharges, vat)}`} />
                                         </View>
                                     </View>
                                     <View>
@@ -307,8 +313,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     user: state.user,
     cart: state.cart,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
-
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 
@@ -319,6 +324,8 @@ const mapDispatchToProps = dispatch => ({
     updatecartFn: (body) => { dispatch(UpdateCart(body)) },
     deleteCartFn: (body) => { dispatch(deleteCart(body)) },
     addtoCart: (body, cartprod, done) => { dispatch(AddToCart(body, cartprod, done)) },
+    getChargsFn: () => { dispatch(getCharges()) },
+
 });
 export default connect(mapStateToProps, mapDispatchToProps)(MyCart);
 

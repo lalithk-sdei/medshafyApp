@@ -30,6 +30,7 @@ export default {
     updateCart: 'v1/updatecart',
     deleteCart: 'v1/delete',
     clearCart: 'v1/clearCart',
+    getCharges: 'v1/settingsget',
 
 
     // Addresses
@@ -42,7 +43,10 @@ export default {
     // Orders
     getOrders: 'v1/getOrders',
     getBuyagain: 'v1/buyAgain',
-    createOrder: "v1/createOrder"
+    createOrder: "v1/createOrder",
+
+    // Banner
+    getbanners: 'v1/banners?page=1&title='
 
 
 

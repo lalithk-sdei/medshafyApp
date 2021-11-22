@@ -79,6 +79,7 @@ export const cart = {
     UpdateCart: (body) => requests.put(`${routes.baseUrl}${routes.updateCart}`, body),
     deleteCart: (body) => requests.post(`${routes.baseUrl}${routes.deleteCart}`, body),
     clearCart: () => requests.post(`${routes.baseUrl}${routes.clearCart}`, {}),
+    getCharges: () => requests.post(`${routes.baseUrl}${routes.getCharges}`, {}),
 }
 
 export const orders = {
@@ -91,3 +92,11 @@ export const orders = {
 export const products = {
     getProducts: ({ cat = "", search = "" }) => requests.get(`${routes.baseUrl}${routes.getProducts(cat, search)} `),
 }
+
+
+export const banners = {
+    getbanners: () => requests.get(`${routes.baseUrl}${routes.getbanners} `),
+}
+
+
+

@@ -1,9 +1,10 @@
-import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, RESET_DATA, ADD_TO_CART, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM, CLEAR_CART } from "../types/types";
+import { SET_LOAD_CART_PROCESS, SET_LOAD_CART_DATA, SET_LOAD_CART_STATUS, RESET_DATA, SET_CHARGES, ADD_NEW_CART, UPDATE_CART, DEL_CART_ITEM, CLEAR_CART } from "../types/types";
 const initialData = {
     cartprocess: false,
     cartStatus: '',
     cartData: [],
-    random: 0
+    random: 0,
+    charges: {}
 };
 
 export default function (state = initialData, action) {
@@ -18,6 +19,8 @@ export default function (state = initialData, action) {
             return { ...state, cartData: [...state.cartData, action.payload] };
         case CLEAR_CART:
             return { ...state, cartData: [] };
+        case SET_CHARGES:
+            return { ...state, charges: action.payload };
         case UPDATE_CART:
             try {
                 let cart = state.cartData;

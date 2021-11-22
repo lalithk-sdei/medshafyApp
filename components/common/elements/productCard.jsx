@@ -80,7 +80,7 @@ const ProductCard = ({
                 }
             </View>
             <View style={{ flex: 3, marginLeft: 20, paddingVertical: 0, marginTop: 20 }}>
-                <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ textAlign: 'left', fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
                 <TouchableOpacity onPress={() => { onPress(); }}><Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text></TouchableOpacity>
                 <View style={{
                     marginTop: 15,

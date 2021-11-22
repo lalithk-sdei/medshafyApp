@@ -68,12 +68,19 @@ export const SET_LOAD_CART_STATUS = "SET_LOAD_CART_STATUS";
 export const CLEAR_CART = "CLEAR_CART";
 export const SET_LOAD_CART_DATA = "SET_LOAD_CART_DATA";
 export const ADD_TO_CART = "ADD_TO_CART";
+export const SET_CHARGES = "SET_CHARGES";
 export const ADD_NEW_CART = "ADD_NEW_CART";
 export const UPDATE_CART = "UPDATE_CART";
 export const DEL_CART_ITEM = "DEL_CART_ITEM";
 
 
 export const RESET_DATA = "RESET_DATA";
+
+// banners
+
+export const SET_LOAD_BANNERS_PROCESS = "SET_LOAD_BANNERS_PROCESS";
+export const SET_LOAD_BANNERS_STATUS = "SET_LOAD_BANNERS_STATUS";
+export const SET_BANNERS = "SET_BANNERS";
 
 
 

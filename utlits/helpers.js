@@ -5,3 +5,13 @@ export const ValidateEmail = (mail) => {
         return false;
     }
 }
+
+export const chargecutoff = (pcent, subtotal) => {
+    return +((subtotal / 100) * pcent).toFixed(2);
+}
+
+
+export const getTotalAmt = (total, shipping, vat) => {
+    return (total + chargecutoff(shipping, total) + chargecutoff(vat, total)).toFixed(2);
+}
+
