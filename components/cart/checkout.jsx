@@ -18,6 +18,7 @@ import { addOrder } from '../../dataStore/actions/orders';
 import LinkText from '../common/elements/linktext';
 import { constants } from '../../utlits/constants';
 import { chargecutoff, getDeliveryCahrgs, getTotalAmt } from '../../utlits/helpers';
+import { getMe } from '../../dataStore/actions/user';
 
 const Checkout = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -92,43 +93,71 @@ const Checkout = (props) => {
     const { lang } = props;
 
     const submit = () => {
+        props.getMeFn(props.user.token, () => { });
         try {
-            const b = {
-                prods: cartData.map((pro) => ({
-                    prodId: pro.prodId._id,
-                    qty: pro.qty,
-                    prodName: pro.prodId.name,
-                    prodnameArabic: pro.prodId.arabicName,
-                    prodImg: pro.prodId.mainImage ? pro.prodId.mainImage.mediumUrl : null,
-                    qtyname: getPriceName(pro, 'en'),
-                    qtynameArabic: getPriceName(pro, 'ar'),
-                    prodPrice: getPriceval(pro),
-                })),
-                paidBy: 0,
-                address: seladdr,
-                DeliveryCharges: 0,
-                Vat: 0,
-                subTotal: cartData.map((pro) => getPriceval(pro)).reduce((a, b) => a + b),
-            };
-            props.addOrderFn(b, (st) => {
-                if (st) {
-                    // Clear Cart
-                    props.clearCartFn((d, r) => {
-                        props.navigation.navigate('myOrders');
-                    });
-                } else {
-                    setTimeout(() => {
-                        Alert.alert(
-                            constants[lang].errors.oops,
-                            constants[lang].errors.swwptast,
-                            [
-                                { text: constants[lang].errors.ok, onPress: () => { } },
-                            ],
-                        );
-                    }, 100);
-                }
+            const { emailVerified, isActive } = props.user.loggedinUserData;
+            if (isActive === false) {
+                setTimeout(() => {
+                    Alert.alert(
+                        constants[lang].errors.oops,
+                        // constants[lang].errors.swwptast,
+                        "Your account is not activated. please react to medshafy support",
+                        [
+                            { text: constants[lang].errors.ok, onPress: () => { } },
+                        ],
+                    );
+                }, 100);
+                return true;
+            } else if (emailVerified === false) {
+                setTimeout(() => {
+                    Alert.alert(
+                        constants[lang].errors.oops,
+                        // constants[lang].errors.swwptast,
+                        "Please verify your eamil before proceding with the order",
+                        [
+                            { text: constants[lang].errors.ok, onPress: () => { } },
+                        ],
+                    );
+                }, 100);
+                return true;
+            } else {
+                const b = {
+                    prods: cartData.map((pro) => ({
+                        prodId: pro.prodId._id,
+                        qty: pro.qty,
+                        prodName: pro.prodId.name,
+                        prodnameArabic: pro.prodId.arabicName,
+                        prodImg: pro.prodId.mainImage ? pro.prodId.mainImage.mediumUrl : null,
+                        qtyname: getPriceName(pro, 'en'),
+                        qtynameArabic: getPriceName(pro, 'ar'),
+                        prodPrice: getPriceval(pro),
+                    })),
+                    paidBy: 0,
+                    address: seladdr,
+                    DeliveryCharges: 0,
+                    Vat: 0,
+                    subTotal: cartData.map((pro) => getPriceval(pro)).reduce((a, b) => a + b),
+                };
+                props.addOrderFn(b, (st) => {
+                    if (st) {
+                        // Clear Cart
+                        props.clearCartFn((d, r) => {
+                            props.navigation.navigate('myOrders');
+                        });
+                    } else {
+                        setTimeout(() => {
+                            Alert.alert(
+                                constants[lang].errors.oops,
+                                constants[lang].errors.swwptast,
+                                [
+                                    { text: constants[lang].errors.ok, onPress: () => { } },
+                                ],
+                            );
+                        }, 100);
+                    }
 
-            });
+                });
+            }
         } catch (e) {
             setTimeout(() => {
                 Alert.alert(
@@ -140,16 +169,14 @@ const Checkout = (props) => {
                 );
             }, 100);
         }
-
-
     }
-
     React.useEffect(() => {
+        props.getMeFn(props.user.token, () => { });
         LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-        if (cartData.length == 0 && props.user.loggedin) {
+        if (cartData.length == 0) {
             props.loadCart();
         }
-        if (address.length == 0 && props.user.loggedin) {
+        if (address.length == 0) {
             props.getAddressFn()
         }
     }, []);
@@ -420,6 +447,7 @@ const mapDispatchToProps = dispatch => ({
     addOrderFn: (body, done) => { dispatch(addOrder(body, done)) },
     clearCartFn: (done) => { dispatch(clearCart(done)) },
     getChargsFn: () => { dispatch(getCharges()) },
+    getMeFn: (token, done) => { dispatch(getMe(token, done)) }
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
 

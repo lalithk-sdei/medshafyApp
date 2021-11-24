@@ -23,21 +23,12 @@ import { getOrders } from '../../../dataStore/actions/orders';
 import { constants } from '../../../utlits/constants';
 
 const MyOrders = (props) => {
-    const logout = async () => {
-        try {
-            props.logoutFn();
-            props.resetAll();
-            props.navigation.navigate('Choselanguage');
-            const val = await AsyncStorage.removeItem('userLang');
-            const val2 = await AsyncStorage.removeItem('loggedin');
-            const val3 = await AsyncStorage.removeItem('token');
-        } catch (e) { }
-    }
+
     const { ordersprocess, ordersStatus, orders = [], buyAgain = [] } = props.order;
     const { lang } = props;
 
     React.useEffect(() => {
-        props.getOrdersFn()
+        props.getOrdersFn();
         // LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
         // if (props.user.loggedin === false) {
         //     props.navigation.navigate('Choselanguage');

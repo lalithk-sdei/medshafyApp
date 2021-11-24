@@ -217,8 +217,6 @@ const Home = (props) => {
 
         setSearch("");
     }, [props.fav.favStatus, isFocused]);
-
-
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
@@ -226,7 +224,7 @@ const Home = (props) => {
                     <ScrollView style={{ flex: 1 }}>
                         <Spinner
                             color={"#9F9FA2"}
-                            visible={Catprocess || favprocess || imgPrs || ordersprocess}
+                            visible={Catprocess || imgPrs || ordersprocess}
                             textContent={constants[lang].static.pleasewait}
                             textStyle={{ color: '#FFF' }}
                         />

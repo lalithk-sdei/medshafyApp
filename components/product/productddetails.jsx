@@ -374,13 +374,13 @@ const ProductDetails = (props) => {
                                     <Text style={{ textAlign: 'left', fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Brand} : {brand} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.modelNumber}:  {model} </Text>
                                 </View>
                                 <View >
-                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Quasimoda', fontSize: 15 }}>{constants[lang].static.Country} :  {country} </Text>
                                 </View>
                                 <View style={{ marginTop: 20 }}>
-                                    <Text style={{ textAlign: 'left',fontFamily: 'Quasimoda', fontSize: 15 }}> {lang === 'ar' ? descriptionArabic : description} </Text>
+                                    <Text style={{ textAlign: 'left', fontFamily: 'Quasimoda', fontSize: 15 }}> {lang === 'ar' ? descriptionArabic : description} </Text>
                                 </View>
                             </View>
                         </View>

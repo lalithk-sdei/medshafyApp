@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, FlatList, Button, Text } from 'react-native';
+import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, KeyboardAvoidingView, TouchableHighlight, FlatList, Button, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { LogBox } from 'react-native';
@@ -152,100 +152,100 @@ const ConfrimLocation = (props) => {
                         textContent={constants[lang].static.pleasewait}
                         textStyle={{ color: '#FFF' }}
                     />
-                    <View style={{ flex: 1 }}>
-                        <View style={styles.tophead}>
-                            <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('MyAddress'); }} name="arrow-back" size={24} color="black" /></View>
-                            <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.anaddr} /></View>
-                            <View style={{ flex: 1 }}></View>
-                        </View>
-                        {/* <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}> */}
-                        <View>
-                            <View style={{
-                                flexDirection: 'row',
-                            }}>
+                    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? "padding" : null} enabled>
+                        <View style={{ flex: 1 }}>
+                            <View style={styles.tophead}>
+                                <View style={{ flex: 1 }}><Ionicons onPress={() => { props.navigation.navigate('MyAddress'); }} name="arrow-back" size={24} color="black" /></View>
+                                <View style={{ flex: 7, alignItems: 'center' }}><TitleText title={constants[lang].static.anaddr} /></View>
+                                <View style={{ flex: 1 }}></View>
+                            </View>
+                            <View>
                                 <View style={{
-                                    flexDirection: 'column',
-                                    position: 'relative'
+                                    flexDirection: 'row',
                                 }}>
-                                    {maploaded ?
-                                        <React.Fragment>
-                                            <View style={{}}>
-                                                <MapView
-                                                    initialRegion={location}
-                                                    style={{
-                                                        width: Dimensions.get('screen').width,
-                                                        height: '90%',
-                                                    }} >
-                                                    <Marker
-                                                        draggable
-                                                        coordinate={location}
-                                                        onDragEnd={(e) => {
-                                                            setLocation({ ...location, ...e.nativeEvent.coordinate });
-                                                            setMapLoaded(false);
-                                                            setTimeout(() => { setMapLoaded(true); }, 20);
-                                                            updateLocation(e.nativeEvent.coordinate)
-                                                        }}
-                                                    />
-                                                </MapView>
-                                            </View>
-                                            <View style={{
-                                                backgroundColor: 'white',
-                                                padding: 30,
-                                                position: 'absolute',
-                                                width: '100%',
-                                                bottom: -30,
-                                                borderTopLeftRadius: 10,
-                                                borderTopRightRadius: 10,
-                                                borderTopColor: '#00000029'
-                                            }}>
-                                                <View>
-                                                    <Floatinginput
-                                                        liftUp={true}
-                                                        value={formstate.feild1Val}
-                                                        currLocationFn={() => { loadMap(); }}
-                                                        location={true}
-                                                        changetext={(e) => { feild1(e) }}
-                                                        onEndEditing={(e) => { feild1(e.nativeEvent.text, true); }}
-                                                        onChangeText={(e) => { }}
-                                                        blurOnSubmit
-                                                        autoCapitalize='none'
-                                                        autoCorrect={false}
-                                                        label={constants[lang].static.selDlo}>
-                                                    </Floatinginput>
+                                    <View style={{
+                                        flexDirection: 'column',
+                                        position: 'relative'
+                                    }}>
+                                        {maploaded ?
+                                            <React.Fragment>
+                                                <View style={{}}>
+                                                    <MapView
+                                                        initialRegion={location}
+                                                        style={{
+                                                            width: Dimensions.get('screen').width,
+                                                            height: '90%',
+                                                        }} >
+                                                        <Marker
+                                                            draggable
+                                                            coordinate={location}
+                                                            onDragEnd={(e) => {
+                                                                setLocation({ ...location, ...e.nativeEvent.coordinate });
+                                                                setMapLoaded(false);
+                                                                setTimeout(() => { setMapLoaded(true); }, 20);
+                                                                updateLocation(e.nativeEvent.coordinate)
+                                                            }}
+                                                        />
+                                                    </MapView>
                                                 </View>
-                                                <View style={{ height: 20 }}>
-                                                    {(formstate.feild1Tch && formstate.feild1ErrMsg) ?
-                                                        <Errortext>{formstate.feild1ErrMsg}</Errortext> : null
-                                                    }
+                                                <View style={{
+                                                    backgroundColor: 'white',
+                                                    padding: 30,
+                                                    position: 'absolute',
+                                                    width: '100%',
+                                                    bottom: -30,
+                                                    borderTopLeftRadius: 10,
+                                                    borderTopRightRadius: 10,
+                                                    borderTopColor: '#00000029'
+                                                }}>
+                                                    <View>
+                                                        <Floatinginput
+                                                            liftUp={true}
+                                                            value={formstate.feild1Val}
+                                                            currLocationFn={() => { loadMap(); }}
+                                                            location={true}
+                                                            changetext={(e) => { feild1(e) }}
+                                                            onEndEditing={(e) => { feild1(e.nativeEvent.text, true); }}
+                                                            onChangeText={(e) => { }}
+                                                            blurOnSubmit
+                                                            autoCapitalize='none'
+                                                            autoCorrect={false}
+                                                            label={constants[lang].static.selDlo}>
+                                                        </Floatinginput>
+                                                    </View>
+                                                    <View style={{ height: 20 }}>
+                                                        {(formstate.feild1Tch && formstate.feild1ErrMsg) ?
+                                                            <Errortext>{formstate.feild1ErrMsg}</Errortext> : null
+                                                        }
+                                                    </View>
+                                                    <View>
+                                                        <Floatinginput
+                                                            changetext={(e) => { feild2(e) }}
+                                                            onEndEditing={(e) => { feild2(e.nativeEvent.text, true); }}
+                                                            onChangeText={(e) => { }}
+                                                            blurOnSubmit
+                                                            autoCapitalize='none'
+                                                            autoCorrect={false}
+                                                            label={constants[lang].static.alOpt}>
+                                                        </Floatinginput>
+                                                    </View>
+                                                    <View style={{ height: 20 }}>
+                                                        {/* {(formstate.feild2Tch && formstate.feild2ErrMsg) && <Errortext>{formstate.feild2ErrMsg}</Errortext>} */}
+                                                    </View>
+                                                    <View>
+                                                        {/* AddressDetails */}
+                                                        <PrimaryButton onPress={() => {
+                                                            props.navigation.navigate('AddressDetails', { ...location, filed1: formstate.feild1Val, feild2: formstate.feild2Val });
+                                                        }} disabled={formstate.feild1Err} title={constants[lang].static.cnfLoc}></PrimaryButton>
+                                                    </View>
                                                 </View>
-                                                <View>
-                                                    <Floatinginput
-                                                        changetext={(e) => { feild2(e) }}
-                                                        onEndEditing={(e) => { feild2(e.nativeEvent.text, true); }}
-                                                        onChangeText={(e) => { }}
-                                                        blurOnSubmit
-                                                        autoCapitalize='none'
-                                                        autoCorrect={false}
-                                                        label={constants[lang].static.alOpt}>
-                                                    </Floatinginput>
-                                                </View>
-                                                <View style={{ height: 20 }}>
-                                                    {/* {(formstate.feild2Tch && formstate.feild2ErrMsg) && <Errortext>{formstate.feild2ErrMsg}</Errortext>} */}
-                                                </View>
-                                                <View>
-                                                    {/* AddressDetails */}
-                                                    <PrimaryButton onPress={() => {
-                                                        props.navigation.navigate('AddressDetails', { ...location, filed1: formstate.feild1Val, feild2: formstate.feild2Val });
-                                                    }} disabled={formstate.feild1Err} title={constants[lang].static.cnfLoc}></PrimaryButton>
-                                                </View>
-                                            </View>
-                                        </React.Fragment> : null
-                                    }
+                                            </React.Fragment> : null
+                                        }
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                        {/* </ScrollView> */}
-                    </View>
+                    </KeyboardAvoidingView>
                 </View>
             </React.Fragment>
         </TouchableWithoutFeedback>
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 

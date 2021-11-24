@@ -201,7 +201,13 @@ const Favorites = (props) => {
                         <View style={styles.firstCol}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1, marginTop: 25, paddingLeft: 10 }}>
-                                    <Ionicons onPress={() => { props.navigation.navigate('Home'); }} name="arrow-back" size={30} color="black" />
+                                    <Ionicons onPress={() => {
+                                        if (from === 'profile') {
+                                            props.navigation.navigate('Profile');
+                                        } else {
+                                            props.navigation.navigate('Home');
+                                        }
+                                    }} name="arrow-back" size={30} color="black" />
                                 </View>
                                 <View style={{ flex: 5 }}>
                                     <SearchInput closeFn={() => { setSearch(""); registerKey("") }} value={search} placeholder={search} onChangeText={(e) => { setSearch(e); registerKey(e) }} />
@@ -408,7 +414,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
     user: state.user,
     fav: state.fav,
     cart: state.cart,
