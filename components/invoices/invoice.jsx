@@ -124,9 +124,9 @@ const MyInvoices = (props) => {
                                                     <div class="col-xs-6">
                                                         <address>
                                                             <strong>Payment Method:</strong><br>
-                                                            ${paidBy === 0 ? 'COD' : null}
-                                                            ${paidBy === 1 ? 'Apple Pay' : null}
-                                                            ${paidBy === 2 ? 'Pay Tabs' : null}
+                                                            ${paidBy === 0 ? 'COD' : ''}
+                                                            ${paidBy === 1 ? 'Apple Pay' : ''}
+                                                            ${paidBy === 2 ? 'Pay Tabs' : ''}
                                                             <br>
                                                         </address>
                                                     </div>
