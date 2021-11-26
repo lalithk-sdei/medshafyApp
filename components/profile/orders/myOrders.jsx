@@ -61,7 +61,7 @@ const MyOrders = (props) => {
 
                         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                             <View style={styles.body}>
-                                {orders.length > 0 ? orders.map((ord, ind) => <View key={ind} style={styles.card}>
+                                {orders.length > 0 ? orders.map((ord, ind) => <View key={`oneord${ind}`} style={styles.card}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                         <View><RegularText styles={{ fontSize: 20 }} title={constants[lang].static.ordTtl} >{constants[lang].static.ordTtl}</RegularText></View>
                                         <View><TitleText title={`${constants[lang].static.curr} ${ord.subTotal}`} /></View>

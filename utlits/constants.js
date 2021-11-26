@@ -151,7 +151,8 @@ export const constants = {
             Logout: "Logout",
             chosQtyPlace: "Choose Quantity",
             addToCart: "Add to cart",
-            viewDetails: "View Details"
+            viewDetails: "View Details",
+            language: "language"
         }
     },
     ar: {
@@ -306,7 +307,8 @@ export const constants = {
             Logout: "تسجيل خروج",
             chosQtyPlace: "اختر الكمية",
             addToCart: "أضف إلى السلة",
-            viewDetails: "عرض التفاصيل"
+            viewDetails: "عرض التفاصيل",
+            language: "لغة"
         }
     }
 }

@@ -13,6 +13,12 @@ export const setLang = (done = () => { }) => async (dispatch) => {
 }
 
 
+export const updateLang = (lang) => async (dispatch) => {
+    const data = await AsyncStorage.setItem('userLang', lang);
+    dispatch({ type: SET_LANG, payload: { lang: lang } });
+}
+
+
 
 
 

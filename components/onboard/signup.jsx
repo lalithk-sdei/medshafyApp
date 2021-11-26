@@ -166,6 +166,7 @@ const SignUp = (props) => {
                     regnumber: regVal,
                     role: 'user',
                     emailVerified: false,
+                    lang: lang,
                     isActive: false,
                     StoreImages: res.map((e) => e.data),
                     phoneNumber: `${cncode}${phVal}`
@@ -458,7 +459,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
     pageState: state.user
 });
 

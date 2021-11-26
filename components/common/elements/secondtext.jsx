@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-const SecondText = props => <Text style={styles.body}>{props.children}</Text>;
+const SecondText = props => <Text style={[styles.body, props.styles]}>{props.children}</Text>;
 
 const styles = StyleSheet.create({
     body: {

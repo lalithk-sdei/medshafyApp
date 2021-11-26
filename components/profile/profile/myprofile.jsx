@@ -19,7 +19,7 @@ const MyProfile = (props) => {
             props.navigation.navigate('Choselanguage');
         }
     }, []);
-    const { companyName = "", email = "", phoneNumber = "", regnumber = "", address = "", StoreImages = [] } = props.user ? props.user.loggedinUserData : {};
+    const { companyName = "", email = "", phoneNumber = "", regnumber = "", address = "", StoreImages = [], lang: langLcl = 'en' } = props.user ? props.user.loggedinUserData : {};
     return (
         <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
             <React.Fragment>
@@ -56,6 +56,10 @@ const MyProfile = (props) => {
                                     <View style={styles.cardClm}>
                                         <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.Address}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{address}</RegularText></View>
+                                    </View>
+                                    <View style={styles.cardClm}>
+                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.language}</LightText></View>
+                                        <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{langLcl == 'ar' ? 'Arabic' : 'English'}</RegularText></View>
                                     </View>
                                 </View>
                                 <View style={styles.card}>

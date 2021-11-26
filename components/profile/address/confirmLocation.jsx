@@ -171,12 +171,19 @@ const ConfrimLocation = (props) => {
                                             <React.Fragment>
                                                 <View style={{}}>
                                                     <MapView
+                                                        onRegionChangeComplete={(event) => {
+                                                            console.log(event);
+                                                            setLocation(event);
+                                                            // setMapLoaded(false);
+                                                            // setTimeout(() => {   (true); }, 20);
+                                                            updateLocation(event)
+                                                        }}
                                                         initialRegion={location}
                                                         style={{
                                                             width: Dimensions.get('screen').width,
                                                             height: '90%',
                                                         }} >
-                                                        <Marker
+                                                        {/* <Marker
                                                             draggable
                                                             coordinate={location}
                                                             onDragEnd={(e) => {
@@ -185,8 +192,11 @@ const ConfrimLocation = (props) => {
                                                                 setTimeout(() => { setMapLoaded(true); }, 20);
                                                                 updateLocation(e.nativeEvent.coordinate)
                                                             }}
-                                                        />
+                                                        /> */}
                                                     </MapView>
+                                                    <View style={styles.markerFixed}>
+                                                        <Image style={styles.marker} source={require('../../../assets/images/markericon.png')} />
+                                                    </View>
                                                 </View>
                                                 <View style={{
                                                     backgroundColor: 'white',
@@ -296,6 +306,17 @@ const styles = StyleSheet.create({
     cardClm: {
         flexDirection: 'row',
         marginBottom: 15
+    },
+    markerFixed: {
+        left: '50%',
+        marginLeft: -24,
+        marginTop: -48,
+        position: 'absolute',
+        top: '50%'
+    },
+    marker: {
+        height: 48,
+        width: 48
     },
 
 });

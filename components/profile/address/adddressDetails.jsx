@@ -118,12 +118,16 @@ const AddressDetails = (props) => {
                                             <React.Fragment>
                                                 <View style={{}}>
                                                     <MapView
+
                                                         initialRegion={location}
                                                         style={{
                                                             width: Dimensions.get('screen').width,
                                                             height: '90%',
                                                         }} >
                                                     </MapView>
+                                                    {/* <View style={styles.markerFixed}>
+                                                        <Image style={styles.marker} source={require('../../../assets/images/markericon.png')} />
+                                                    </View> */}
                                                 </View>
                                                 <View style={{
                                                     backgroundColor: 'white',
@@ -243,6 +247,17 @@ const styles = StyleSheet.create({
     cardClm: {
         flexDirection: 'row',
         marginBottom: 15
+    },
+    markerFixed: {
+        left: '50%',
+        marginLeft: -24,
+        marginTop: -48,
+        position: 'absolute',
+        top: '50%'
+    },
+    marker: {
+        height: 48,
+        width: 48
     },
 
 });

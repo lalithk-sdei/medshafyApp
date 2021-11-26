@@ -1,6 +1,7 @@
 import { REGISTER_USER, SET_CHANGEPASS_PROCESS, SET_CHNAGPASS_STATUS, SET_LOGIN_PROCESS, SET_LOGIN_STATUS, SET_LOGOUT, SET_OTPSEND_PROCESS, SET_OTPSEND_STATUS, SET_OTPVERFY_PROCESS, SET_OTPVERFY_STATUS, SET_SIGNUP_PROCESS, SET_SIGNUP_STATUS, SET_TOKEN, SET_USER_DATA, SET_USER_DATA_MANUAL } from "../types/types";
 import { users } from "../ApiServices/index";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setLang, updateLang } from "./common";
 
 export const uploadStoredoc = (body, done) => async (dispatch) => {
     dispatch({ type: SET_SIGNUP_PROCESS, payload: true });
@@ -40,6 +41,8 @@ export const getMe = (token, clbak = () => { }) => async (dispatch) => {
         let res = await users.getme();
         if (res.data && res.code === 200) {
             dispatch({ type: SET_USER_DATA_MANUAL, payload: res.data });
+            const { lang = 'en' } = res.data;
+            dispatch(updateLang(lang));
             dispatch({ type: SET_LOGIN_STATUS, payload: 'ok' });
             clbak(true);
             dispatch({ type: SET_LOGIN_PROCESS, payload: false });
@@ -61,6 +64,8 @@ export const updateuser = (bod, clbak = () => { }) => async (dispatch) => {
         let res = await users.updateuser(bod);
         if (res.data && res.code === 200) {
             dispatch({ type: SET_USER_DATA_MANUAL, payload: res.data });
+            const { lang = 'en' } = res.data;
+            dispatch(updateLang(lang));
             dispatch({ type: SET_LOGIN_STATUS, payload: 'ok' });
             clbak(true);
             dispatch({ type: SET_LOGIN_PROCESS, payload: false });

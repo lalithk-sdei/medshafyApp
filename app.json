@@ -2,7 +2,7 @@
   "expo": {
     "name": "medshafy",
     "slug": "medshafy",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,14 +17,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "www.medshafy.com"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#fff"
       },
-      "package": "www.test.com"
+      "package": "www.medshafy.com",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

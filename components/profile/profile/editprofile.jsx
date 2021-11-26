@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, FlatList, Button } from 'react-native';
+import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, TouchableOpacity, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, FlatList, Button } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import { LogBox } from 'react-native';
@@ -21,8 +21,12 @@ import Errortext from '../../common/elements/errorText';
 import { ValidateEmail } from '../../../utlits/helpers';
 import PrimaryButton from '../../common/elements/primaryButton';
 import { updateuser } from '../../../dataStore/actions/user';
+import SecondText from '../../common/elements/secondtext';
+import RadioButton from '../../common/elements/radiobutton';
 
 const EditProfile = (props) => {
+    const { lang: lnglcl = 'en' } = props.user.loggedinUserData;
+    const [selected, setSelected] = React.useState(lnglcl);
     const { loginprocess } = props.user;
     const { companyName = "", email = "", phoneNumber = "", regnumber = "", address = "", StoreImages = [] } = props.route ? props.route.params : {};
     const [formstate, setFormState] = React.useState({
@@ -85,7 +89,8 @@ const EditProfile = (props) => {
             phoneNumber: formstate.phVal,
             regnumber: formstate.regVal,
             address: formstate.addrVal,
-            StoreImages: StoreImages
+            StoreImages: StoreImages,
+            lang:selected
         }
         props.updateuserFn(b, (st) => {
             if (st) {
@@ -102,6 +107,7 @@ const EditProfile = (props) => {
         });
     }
 
+    console.log();
     React.useEffect(() => {
     }, []);
     return (
@@ -187,6 +193,35 @@ const EditProfile = (props) => {
                                         </View>
                                         <View style={{ height: 20 }}>
                                             {(formstate.addrTch && formstate.addrErr) && <Errortext>{formstate.addrErrMsg}  </Errortext>}
+                                        </View>
+                                        <View sstyle={styles.cardInp}>
+                                            <LightText>{constants[lang].static.language}</LightText>
+                                            <View>
+                                                <View style={styles.langContainer}>
+                                                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('ar') }}>
+                                                        <View style={[styles.langInp, { flexDirection: 'row', marginBottom: 20 }]}>
+                                                            <View style={{ flex: 1 }}>
+                                                                <Image style={{ width: 35, height: 28 }} source={require('../../../assets/images/arabicflag.png')} />
+                                                            </View>
+                                                            <View style={{ flex: 4 }}><SecondText styles={{ fontSize: 16 }}>Arabic </SecondText></View>
+                                                            <View style={{ flex: 1, textAlign: 'right', flexDirection: 'row-reverse' }}>
+                                                                <RadioButton selected={selected === 'ar'}></RadioButton>
+                                                            </View>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('en') }}>
+                                                        <View style={[styles.langInp, { flexDirection: 'row' }]}>
+                                                            <View style={{ flex: 1 }}>
+                                                                <Image style={{ width: 35, height: 27 }} source={require('../../../assets/images/usFlag.png')} />
+                                                            </View>
+                                                            <View style={{ flex: 4 }}><SecondText styles={{ fontSize: 16 }}>English </SecondText></View>
+                                                            <View style={{ flex: 1, textAlign: 'right', flexDirection: 'row-reverse' }}>
+                                                                <RadioButton selected={selected === 'en'}></RadioButton>
+                                                            </View>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
@@ -282,13 +317,23 @@ const styles = StyleSheet.create({
     },
     cardInp: {
         marginTop: 10
+    },
+    langInp: {
+        flexDirection: 'row',
+        padding: 30,
+    },
+    langInp: {
+        // borderBottomColor: '#DCDCDC',
+        // borderBottomWidth: 1
+    },
+    langContainer: {
+        marginTop: 20,
     }
-
 });
 
 
 const mapStateToProps = (state) => ({
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
     user: state.user
 });
 

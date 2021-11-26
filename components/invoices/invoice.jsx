@@ -254,8 +254,8 @@ const MyInvoices = (props) => {
                         </View> :
                             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                                 <View style={styles.body}>
-                                    {orders.map((ord) =>
-                                        <View style={styles.card}>
+                                    {orders.map((ord,ind) =>
+                                        <View key={`invoic${ind}`} style={styles.card}>
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                 <View >
                                                     <View style={{ flexDirection: 'column' }}>
