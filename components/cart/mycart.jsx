@@ -237,19 +237,20 @@ const MyCart = (props) => {
                                     <View style={[styles.card, { padding: 0 }]}>
                                         <View style={{ paddingHorizontal: 15, paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.subtotal} </RegularText>
-                                            <RegularText >{constants[lang].static.curr} {getSubtotal()}</RegularText>
+                                            <RegularText >{lang == 'en' ? constants[lang].static.curr : ''} {getSubtotal()} {lang == 'ar' ? constants[lang].static.curr : ''}</RegularText>
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.delChag}</RegularText>
-                                            <RegularText >{constants[lang].static.curr} {chargecutoff(shipppingCharges, getSubtotal())}</RegularText>
+                                            <RegularText >{lang == 'en' ? constants[lang].static.curr : ''} {chargecutoff(shipppingCharges, getSubtotal())} {lang == 'ar' ? constants[lang].static.curr : ''}</RegularText>
                                         </View>
                                         <View style={{ paddingHorizontal: 15, paddingBottom: 10, paddingTop: 5, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.vat}</RegularText>
-                                            <RegularText >{constants[lang].static.curr}  {chargecutoff(vat, getSubtotal())}</RegularText>
+                                            <RegularText >{lang == 'en' ? constants[lang].static.curr : ''}  {chargecutoff(vat, getSubtotal())} {lang == 'ar' ? constants[lang].static.curr : ''}</RegularText>
+
                                         </View>
                                         <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.total}</RegularText>
-                                            <TitleText styles={{ fontSize: 17 }} title={`${constants[lang].static.curr} ${getTotalAmt(getSubtotal(), shipppingCharges, vat)}`} />
+                                            <TitleText styles={{ fontSize: 17 }} title={`${lang == 'en' ? constants[lang].static.curr : ''}  ${getTotalAmt(getSubtotal(), shipppingCharges, vat)} ${lang == 'ar' ? constants[lang].static.curr : ''} `} />
                                         </View>
                                     </View>
                                     <View>

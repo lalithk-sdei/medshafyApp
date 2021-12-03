@@ -90,7 +90,7 @@ const EditProfile = (props) => {
             regnumber: formstate.regVal,
             address: formstate.addrVal,
             StoreImages: StoreImages,
-            lang:selected
+            lang: selected
         }
         props.updateuserFn(b, (st) => {
             if (st) {
@@ -195,7 +195,7 @@ const EditProfile = (props) => {
                                             {(formstate.addrTch && formstate.addrErr) && <Errortext>{formstate.addrErrMsg}  </Errortext>}
                                         </View>
                                         <View sstyle={styles.cardInp}>
-                                            <LightText>{constants[lang].static.language}</LightText>
+                                            <LightText styles={{ textAlign: 'left' }}>{constants[lang].static.language}</LightText>
                                             <View>
                                                 <View style={styles.langContainer}>
                                                     <TouchableOpacity activeOpacity={0.5} onPress={() => { setSelected('ar') }}>
