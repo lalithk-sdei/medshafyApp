@@ -11,6 +11,7 @@ import PrimaryButton from '../common/elements/primaryButton';
 import { AddToCart, deleteCart, GetCartForUser, getCharges, UpdateCart } from '../../dataStore/actions/cart';
 import { constants } from '../../utlits/constants';
 import { chargecutoff, getTotalAmt, roundnum } from '../../utlits/helpers';
+import LightText from '../common/elements/lightText';
 
 const MyCart = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -251,6 +252,25 @@ const MyCart = (props) => {
                                         <View style={{ paddingBottom: 20, paddingHorizontal: 15, borderTopColor: '#d9d8d8', paddingTop: 20, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                                             <RegularText title={""}>{constants[lang].static.total}</RegularText>
                                             <TitleText styles={{ fontSize: 17 }} title={`${lang == 'en' ? constants[lang].static.curr : ''}  ${getTotalAmt(getSubtotal(), shipppingCharges, vat)} ${lang == 'ar' ? constants[lang].static.curr : ''} `} />
+                                        </View>
+                                    </View>
+                                    <View style={{ margin: 20 }}>
+                                        <LightText>
+                                            Available payment methods
+                                        </LightText>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View style={{ flex: 1, }}>
+                                                <Image style={{ width: Dimensions.get('screen').width / 6, height: 80, resizeMode: 'contain' }} source={require('../../assets/images/visa.png')} />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <Image style={{ width: Dimensions.get('screen').width / 6, height: 80, resizeMode: 'contain' }} source={require('../../assets/images/master.png')} />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <Image style={{ width: Dimensions.get('screen').width / 6, height: 80, resizeMode: 'contain' }} source={require('../../assets/images/mada.png')} />
+                                            </View>
+                                            <View style={{ flex: 1 }}>
+                                                <Image style={{ width: Dimensions.get('screen').width / 6, height: 80, resizeMode: 'contain' }} source={require('../../assets/images/cod.png')} />
+                                            </View>
                                         </View>
                                     </View>
                                     <View>
