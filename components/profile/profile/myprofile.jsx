@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Platform, View, Image, StyleSheet, Dimensions, TouchableWithoutFeedback, Keyboard, ScrollView, Alert, BackHandler, TouchableHighlight, FlatList, Button } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-import { LogBox } from 'react-native';
+import { LogBox, Linking } from 'react-native';
 import { RESET_DATA, SET_LOGOUT } from '../../../dataStore/types/types';
 import TitleText from '../../common/elements/TitleText';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons';
 import LightText from '../../common/elements/lightText';
 import RegularText from '../../common/elements/regulartext';
 import { constants } from '../../../utlits/constants';
+import LinkText from '../../common/elements/linktext';
 
 const MyProfile = (props) => {
     const { lang } = props;
@@ -67,9 +68,6 @@ const MyProfile = (props) => {
                                         <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.EnoRn}</LightText></View>
                                         <View style={{ flex: 1 }}><RegularText styles={{ color: '#3F3F46', fontSize: 16 }}>{regnumber}</RegularText></View>
                                     </View>
-                                    <View style={styles.cardClm}>
-                                        <View style={{ flex: 1 }}><LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.EnoRn}</LightText></View>
-                                    </View>
                                     {StoreImages.length > 0 ? <View style={[styles.cardClm, { flexWrap: 'wrap' }]}>
                                         {StoreImages.map((e, ind) => <Image
                                             key={ind}
@@ -84,6 +82,11 @@ const MyProfile = (props) => {
                                         />
                                         )}
                                     </View> : <LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.NIF}</LightText>}
+                                    <View style={styles.cardClm}>
+                                        <View style={{ flex: 1 }}>
+                                            <LinkText onPress={() => { Linking.openURL('https://www.medshafy.com/privacy-policy') }}>Privacy Policy Terms & Conditions</LinkText>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
                         </ScrollView>

@@ -16,6 +16,7 @@ import { ValidateEmail } from '../../utlits/helpers';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Picker } from 'react-native-web';
 import { CheckBox } from 'react-native-elements';
+import { Linking } from 'react-native';
 
 
 const SignUp = (props) => {
@@ -383,6 +384,9 @@ const SignUp = (props) => {
                             </View>
                             <View style={{ marginLeft: 22, height: 20 }}>
                                 {(formstate.termsTch && formstate.termsErr) && <Errortext>{formstate.termsMsg}  </Errortext>}
+                            </View>
+                            <View style={{ marginLeft: 22, height: 20 }}>
+                                {/* <LinkText onPress={() => { Linking.openURL('https://www.medshafy.com/privacy-policy') }}>Privacy Policy Terms & Conditions</LinkText> */}
                             </View>
                             <View style={{
                                 alignItems: 'center',
