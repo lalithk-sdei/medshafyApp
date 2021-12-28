@@ -82,11 +82,11 @@ const MyProfile = (props) => {
                                         />
                                         )}
                                     </View> : <LightText styles={{ fontSize: 16, textAlign: 'left' }}>{constants[lang].static.NIF}</LightText>}
-                                    <View style={styles.cardClm}>
+                                    {/* <View style={styles.cardClm}>
                                         <View style={{ flex: 1 }}>
                                             <LinkText onPress={() => { Linking.openURL('https://www.medshafy.com/privacy-policy') }}>Privacy Policy Terms & Conditions</LinkText>
                                         </View>
-                                    </View>
+                                    </View> */}
                                 </View>
                             </View>
                         </ScrollView>

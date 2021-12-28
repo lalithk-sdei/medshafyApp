@@ -15,6 +15,7 @@ import LinkText from '../common/elements/linktext';
 import RegularText from '../common/elements/regulartext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { constants } from '../../utlits/constants';
+import { Linking } from 'react-native';
 const ProfilelandngPage = (props) => {
     const [logoutfr, setLogfr] = React.useState(false)
     const logout = async () => {
@@ -121,10 +122,36 @@ const ProfilelandngPage = (props) => {
                                                 <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
                                             </View>
                                         </View>
-                                        <View style={{ marginVertical: 10 }}>
-                                            <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={constants[lang].static.Logout} onPress={() => { logout(); }}></SecondaryBtn>
+                                    </TouchableOpacity>
+
+                                    {/* Buy Again */}
+                                    <TouchableOpacity onPress={() => { Linking.openURL('https://www.medshafy.com/privacy-policy') }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><Entypo name="text-document" size={24} color="black" /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.Privacy_Policy}</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
                                         </View>
                                     </TouchableOpacity>
+
+                                    {/* Buy Again */}
+                                    <TouchableOpacity onPress={() => { Linking.openURL('https://www.medshafy.com/terms-conditions') }}>
+                                        <View style={styles.card}>
+                                            <View style={styles.cardIcon}><Entypo name="text-document" size={24} color="black" /></View>
+                                            <View style={styles.CardTextDiv}>
+                                                <Text style={styles.CardtextStyle}>{constants[lang].static.Terms_Conds}</Text>
+                                            </View>
+                                            <View style={{ flex: 1, position: 'absolute', right: 14, top: 15 }}>
+                                                <MaterialIcons name="chevron-right" size={39} color="#3F3F46" />
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <View style={{ marginVertical: 10 }}>
+                                        <SecondaryBtn style={{ backgroundColor: '#00000000' }} title={constants[lang].static.Logout} onPress={() => { logout(); }}></SecondaryBtn>
+                                    </View>
                                 </View>
                             </ScrollView>
                         }
@@ -192,7 +219,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     user: state.user,
-    lang: state.common.lang ?  state.common.lang : 'en' ,
+    lang: state.common.lang ? state.common.lang : 'en',
 });
 
 

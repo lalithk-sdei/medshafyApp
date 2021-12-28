@@ -272,6 +272,10 @@ const MyCart = (props) => {
                                                 <Image style={{ width: Dimensions.get('screen').width / 6, height: 80, resizeMode: 'contain' }} source={require('../../assets/images/cod.png')} />
                                             </View>
                                         </View>
+
+                                        <LightText>
+                                            Estimated Delivery within 24hrs.
+                                        </LightText>
                                     </View>
                                     <View>
                                         <PrimaryButton onPress={() => { props.navigation.navigate('Checkout'); }} title={constants[lang].static.checkout}></PrimaryButton>

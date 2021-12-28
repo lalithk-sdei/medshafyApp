@@ -152,7 +152,9 @@ export const constants = {
             chosQtyPlace: "Choose Quantity",
             addToCart: "Add to cart",
             viewDetails: "View Details",
-            language: "language"
+            language: "language",
+            Privacy_Policy: "Privacy Policy",
+            Terms_Conds: "Terms & Conditions"
         }
     },
     ar: {
@@ -308,7 +310,9 @@ export const constants = {
             chosQtyPlace: "اختر الكمية",
             addToCart: "أضف إلى السلة",
             viewDetails: "عرض التفاصيل",
-            language: "لغة"
+            language: "لغة",
+            Privacy_Policy: "Privacy Policy",
+            Terms_Conds: "Terms & Conditions"
         }
     }
 }

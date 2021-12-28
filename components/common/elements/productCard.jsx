@@ -23,7 +23,7 @@ const ProductCard = ({
     const discount = Math.ceil(100 - (salePrice / mrp) * 100);
     return <View>
         <View style={styles.prodBox}>
-            <View style={{ flex: 2, paddingVertical: 20 }}>
+            <View style={{ flex: 2, paddingVertical: 0 }}>
                 <TouchableOpacity onPress={() => { onPress(); }}>
                     <Image
                         style={{ width: '100%', height: '100%', resizeMode: 'stretch' }}
@@ -79,11 +79,11 @@ const ProductCard = ({
                     </React.Fragment>
                 }
             </View>
-            <View style={{ flex: 3, marginLeft: 20, paddingVertical: 0, marginTop: 20 }}>
+            <View style={{ flex: 3, marginLeft: 20, paddingVertical: 0, marginTop: 5 }}>
                 <TouchableOpacity onPress={() => { onPress(); }}><Text numberOfLines={1} style={{ textAlign: 'left', fontFamily: 'QuasimodaMedium', fontSize: 18, }}>{name}</Text></TouchableOpacity>
                 <TouchableOpacity onPress={() => { onPress(); }}><Text style={{ fontFamily: 'Quasimodabold', fontWeight: 'bold', fontSize: 18, marginTop: 10 }}>SAR {salePrice}</Text></TouchableOpacity>
                 <View style={{
-                    marginTop: 15,
+                    marginTop: 5,
                 }}>
                     {cartData.inCart ? <React.Fragment>
                         <View style={{ flexDirection: 'row' }}>
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#E6E7E6',
         borderRadius: 5,
-        maxHeight: 150,
+        maxHeight: 120,
         minHeight: 100,
         position: 'relative',
         flexDirection: 'row'

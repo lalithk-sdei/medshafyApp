@@ -27,7 +27,7 @@ const ProductBoxOne = ({
             <View style={styles.prodBox}>
                 <View style={{ flex: 2, paddingTop: 20, alignItems: 'center' }}>
                     <Image
-                        style={{ marginTop: 15, width: '80%', height: '80%', resizeMode: 'stretch' }}
+                        style={{ marginTop: 15, width: '100%', height: '100%', resizeMode: 'stretch' }}
                         source={{
                             uri: img,
                         }}

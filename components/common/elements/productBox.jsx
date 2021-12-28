@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 5,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
-        padding: 10,
+        // padding: 10,
         maxHeight: 100,
         minHeight: 100,
         position: 'relative',
