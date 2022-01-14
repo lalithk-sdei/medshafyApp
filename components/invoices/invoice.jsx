@@ -12,6 +12,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as Sharing from "expo-sharing";
 import { getOrders } from '../../dataStore/actions/orders';
 import { getTotalAmt } from '../../utlits/helpers';
+import QR from 'qrcode-base64'
 
 const MyInvoices = (props) => {
     const logout = async () => {
@@ -27,7 +28,20 @@ const MyInvoices = (props) => {
 
     const { lang } = props;
     const downloadfile = async (ord) => {
+
         try {
+
+
+            const test = (data) => {
+                console.log(data);
+            }
+
+            const imgData = (orderID) => QR.drawImg(`https://medshafy.com/invoice/${orderID}`, {
+                typeNumber: 4,
+                errorCorrectLevel: 'M',
+                size: 500
+            });
+
             const { createdAt = new Date(), prods = [], paidBy = 0, address = { address: "", addressline1: "", completeAddress: "", mobileno: "", name: "" } } = ord;
             const html = `
                 <html>
@@ -117,6 +131,9 @@ const MyInvoices = (props) => {
                                                             ${address.addressline1},<br>
                                                             ${address.mobileno}
                                                         </address>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <img src="${imgData(ord.orderId)}" class="pull-right" style="margin-bottom:20px;width:150px; height:150px">
                                                     </div>
                                                     
                                                 </div>
@@ -254,7 +271,7 @@ const MyInvoices = (props) => {
                         </View> :
                             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
                                 <View style={styles.body}>
-                                    {orders.map((ord,ind) =>
+                                    {orders.map((ord, ind) =>
                                         <View key={`invoic${ind}`} style={styles.card}>
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                 <View >

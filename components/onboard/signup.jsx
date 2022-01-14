@@ -277,7 +277,8 @@ const SignUp = (props) => {
                                             <View style={{
                                                 flexDirection: 'row'
                                             }}>
-                                                <TouchableOpacity onPress={() => { setSelectedValue() }}>
+                                                {/* <TouchableOpacity onPress={() => { setSelectedValue() }}> */}
+                                                <TouchableOpacity >
                                                     <Text style={{
                                                         paddingBottom: 7,
                                                         fontSize: 18,
@@ -298,7 +299,9 @@ const SignUp = (props) => {
                                                 keyboardType={'phone-pad'}
                                                 autoCorrect={false}
                                                 maxLength={10}
-                                                label={constants[lang].static.mobileno}>
+                                                label={constants[lang].static.mobileno}
+                                                placeholder={"5XXXXXXXX"}
+                                            >
                                             </Floatinginput>
                                         </View>
                                         <View style={{ height: 20 }}>

@@ -165,7 +165,7 @@ export const constants = {
             passwordmin: "يرجى إدخال رقم سري مكون من 6 خانات أو اكثر",
             companyNamereq: "محتاجين اسم المنشأة او المركز",
             phonereq: "محتاجين رقم جوالك",
-            phoneinvalid: "يرجى إدخال رقم هاتف صحيح XXXXXXXX05",
+            phoneinvalid: "يرجى إدخال رقم هاتف صحيح",
             cnfPass: "محتاجين تأكيد للرقم السري",
             passNotsame: "الرقم السري غير متطابق",
             acpectTerms: "الرجاء قبول الشروط والأحكام.",

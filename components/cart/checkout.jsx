@@ -19,6 +19,7 @@ import LinkText from '../common/elements/linktext';
 import { constants } from '../../utlits/constants';
 import { chargecutoff, getDeliveryCahrgs, getTotalAmt } from '../../utlits/helpers';
 import { getMe } from '../../dataStore/actions/user';
+import { RNPaymentSDKLibrary, PaymentSDKShippingDetails, PaymentSDKConfiguration, PaymentSDKBillingDetails, PaymentSDKTheme, PaymentSDKConstants } from '@paytabs/react-native-paytabs';
 
 const Checkout = (props) => {
     const [openQty, setOIpenQty] = React.useState(false);
@@ -92,6 +93,56 @@ const Checkout = (props) => {
     const { address = [], addressprocess } = props.address;
     const { lang } = props;
 
+
+    const processPayment = () => {
+        let billingDetails = new PaymentSDKBillingDetails("John Smith",
+            "email@test.com",
+            "+2011111111",
+            "address line",
+            "Dubai",
+            "Dubai",
+            "ae", // ISO alpha 2
+            "1234");
+        // let shippingDetails = new PaymentSDKShippingDetails(name = "John Smith",
+        //     email = "email@test.com",
+        //     phone = "+2011111111",
+        //     addressLine = "address line",
+        //     city = "Dubai",
+        //     state = "Dubai",
+        //     countryCode = "ae", // ISO alpha 2
+        //     zip = "1234");
+        let configuration = new PaymentSDKConfiguration();
+        configuration.profileID = "80656";
+        configuration.serverKey = "SJJNZJKKBN-J2HZ2H9JZ6-26D6T9JJGN";
+        configuration.clientKey = "CGKMH9-RGTG6M-H9MHP6-7VN2GT";
+        configuration.cartID = "545454";
+        configuration.currency = "sar";
+        configuration.cartDescription = "Flowers";
+        configuration.merchantCountryCode = "ae";
+        configuration.merchantName = "Flowers Store";
+        configuration.amount = 20;
+        configuration.screenTitle = "Pay with Card";
+        configuration.billingDetails = billingDetails;
+        configuration.forceShippingInfo = false;
+
+
+        console.log(JSON.stringify(configuration));
+
+        RNPaymentSDKLibrary.startCardPayment(JSON.stringify(configuration)).then(result => {
+            if (result["PaymentDetails"] != null) { // Handle transaction details
+                let paymentDetails = result["PaymentDetails"]
+                console.log(paymentDetails)
+            } else if (result["Event"] == "CancelPayment") { // Handle events
+                console.log("Cancel Payment Event")
+            }
+        }, function (error) { // Handle error
+            console.log(error);
+            console.log("magic");
+        });
+
+
+    }
+
     const submit = () => {
         props.getMeFn(props.user.token, () => { });
         try {
@@ -138,6 +189,20 @@ const Checkout = (props) => {
                     Vat: 0,
                     subTotal: cartData.map((pro) => getPriceval(pro)).reduce((a, b) => a + b),
                 };
+
+
+                // Add Pay tabs integration
+
+
+                console.log("Added to paytab integration")
+
+                // processPayment();
+
+
+
+
+
+
                 props.addOrderFn(b, (st) => {
                     if (st) {
                         // Clear Cart
@@ -159,6 +224,7 @@ const Checkout = (props) => {
                 });
             }
         } catch (e) {
+            console.log(e);
             setTimeout(() => {
                 Alert.alert(
                     constants[lang].errors.oops,

@@ -6,6 +6,7 @@ const Floatinginput = (props) => {
     const [isFocused, setisFocused] = useState(false);
     const [isActive, setisActive] = useState(false);
     const [val, setVal] = useState('');
+    const { placeholder = "" } = props;
 
     const blured = () => {
         setisActive(false);
@@ -55,6 +56,7 @@ const Floatinginput = (props) => {
                 onFocus={() => { setisFocused(true); setisActive(true) }}
                 onBlur={(e) => { blured(); }}
                 onChangeText={(e) => { setVal(e); props.changetext(e); }}
+                placeholder={isFocused ? placeholder : ''}
             />
             {props.location && <Ionicons onPress={() => { props.currLocationFn(); }} style={{
                 position: 'absolute',
